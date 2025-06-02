@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link, Links, NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // Mobile menu state
@@ -17,7 +18,7 @@ const Navbar = () => {
   // }, []);
   return (
     <>
-      <nav className="bg-blue-200 w-full fixed top-0 left-0 right-0 z-50">
+      <nav className="bg-green-800 w-full fixed top-0 left-0 right-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
             {/* Mobile Menu Button */}
@@ -25,7 +26,7 @@ const Navbar = () => {
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 type="button"
-                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-red-700 hover:text-white focus:ring-1 focus:ring-white focus:outline-none"
+                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:text-white focus:ring-1 focus:ring-white focus:outline-none"
                 aria-controls="mobile-menu"
                 aria-expanded={isOpen}
               >
@@ -51,33 +52,41 @@ const Navbar = () => {
               </button>
             </div>
             {/* Logo and Navigation Links */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between w-full">
               <div className="flex-shrink-0">
-                <a href="/" className="text-xl font-bold text-gray-800">
+                <Link to="/" className="text-xl font-bold text-gray-800">
                   Logo
-                </a>
+                </Link>
               </div>
-              <div className="hidden sm:block">
-                <div className="ml-10 flex items-baseline space-x-4">
-                  <a
-                    href="/"
-                    className="text-gray-800 hover:bg-red-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              <div className="hidden sm:flex sm:space-x-12 mx-auto">
+                <div className="ml-10 flex items-baseline space-x-10">
+                  <Link
+                    to="/"
+                    className="text-white hover:text-green-200 px-3 py-2 rounded-md text-[14px] font-medium"
                   >
                     Home
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="/about"
-                    className="text-gray-800 hover:bg-red-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    className="text-white hover:text-green-200 px-3 py-2 rounded-md text-[14px] font-medium"
+                  >
+                    Services
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="text-white hover:text-green-200 px-3 py-2 rounded-md text-[14px] font-medium"
                   >
                     About
-                  </a>
-                  <a
-                    href="/contact"
-                    className="text-gray-800 hover:bg-red-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                  >
-                    Contact
-                  </a>
+                  </Link>
                 </div>
+              </div>
+              <div className="hidden sm:block">
+                <Link
+                  href="/Qoute"
+                  className="text-white hover:text-green-200 px-3 py-2 rounded-md text-[14px] font-medium"
+                >
+                  Request a Qoute
+                </Link>
               </div>
             </div>
           </div>

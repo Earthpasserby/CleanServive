@@ -60,33 +60,33 @@ const Navbar = () => {
               </div>
               <div className="hidden sm:flex sm:space-x-12 mx-auto">
                 <div className="ml-10 flex items-baseline space-x-10">
-                  <Link
+                  <NavLink
                     to="/"
                     className="text-white hover:text-green-200 px-3 py-2 rounded-md text-[14px] font-medium"
                   >
                     Home
-                  </Link>
-                  <Link
+                  </NavLink>
+                  <NavLink
                     href="/about"
                     className="text-white hover:text-green-200 px-3 py-2 rounded-md text-[14px] font-medium"
                   >
                     Services
-                  </Link>
-                  <Link
+                  </NavLink>
+                  <NavLink
                     href="/contact"
                     className="text-white hover:text-green-200 px-3 py-2 rounded-md text-[14px] font-medium"
                   >
                     About
-                  </Link>
+                  </NavLink>
                 </div>
               </div>
               <div className="hidden sm:block">
-                <Link
+                <NavLink
                   href="/Qoute"
                   className="text-white hover:text-green-200 px-3 py-2 rounded-md text-[14px] font-medium"
                 >
                   Request a Qoute
-                </Link>
+                </NavLink>
               </div>
             </div>
           </div>

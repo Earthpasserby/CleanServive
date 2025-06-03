@@ -3,32 +3,37 @@ import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Link } from "react-router-dom";
+import React from "react";
+// Import your image here
+import holdingBucket from "../assets/holdingBucket.jpg"; // Adjust the path as necessary
+import suprisedClean from "../assets/suprisedClean.jpg"; // Adjust the path as necessary
+import construct from "../assets/construct.jpg"; // Adjust the path as necessary
+import woman from "../assets/woman.jpg";
 
 const slides = [
   {
-    image:
-      "https://www.freepik.com/free-photo/smiling-holding-points-bucket-cleaning-tools-young-africanamerican-cleaner-male-uniform-with-gloves-isolated-green-background_27467809.htm#fromView=search&page=1&position=1&uuid=1538dd99-8bc6-48d8-bb8f-78e13b11848e&query=cleaning+team",
+    image: holdingBucket,
     span: "Standard Cleaninng",
     title: "providing the best cleaning services for your home and office.",
     buttonText: "Request a Qoute",
     //     link: "/faqs",
   },
   {
-    image: "https://example.com/image1.jpg",
+    image: suprisedClean,
     span: "Deep Cleaning",
     title: "Experience the best cleaning services with our expert team.",
     buttonText: "Request a Qoute",
     //     link: "/faqs",
   },
   {
-    image: "https://example.com/image1.jpg",
+    image: woman,
     span: "Move In/Out Cleaning",
     title: "We make your move stress-free with our cleaning services.",
     buttonText: "Request a Qoute",
     //     link: "/faqs",
   },
   {
-    image: "https://example.com/image1.jpg",
+    image: construct,
     span: "Post Construction Cleaning",
     title: "Transform your space with our post-construction cleaning services.",
     buttonText: "Request a Qoute",

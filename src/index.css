@@ -1,1 +1,92 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap");
+
+.swiper-pagination {
+  position: absolute !important;
+  left: auto !important;
+  right: 56px !important;
+  bottom: 80px !important;
+  height: fit-content !important;
+  width: auto !important; /* Avoids taking full width */
+  display: flex !important;
+  flex-direction: row !important; /* Stack bullets vertically */
+  background: #65656557 !important;
+  padding: 10px !important;
+  border-radius: 24px !important;
+  box-shadow: 0px 4px 15px 0px #1b20201f !important;
+  backdrop-filter: blur(4px) !important;
+  gap: 0px !important;
+}
+
+@media screen and (max-width: 480px) {
+  .swiper-pagination {
+    left: 40px !important;
+    right: 0 !important;
+    width: 150px !important;
+    bottom: 0 !important;
+    margin-bottom: 10px;
+    margin-top: 15px;
+  }
+}
+
+.swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  border-radius: 24px !important;
+  background: #989898 !important;
+  opacity: 1 !important;
+  transition: all 0.3s ease-in-out;
+}
+
+.swiper-pagination-bullet-active {
+  background: green !important; /* Active bullet color */
+  width: 24px !important;
+}
+
+/* Default Pagination Style */
+.custom-pagination {
+  display: flex;
+  flex-direction: column; /* Arrange bullets vertically */
+  gap: 10px; /* Space between bullets */
+  background: transparent; /* Transparent background */
+  padding: 10px;
+}
+
+.custom-pagination .swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.6); /* Semi-transparent bullets */
+  opacity: 0.7;
+  transition: all 0.3s ease-in-out;
+}
+
+.custom-pagination .swiper-pagination-bullet-active {
+  background: green; /* Active bullet color */
+  width: 14px;
+  height: 14px;
+  opacity: 1;
+}
+
+.Cont-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #00000099;
+  z-index: 1;
+  border-radius: 35px;
+}
+
+.Cont-text {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-40%);
+  z-index: 2;
+  color: white;
+}
+
+ul > li {
+  font-size: 12px;
+  font-weight: 400;
+}

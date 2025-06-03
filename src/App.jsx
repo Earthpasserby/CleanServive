@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "./ScrollToTop";
 import Layout from "../Layout";
-import Home from "./Components/Home";
+import Home from "./Home";
 function App() {
   return (
     <>

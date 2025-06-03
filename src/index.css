@@ -20,7 +20,7 @@
 
 @media screen and (max-width: 480px) {
   .swiper-pagination {
-    left: 340px !important;
+    left: 40px !important;
     right: 0 !important;
     width: 100px !important;
     bottom: 0 !important;

@@ -69,7 +69,7 @@ const HeroSlide = () => {
                   </div>
                   <div className="absolute inset-0 bg-black opacity-50"></div>
                   <div className="absolute inset-0 top-[30vh]  sm:top-[65%] flex flex-col justify-center items-start px-10 mx-auto lg:px-14 transform -translate-y-1/2">
-                    <p className="text-yellow-200 text-[16px] font-medium uppercase tracking-wide">
+                    <p className="text-[#FFC234] text-[16px] font-medium uppercase tracking-wide">
                       {slide.span}
                     </p>
                     <div className="sm:w-[700px]">
@@ -77,7 +77,7 @@ const HeroSlide = () => {
                         {slide.title}
                       </h3>
                     </div>
-                    <button className="mt-4 sm:mt-7 sm:px-8 sm:py-4 px-8 py-2 bg-yellow-500 text-white rounded-4xl hover:bg-green-700">
+                    <button className="mt-4 sm:mt-7 sm:px-8 sm:py-4 px-8 py-2 bg-[#007CFF] text-white rounded-4xl hover:bg-green-700">
                       <Link to={slide.link}>{slide.buttonText}</Link>
                     </button>
                   </div>

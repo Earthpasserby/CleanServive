@@ -7,12 +7,12 @@ import pressure from "../assets/pressure.png";
 const CoreMessage = () => {
   return (
     <>
-      <div className="mx-auto w-full px-4 sm:px-14 lg:px-14 pt-8 sm:pt-24 bg-[#fbfbfb]">
+      <div className="mx-auto w-full px-4 sm:px-14 lg:px-14 pt-8 sm:pt-24 bg-gradient-to-l from-white to-white-100">
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-5 xl:gap-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-24">
-            <div className="bg-[#FAE6E6]   px-6 py-12 rounded-2xl sm:hidden xl:inline-block">
+            <div className="bg-[#FFC234]  px-6 py-12 rounded-2xl sm:hidden xl:inline-block">
               <img src={polisher} alt="group" className="w-[42px]" />
-              <h1 className="text-[#1E1E1E] font-medium text-[16px] text-sm pt-2">
+              <h1 className="text-white font-medium text-[16px] text-sm pt-2">
                 Excellent client service{" "}
               </h1>
               <p className="text-[#4B4B4B] font-normal text-sm pt-2">
@@ -23,7 +23,7 @@ const CoreMessage = () => {
             </div>
             <div className="bg-[#E9F9E8]   px-6 py-12 rounded-2xl">
               <img src={pressure} alt="group" className="w-[42px]" />
-              <h1 className="text-[#1E1E1E] font-medium text-[16px] text-sm pt-2">
+              <h1 className="text-[#FFC234] font-medium text-[16px] text-sm pt-2">
                 High success rate
               </h1>
               <p className="text-[#4B4B4B] font-normal text-sm pt-2">
@@ -34,7 +34,7 @@ const CoreMessage = () => {
             </div>
             <div className="bg-[#F9F4E8]  px-6 py-12 rounded-2xl ">
               <img src={broom} alt="group" className="w-[42px]" />
-              <h1 className="text-[#1E1E1E] font-medium text-[16px] text-sm pt-2">
+              <h1 className="text-[#FFC234] font-medium text-[16px] text-sm pt-2">
                 Professionalism
               </h1>
               <p className="text-[#4B4B4B] font-normal text-sm pt-2">
@@ -43,30 +43,30 @@ const CoreMessage = () => {
                 professionalism, ensuring your peace of mind.
               </p>
             </div>
-            <div className="bg-[#E9E9E9] sm:col-span-2 xl:col-span-1  px-6 py-12 rounded-2xl ">
+            <div className="bg-[#FFC234] sm:col-span-2 xl:col-span-1  px-6 py-12 rounded-2xl ">
               <img src={pressure} alt="group" className="w-[42px]" />
-              <h1 className="text-[#1E1E1E] font-medium text-[16px] text-sm pt-2">
+              <h1 className="text-white font-medium text-[16px] text-sm pt-2">
                 Worth every penny
               </h1>
               <p className="text-[#4B4B4B] font-normal text-sm pt-2">
                 Our extensive packages gives you trusted access to the best
-                cleaning services at every core.
+                services at every core.
               </p>
             </div>
           </div>
           <div className=" grid sm:grid-cols-2 xl:grid-cols-1 gap-4 sm:gap-5 ">
             <div className="flex flex-col">
-              <h1 className=" font-bold  text-[#989898] text-2xl sm:text-[32px] md:ml-0 lg:ml-80 sm:ml-0">
+              <h1 className=" font-bold  text-[#FFC234] text-2xl sm:text-[32px] md:ml-0 lg:ml-80 sm:ml-0">
                 Why Choose Us?
               </h1>
-              <p className="text-[#989898] font-medium pt-2 max-w-xl">
+              <p className="text-[#4B4B4B] font-medium pt-2 max-w-xl">
                 At our core, we are dedicated to providing exceptional service,
                 with a concise detailing which highlights our commitment to a
                 sparkling evnvironment.
               </p>
               <Link
                 to="/contactus"
-                className="bg-green-800 border-1 w-fit mt-4  text-green-200 px-8 py-3 sm:py-4 rounded-4xl hover:text-white hover:border-0 "
+                className="bg-[#FFC234] border-0 w-fit mt-4  text-white px-8 py-3 sm:py-4 rounded-4xl hover:text-white hover:border-0 "
               >
                 Request a Quote
               </Link>

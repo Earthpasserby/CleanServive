@@ -18,7 +18,7 @@ const Navbar = () => {
   }, []);
   return (
     <>
-      <nav className="bg-gradient-to-r from-blue-500 to-white-100 w-full fixed top-0 left-0 right-0 z-50">
+      <nav className="bg-gradient-to-r from-white-100 to-[#007CFF] w-full fixed top-0 left-0 right-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
             {/* Mobile Menu Button */}
@@ -55,27 +55,31 @@ const Navbar = () => {
             <div className="flex items-center justify-between w-full">
               <div className="flex-shrink-0">
                 <Link to="/" className="text-xl font-bold text-white">
-                  Scrubb
+                  <img
+                    src="/src/assets/scrubb.png"
+                    alt="logo"
+                    className="w-full h-30 object-contain"
+                  />
                 </Link>
               </div>
               <div className="hidden sm:flex sm:space-x-12 mx-auto">
                 <div className="ml-10 flex items-baseline space-x-10">
                   <NavLink
                     to="/"
-                    className="text-yellow-300 hover:underline px-3 py-2 rounded-md text-[14px] font-medium"
+                    className="text-white hover:underline px-3 py-2 rounded-md text-[16px] font-medium"
                   >
                     Home
                   </NavLink>
 
                   <NavLink
                     href="/about"
-                    className="text-yellow-300  px-3 py-2 rounded-md text-[14px] font-medium"
+                    className="text-white px-3 py-2 rounded-md text-[16px] font-medium"
                   >
                     Pricing
                   </NavLink>
                   <NavLink
                     href="/contact"
-                    className="text-yellow-300  px-3 py-2 rounded-md text-[14px] font-medium"
+                    className="text-white px-3 py-2 rounded-md text-[16px] font-medium"
                   >
                     About Us
                   </NavLink>
@@ -84,7 +88,7 @@ const Navbar = () => {
               <div className="hidden sm:block">
                 <NavLink
                   href="/Qoute"
-                  className="text-yellow-300  px-3 py-2 rounded-md text-[14px] font-medium"
+                  className="text-white px-3 py-2 rounded-md text-[16px] font-medium"
                 >
                   Request a Qoute
                 </NavLink>

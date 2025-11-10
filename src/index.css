@@ -1,5 +1,29 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap");
+/* Use Poppins for UI and Inter as fallback for system-like text */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@300;400;600;700&display=swap");
+
+/* Brand variables - change these values to tune the palette */
+:root {
+  --brand-primary: #0077b6; /* deep-sky blue - main brand color */
+  --brand-primary-dark: #005f8f; /* darker blue for hover */
+  --brand-accent: #ffc234; /* warm yellow accent - keep for highlights */
+  --brand-dark: #06283d; /* near-black navy for text */
+  --brand-muted: #6b7280; /* gray for secondary text */
+  /* Neutral / UI tokens */
+  --brand-cream: #f9f4e8; /* soft cream background used across cards */
+  --ui-muted: #989898; /* used for pagination bullets and neutral elements */
+  --pagination-bg: rgba(101, 101, 101, 0.34); /* background behind pagination */
+  --shadow-strong: rgba(27, 32, 32, 0.12);
+  --overlay-dark: rgba(0, 0, 0, 0.6);
+}
+
+/* Apply base type */
+html,
+body {
+  font-family: "Poppins", "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+  color: var(--brand-dark);
+}
 
 .swiper-pagination {
   position: absolute !important;
@@ -10,10 +34,10 @@
   width: auto !important; /* Avoids taking full width */
   display: flex !important;
   flex-direction: row !important; /* Stack bullets vertically */
-  background: #65656557 !important;
+  background: var(--pagination-bg) !important;
   padding: 10px !important;
   border-radius: 24px !important;
-  box-shadow: 0px 4px 15px 0px #1b20201f !important;
+  box-shadow: 0px 4px 15px 0px var(--shadow-strong) !important;
   backdrop-filter: blur(4px) !important;
   gap: 0px !important;
 }
@@ -33,13 +57,13 @@
   width: 12px;
   height: 12px;
   border-radius: 24px !important;
-  background: #989898 !important;
+  background: var(--ui-muted) !important;
   opacity: 1 !important;
   transition: all 0.3s ease-in-out;
 }
 
 .swiper-pagination-bullet-active {
-  background: #ffc234 !important; /* Active bullet color */
+  background: var(--brand-primary) !important; /* Active bullet color */
   width: 24px !important;
 }
 
@@ -61,10 +85,157 @@
 }
 
 .custom-pagination .swiper-pagination-bullet-active {
-  background: yellow; /* Active bullet color */
+  background: var(--brand-accent); /* Active bullet color */
   width: 14px;
   height: 14px;
   opacity: 1;
+}
+
+/* Utility classes for branding */
+.bg-accent {
+  background-color: var(--brand-primary) !important;
+}
+.text-accent {
+  color: var(--brand-primary) !important;
+}
+.bg-cream {
+  background-color: var(--brand-cream);
+}
+.text-muted {
+  color: var(--brand-muted);
+}
+
+/* Accent button: pill style using brand-accent and a primary hover */
+.btn-accent {
+  background-color: #9b741b;
+  color: white;
+  border: 0;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-accent:hover {
+  /* on hover switch to primary for better contrast */
+  background-color: var(--brand-primary);
+  color: white;
+}
+
+/* Primary (blue) button style */
+.btn-primary {
+  background-color: var(--brand-primary);
+  color: white;
+  border: 0;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 180ms ease, transform 120ms ease;
+}
+.btn-primary:hover {
+  background-color: var(--brand-primary-dark);
+  transform: translateY(-2px);
+}
+.btn-primary:focus {
+  outline: 3px solid rgba(0, 119, 182, 0.16);
+  outline-offset: 2px;
+}
+
+/* Card box style to standardize padding and border-radius */
+.card-box {
+  padding: 1.5rem;
+  border-radius: 1rem;
+}
+
+/* Primary card that blends brand primary and accent for a smooth look */
+.card-primary {
+  background: linear-gradient(
+    135deg,
+    var(--brand-primary) 0%,
+    var(--brand-accent) 100%
+  );
+  color: white;
+}
+
+/* Cream card variant keeps the soft background but uses the card-box spacing */
+.card-cream {
+  background-color: var(--brand-cream);
+  color: var(--brand-dark);
+}
+
+/* Gentle floating animation */
+@keyframes floaty {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: floaty 6s ease-in-out infinite;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float {
+    animation: none !important;
+  }
+}
+
+/* Card hover / focus lift */
+.card-box {
+  transition: transform 280ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    box-shadow 280ms ease;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
+}
+.card-box:hover,
+.card-box:focus-within {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.12);
+}
+
+/* Fade-up animation for sections */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-up {
+  animation: fadeUp 700ms ease both;
+}
+
+/* Social icons */
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+  transition: background-color 180ms ease, transform 120ms ease;
+}
+.social-icon:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-3px);
+}
+
+/* Muted text for dark backgrounds */
+.text-muted-dark {
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .Cont-overlay {
@@ -73,7 +244,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: #00000099;
+  background: var(--overlay-dark);
   z-index: 1;
   border-radius: 35px;
 }
@@ -89,4 +260,17 @@
 ul > li {
   font-size: 12px;
   font-weight: 400;
+}
+
+/* Navbar/link helpers */
+.nav-link {
+  color: var(--brand-dark);
+}
+.nav-link:hover {
+  color: var(--brand-primary);
+}
+
+/* Background helper using brand dark */
+.bg-brand-dark {
+  background-color: var(--brand-dark);
 }

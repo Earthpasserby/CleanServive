@@ -2,7 +2,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import { Link } from "react-router-dom";
 import React from "react";
 // Import your image here
 import holdingBucket from "../assets/holdingBucket.jpg"; // Adjust the path as necessary
@@ -15,28 +14,28 @@ const slides = [
     image: holdingBucket,
     span: "Standard Cleaninng",
     title: "providing the best cleaning services for your home and office.",
-    buttonText: "Request a Qoute",
+    buttonText: "Request a Quote",
     //     link: "/faqs",
   },
   {
     image: suprisedClean,
     span: "Deep Cleaning",
     title: "Experience the best cleaning services with our expert team.",
-    buttonText: "Request a Qoute",
+    buttonText: "Request a Quote",
     //     link: "/faqs",
   },
   {
     image: woman,
     span: "Move In/Out Cleaning",
     title: "We make your move stress-free with our cleaning services.",
-    buttonText: "Request a Qoute",
+    buttonText: "Request a Quote",
     //     link: "/faqs",
   },
   {
     image: construct,
     span: "Post Construction Cleaning",
     title: "Transform your space with our post-construction cleaning services.",
-    buttonText: "Request a Qoute",
+    buttonText: "Request a Quote",
     //     link: "/faqs",
   },
 ];
@@ -69,7 +68,7 @@ const HeroSlide = () => {
                   </div>
                   <div className="absolute inset-0 bg-black opacity-50"></div>
                   <div className="absolute inset-0 top-[30vh]  sm:top-[65%] flex flex-col justify-center items-start px-10 mx-auto lg:px-14 transform -translate-y-1/2">
-                    <p className="text-[#FFC234] text-[16px] font-medium uppercase tracking-wide">
+                    <p className="text-[18px] !text-[#ffc234] font-medium uppercase tracking-wide text-accent">
                       {slide.span}
                     </p>
                     <div className="sm:w-[700px]">
@@ -77,8 +76,14 @@ const HeroSlide = () => {
                         {slide.title}
                       </h3>
                     </div>
-                    <button className="mt-4 sm:mt-7 sm:px-8 sm:py-4 px-8 py-2 bg-[#FFC234] text-white rounded-4xl hover:bg-green-700">
-                      <Link to={slide.link}>{slide.buttonText}</Link>
+                    <button
+                      type="button"
+                      className="mt-4 sm:mt-7 sm:px-8 sm:py-4 px-8 py-2 btn-primary"
+                      onClick={() =>
+                        window.dispatchEvent(new CustomEvent("openQuoteModal"))
+                      }
+                    >
+                      {slide.buttonText}
                     </button>
                   </div>
                 </div>

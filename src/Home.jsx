@@ -1,6 +1,8 @@
 import CoreMessage from "./Components/CoreMessage";
 import HeroSlide from "./Components/HeroSlide";
 import Service from "./Components/Service";
+import AnimatedFeatures from "./Components/AnimatedFeatures";
+import HomeExtras from "./Components/HomeExtras";
 
 const Home = () => {
   return (
@@ -13,7 +15,9 @@ const Home = () => {
       <div className="w-full h-full">
         <HeroSlide />
         <CoreMessage />
+        <AnimatedFeatures />
         <Service />
+        <HomeExtras />
       </div>
     </>
   );

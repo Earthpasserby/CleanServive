@@ -1,24 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Link, Links, NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // Mobile menu state
-  const [dropdownOpen, setDropdownOpen] = useState(false); // Dropdown state
-  // Function to close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest(".dropdown-menu")) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
+  // dropdown menu removed (not currently used)
   return (
     <>
-      <nav className="bg-gradient-to-r from-white-100 to-[#FFC234] w-full fixed top-0 left-0 right-0 z-50">
+      <nav className="w-full fixed top-0 left-0 right-0 z-50 bg-white  shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
             {/* Mobile Menu Button */}
@@ -54,11 +42,12 @@ const Navbar = () => {
             {/* Logo and Navigation Links */}
             <div className="flex items-center justify-between w-full">
               <div className="flex-shrink-0">
-                <Link to="/" className="text-xl font-bold text-white">
+                <Link to="/" className="inline-flex items-center gap-2">
+                  {/* Logo: prefer SVG for easy recolor; PNG will keep original colors */}
                   <img
-                    src="/src/assets/scrubb.png"
+                    src="/src/assets/scrubbNewLg-removebg-preview.png"
                     alt="logo"
-                    className="w-full h-30 object-contain"
+                    className="w-40 h-auto object-contain"
                   />
                 </Link>
               </div>
@@ -66,32 +55,35 @@ const Navbar = () => {
                 <div className="ml-10 flex items-baseline space-x-10">
                   <NavLink
                     to="/"
-                    className="text-white hover:text-[#00A8FF] px-3 py-2 rounded-md text-[16px] font-medium"
+                    className="nav-link px-3 py-2 rounded-md text-[16px] font-medium"
                   >
                     Home
                   </NavLink>
 
                   <NavLink
-                    href="/about"
-                    className="text-white px-3 py-2 rounded-md text-[16px] font-medium"
+                    to="/pricing"
+                    className="nav-link px-3 py-2 rounded-md text-[16px] font-medium"
                   >
                     Pricing
                   </NavLink>
                   <NavLink
-                    href="/contact"
-                    className="text-white px-3 py-2 rounded-md text-[16px] font-medium"
+                    to="/about"
+                    className="nav-link px-3 py-2 rounded-md text-[16px] font-medium"
                   >
                     About Us
                   </NavLink>
                 </div>
               </div>
               <div className="hidden sm:block">
-                <NavLink
-                  href="/Qoute"
-                  className="text-white px-3 py-2 rounded-md text-[16px] font-medium"
+                <button
+                  type="button"
+                  onClick={() =>
+                    window.dispatchEvent(new CustomEvent("openQuoteModal"))
+                  }
+                  className="nav-link px-3 py-2 rounded-md text-[16px] font-medium"
                 >
-                  Request a Qoute
-                </NavLink>
+                  Request a Quote
+                </button>
               </div>
             </div>
           </div>
@@ -99,13 +91,12 @@ const Navbar = () => {
 
         {/* Mobile Navigation Menu */}
         {isOpen && (
-          <div className="sm:hidden absolute top-16 left-0 w-full bg-green-800 ">
+          <div className="sm:hidden absolute top-16 left-0 w-full bg-white shadow-md ">
             <div className="px-2 pt-2 pb-3 space-y-2">
               <NavLink
-                exact
+                end
                 to="/"
-                className="text-white hover:text-green-200 px-3 py-2 rounded-md text-[14px] font-medium block"
-                activeClassName="text-red-500"
+                className="nav-link px-3 py-2 rounded-md text-[14px] font-medium block"
                 onClick={() => setIsOpen(false)}
               >
                 Home
@@ -190,29 +181,29 @@ const Navbar = () => {
               {/* )} */}
               {/* </div> */}
               <NavLink
-                to="/Services"
-                className="text-white hover:text-green-200 px-3 py-2 rounded-md text-[14px] font-medium block"
-                activeClassName="text-red-500"
+                to="/services"
+                className="nav-link px-3 py-2 rounded-md text-[14px] font-medium block"
                 onClick={() => setIsOpen(false)}
               >
                 Services
               </NavLink>
               <NavLink
-                to="/About"
-                className="text-white hover:text-green-200 px-3 py-2 rounded-md text-[14px] font-medium block"
-                activeClassName="text-red-500"
+                to="/about"
+                className="nav-link px-3 py-2 rounded-md text-[14px] font-medium block"
                 onClick={() => setIsOpen(false)}
               >
                 About
               </NavLink>
-              <NavLink
-                to="/Qoute"
-                className="text-white hover:text-green-200 px-3 py-2 rounded-md text-[14px] font-medium block"
-                activeClassName="text-red-500"
-                onClick={() => setIsOpen(false)}
+              <button
+                type="button"
+                className="nav-link px-3 py-2 rounded-md text-[14px] font-medium block text-left"
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent("openQuoteModal"));
+                  setIsOpen(false);
+                }}
               >
-                Request a Qoute
-              </NavLink>
+                Request a Quote
+              </button>
             </div>
           </div>
         )}

@@ -8,11 +8,11 @@ import {
 
 const Footer = () => {
   return (
-  <footer className="bg-brand-dark text-white mt-12">
+    <footer className="bg-brand-dark text-white mt-12">
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <img
-            src="/src/assets/scrubbNewLg-removebg-preview.png"
+            src="/scrubbNewLg-removebg-preview.png"
             alt="logo"
             className="w-36 h-auto object-contain"
           />
@@ -21,7 +21,7 @@ const Footer = () => {
         <div>
           <h5 className="font-semibold">Contact</h5>
           <p className="mt-2 text-muted-dark">
-            <FaPhone className="inline mr-2" /> +234 (7067)87-6791
+            <FaPhone className="inline mr-2" /> +234 (7067) 87-6791
           </p>
           <p className="mt-1 text-muted-dark">
             <FaEnvelope className="inline mr-2" /> hello@scrubb.example

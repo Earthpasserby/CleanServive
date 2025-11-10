@@ -43,12 +43,8 @@ const Navbar = () => {
             <div className="flex items-center justify-between w-full">
               <div className="flex-shrink-0">
                 <Link to="/" className="inline-flex items-center gap-2">
-                  {/* Logo: prefer SVG for easy recolor; PNG will keep original colors */}
-                  <img
-                    src="/src/assets/scrubbNewLg-removebg-preview.png"
-                    alt="logo"
-                    className="w-40 h-auto object-contain"
-                  />
+                  {/* Logo: import from assets so bundler includes it in the build */}
+                  <img src="/scrubbNewLg-removebg-preview.png" alt="logo" className="w-40 h-auto object-contain" />
                 </Link>
               </div>
               <div className="hidden sm:flex sm:space-x-12 mx-auto">

@@ -8,7 +8,7 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-brand-dark text-white mt-12">
+  <footer className="bg-brand-dark text-white mt-12">
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <img
@@ -57,7 +57,11 @@ const Footer = () => {
             <a className="social-icon" href="#" aria-label="twitter">
               <FaTwitter />
             </a>
-            <a className="social-icon" href="#" aria-label="instagram">
+            <a
+              className="social-icon"
+              href="https://www.instagram.com/getscrubb/"
+              aria-label="instagram"
+            >
               <FaInstagram />
             </a>
           </div>

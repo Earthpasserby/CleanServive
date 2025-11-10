@@ -41,8 +41,8 @@ const slides = [
 ];
 const HeroSlide = () => {
   return (
-    <>
-      <div className="">
+      <>
+        <div className="">
         <div className="">
           <Swiper
             modules={[Pagination, Autoplay]}
@@ -67,7 +67,7 @@ const HeroSlide = () => {
                     />
                   </div>
                   <div className="absolute inset-0 bg-black opacity-50"></div>
-                  <div className="absolute inset-0 top-[30vh]  sm:top-[65%] flex flex-col justify-center items-start px-10 mx-auto lg:px-14 transform -translate-y-1/2">
+                    <div className="absolute inset-0 top-[30vh]  sm:top-[65%] flex flex-col justify-center items-start px-10 mx-auto lg:px-14 transform -translate-y-1/2">
                     <p className="text-[18px] !text-[#ffc234] font-medium uppercase tracking-wide text-accent">
                       {slide.span}
                     </p>

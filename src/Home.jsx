@@ -1,7 +1,6 @@
 import CoreMessage from "./Components/CoreMessage";
 import HeroSlide from "./Components/HeroSlide";
 import Service from "./Components/Service";
-import AnimatedFeatures from "./Components/AnimatedFeatures";
 import HomeExtras from "./Components/HomeExtras";
 
 const Home = () => {
@@ -14,9 +13,8 @@ const Home = () => {
       {/* <Title title="Palynx | The People Pairing App" /> */}
       <div className="w-full h-full">
         <HeroSlide />
-        <CoreMessage />
-        <AnimatedFeatures />
-        <Service />
+  <CoreMessage />
+  <Service />
         <HomeExtras />
       </div>
     </>

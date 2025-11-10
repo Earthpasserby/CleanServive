@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import holdingBucket from "./Components/../assets/holdingBucket.jpg";
 
 export default function About() {
   return (

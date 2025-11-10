@@ -77,7 +77,7 @@ const HeroSlide = () => {
                         {slide.title}
                       </h3>
                     </div>
-                    <button className="mt-4 sm:mt-7 sm:px-8 sm:py-4 px-8 py-2 bg-[#007CFF] text-white rounded-4xl hover:bg-green-700">
+                    <button className="mt-4 sm:mt-7 sm:px-8 sm:py-4 px-8 py-2 bg-[#FFC234] text-white rounded-4xl hover:bg-green-700">
                       <Link to={slide.link}>{slide.buttonText}</Link>
                     </button>
                   </div>

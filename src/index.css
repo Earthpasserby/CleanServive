@@ -39,7 +39,7 @@
 }
 
 .swiper-pagination-bullet-active {
-  background: #007cff !important; /* Active bullet color */
+  background: #ffc234 !important; /* Active bullet color */
   width: 24px !important;
 }
 

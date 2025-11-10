@@ -21,7 +21,7 @@ const CoreMessage = () => {
                 stress-free.
               </p>
             </div>
-            <div className="bg-[#E9F9E8]   px-6 py-12 rounded-2xl">
+            <div className="bg-[#F9F4E8]   px-6 py-12 rounded-2xl">
               <img src={pressure} alt="group" className="w-[42px]" />
               <h1 className="text-[#FFC234] font-medium text-[16px] text-sm pt-2">
                 High success rate

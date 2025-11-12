@@ -163,9 +163,7 @@ export default function Pricing() {
       <section className="mt-12 card-box card-primary text-white flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
           <h3 className="text-xl font-bold">Satisfaction Guaranteed</h3>
-          <p className="mt-1 opacity-90">
-            If you're not satisfied with the clean, we'll make it right.
-          </p>
+          <p className="mt-1 opacity-90">See Dirt, Think Scrubb.</p>
         </div>
         <div>
           <button

@@ -2,6 +2,7 @@ import CoreMessage from "./Components/CoreMessage";
 import HeroSlide from "./Components/HeroSlide";
 import Service from "./Components/Service";
 import HomeExtras from "./Components/HomeExtras";
+import JoinTeam from "./Components/JoinTeam";
 
 const Home = () => {
   return (
@@ -13,9 +14,10 @@ const Home = () => {
       {/* <Title title="Palynx | The People Pairing App" /> */}
       <div className="w-full h-full">
         <HeroSlide />
-  <CoreMessage />
-  <Service />
+        <CoreMessage />
+        <Service />
         <HomeExtras />
+        <JoinTeam />
       </div>
     </>
   );

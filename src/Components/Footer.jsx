@@ -45,6 +45,16 @@ const Footer = () => {
                 Request a Quote
               </button>
             </li>
+            <li>
+              <a
+                href="https://forms.gle/your-form-id"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="text-left"
+              >
+                Join the Team
+              </a>
+            </li>
           </ul>
         </div>
 

@@ -3,6 +3,23 @@ import React, { useEffect, useRef, useState } from "react";
 // Business WhatsApp number (international format, digits only)
 // Provided by user: +234 (7067)87-6791 -> digits-only: 2347067876791
 const WHATSAPP_NUMBER = "2347067876791";
+// Pricing maps kept at module scope so effects don't need them as deps
+const PLAN_RATE = {
+  Basic: 1200, // per room
+  Standard: 2000,
+  Premium: 3500,
+};
+
+const HOUSE_MULTIPLIER = {
+  Studio: 0.8,
+  Flat: 1,
+  Condo: 1.05,
+  Apartment: 1.1,
+  Townhouse: 1.15,
+  Duplex: 1.4,
+  Bungalow: 1.2,
+  Other: 1,
+};
 
 export default function QuoteModal() {
   const [open, setOpen] = useState(false);
@@ -20,6 +37,7 @@ export default function QuoteModal() {
     plan: "",
     preferred: "",
   });
+  const [estimated, setEstimated] = useState(null);
   const [errors, setErrors] = useState({});
   const firstInput = useRef(null);
 
@@ -72,6 +90,28 @@ export default function QuoteModal() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
+  // compute estimated price whenever relevant inputs change
+  useEffect(() => {
+    const rooms = parseInt(form.rooms, 10);
+    const plan = form.plan;
+    const house = form.houseType;
+    if (!plan || !rooms || !house) {
+      setEstimated(null);
+      return;
+    }
+    const base = PLAN_RATE[plan] || PLAN_RATE.Standard;
+    const mult = HOUSE_MULTIPLIER[house] || 1;
+    const amount = Math.round(base * rooms * mult);
+    setEstimated(amount);
+  }, [form.plan, form.rooms, form.houseType]);
+
+  // auto-select rooms for certain house types (e.g. Studio -> 1)
+  useEffect(() => {
+    if (form.houseType === "Studio" && !form.rooms) {
+      setForm((f) => ({ ...f, rooms: "1" }));
+    }
+  }, [form.houseType, form.rooms]);
+
   function sendToWhatsApp(message) {
     const digits = (WHATSAPP_NUMBER || "").replace(/\D/g, "");
     const url = `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
@@ -92,6 +132,13 @@ export default function QuoteModal() {
       form.houseType ? `House type: ${form.houseType}` : null,
       form.rooms ? `Rooms: ${form.rooms}` : null,
       form.plan ? `Plan: ${form.plan}` : null,
+      estimated
+        ? `Estimated price: ${new Intl.NumberFormat("en-NG", {
+            style: "currency",
+            currency: "NGN",
+            maximumFractionDigits: 0,
+          }).format(estimated)}`
+        : null,
       form.specialRequests ? `Special requests: ${form.specialRequests}` : null,
       form.preferred ? `Preferred: ${form.preferred}` : null,
     ]
@@ -269,6 +316,28 @@ export default function QuoteModal() {
                       </select>
                     </label>
                   </div>
+                </div>
+                {/* price estimate */}
+                <div className="mt-2">
+                  {estimated ? (
+                    <div className="text-sm p-3 rounded-md bg-gray-50 border">
+                      <div className="font-medium">Estimated price</div>
+                      <div className="text-lg font-semibold mt-1">
+                        {new Intl.NumberFormat("en-NG", {
+                          style: "currency",
+                          currency: "NGN",
+                          maximumFractionDigits: 0,
+                        }).format(estimated)}
+                      </div>
+                      <div className="text-xs text-muted mt-1">
+                        Based on selected plan, house type and number of rooms.
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-xs text-muted">
+                      Select house type, rooms and plan to see an estimate.
+                    </div>
+                  )}
                 </div>
                 <label className="block">
                   <span className="block text-sm font-medium">

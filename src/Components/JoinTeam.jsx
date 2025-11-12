@@ -1,42 +1,62 @@
 import React from "react";
+import { FaUsers, FaCheckCircle } from "react-icons/fa";
 
 // Replace this with your actual Google Form URL
-const GOOGLE_FORM_URL = "https://forms.gle/your-form-id";
+const GOOGLE_FORM_URL = "https://forms.gle/BTCTMdHi4kZrmPhE8";
 
 export default function JoinTeam() {
   return (
-    <section className="max-w-7xl mx-auto px-6 py-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div className="order-2 md:order-1">
-          <h2 className="text-2xl md:text-3xl font-semibold">
-            Join our cleaning team
-          </h2>
-          <p className="mt-3 text-muted-dark">
-            We're growing — if you're reliable, hardworking and passionate about
-            providing great cleaning service, we'd love to hear from you. Click
-            the button to apply; it opens a short Google Form where you can tell
-            us about your experience and availability.
-          </p>
+    <section className="bg-white/80 py-12">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="rounded-2xl overflow-hidden shadow-lg grid grid-cols-1 md:grid-cols-2">
+          <div className="p-8 flex flex-col justify-center bg-brand-light">
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-full bg-white/30 text-[#0077b6]">
+                <FaUsers className="w-6 h-6" />
+              </div>
+              <h3 className="text-2xl font-semibold text-[#9b741b]">
+                Join our Scrubb team
+              </h3>
+            </div>
 
-          <div className="mt-6">
-            <a
-              className="btn-primary"
-              href={GOOGLE_FORM_URL}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Apply to join
-            </a>
+            <p className="mt-4 text-[#0077b6]/90">
+              We're expanding our team. If you're reliable, hardworking and take
+              pride in delivering exceptional Scrubb, apply now — it only takes
+              a minute to fill the short form. We'll review your application and
+              get in touch.
+            </p>
+
+            <ul className="mt-6 space-y-2 text-[#0077b6]/90">
+              <li className="flex items-center gap-2">
+                <FaCheckCircle /> Competitive pay
+              </li>
+              <li className="flex items-center gap-2">
+                <FaCheckCircle /> Flexible schedules
+              </li>
+              <li className="flex items-center gap-2">
+                <FaCheckCircle /> Training and growth
+              </li>
+            </ul>
+
+            <div className="mt-6">
+              <a
+                href={"https://forms.gle/BTCTMdHi4kZrmPhE8"}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="inline-block btn-primary"
+                aria-label="Apply to join our cleaning team (opens in new tab)"
+              >
+                Apply to join
+              </a>
+            </div>
           </div>
-        </div>
 
-        <div className="order-1 md:order-2">
-          {/* Put an image named `join-team.jpg` in `public/` or change the path */}
-          <div className="rounded-lg overflow-hidden shadow-md">
+          <div className="h-64 md:h-auto">
+            {/* Add an image named `join-team.jpg` to `public/` or change path */}
             <img
               src="/join-team.jpg"
-              alt="Join our team"
-              className="w-full h-64 object-cover"
+              alt="Scrubb Team"
+              className="w-full h-full object-cover"
             />
           </div>
         </div>

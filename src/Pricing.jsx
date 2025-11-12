@@ -3,27 +3,62 @@ import React, { useState } from "react";
 export default function Pricing() {
   const [billing, setBilling] = useState("monthly");
 
+  const formatNGN = (value) =>
+    new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+      maximumFractionDigits: 0,
+    }).format(value);
+
+  // Prices converted to NGN from USD values using a conversion rate.
+  // Assumption: 1 USD = 1500 NGN (change this rate if you prefer a different conversion).
+  const USD_TO_NGN = 1500;
+
   const plans = [
     {
       name: "Basic",
-      monthly: 29,
-      yearly: 290,
-      desc: "Standard home cleaning",
-      features: ["1 hour per room", "Basic supplies"],
+      // original: $29/mo -> converted to NGN
+      monthly: 42 * USD_TO_NGN, // 43,500
+      yearly: 29 * USD_TO_NGN * 12,
+      desc: "Standard home cleaning Twice a week",
+      features: [
+        "In house Sweeping",
+        "Rooms Mopping",
+        "Dusting",
+        "Trash Removal",
+        "Bathroom Cleaning",
+        "Kitchen Cleaning",
+      ],
     },
     {
       name: "Standard",
-      monthly: 49,
-      yearly: 490,
-      desc: "Deep cleaning for small homes",
-      features: ["Deep clean", "2 rooms included", "Priority booking"],
+      // original: $49/mo
+      monthly: 95 * USD_TO_NGN, // 73,500
+      yearly: 49 * USD_TO_NGN * 12,
+      desc: "Basic and Deep cleaning for small homes",
+      features: [
+        "Deep clean",
+        "Room Dressing/Mopping",
+        "Bathroom Sanitization",
+        "kitchen Scrubbing",
+        "Appliance Cleaning",
+        "Compound Sweeping",
+      ],
     },
     {
       name: "Premium",
-      monthly: 79,
-      yearly: 790,
+      // original: $79/mo
+      monthly: 150 * USD_TO_NGN, // 118,500
+      yearly: 79 * USD_TO_NGN * 12,
       desc: "Full home cleaning + extras",
-      features: ["All rooms", "Move-in/out options", "Eco-friendly supplies"],
+      features: [
+        "All rooms",
+        "Move-in/out options",
+        "Deep Cleaning",
+        "Window cleaning",
+        "lundry Service",
+        "Eco-friendly supplies",
+      ],
     },
   ];
 
@@ -33,11 +68,19 @@ export default function Pricing() {
         <div>
           <h1 className="text-4xl font-extrabold text-accent">Pricing Plans</h1>
           <p className="text-muted mt-2 max-w-xl">
-            Simple plans with transparent pricing — choose monthly or yearly
+            Simple plans with transparent pricing — choose Weekly or Monthly
             billing.
           </p>
         </div>
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setBilling("weekly")}
+            className={`px-4 py-2 rounded-full ${
+              billing === "weekly" ? "btn-primary" : "btn-accent"
+            }`}
+          >
+            Weekly
+          </button>
           <button
             onClick={() => setBilling("monthly")}
             className={`px-4 py-2 rounded-full ${
@@ -45,14 +88,6 @@ export default function Pricing() {
             }`}
           >
             Monthly
-          </button>
-          <button
-            onClick={() => setBilling("yearly")}
-            className={`px-4 py-2 rounded-full ${
-              billing === "yearly" ? "btn-primary" : "btn-accent"
-            }`}
-          >
-            Yearly
           </button>
         </div>
       </header>
@@ -62,7 +97,9 @@ export default function Pricing() {
           <div key={p.name} className="card-box card-cream">
             <h3 className="text-xl font-semibold text-accent">{p.name}</h3>
             <p className="text-2xl font-bold mt-2">
-              {billing === "monthly" ? `$${p.monthly}/mo` : `$${p.yearly}/yr`}
+              {billing === "monthly"
+                ? `${formatNGN(p.monthly)}/mo`
+                : `${formatNGN(p.weekly ?? Math.round(p.monthly / 4))}/wk`}
             </p>
             <p className="text-muted mt-2">{p.desc}</p>
             <ul className="text-muted mt-3 list-disc pl-5 space-y-1">
@@ -107,8 +144,8 @@ export default function Pricing() {
               </tr>
               <tr className="bg-gray-50">
                 <td className="p-3">Eco Supplies</td>
-                <td className="p-3">✓</td>
-                <td className="p-3">✓</td>
+                <td className="p-3">—</td>
+                <td className="p-3">—</td>
                 <td className="p-3">✓</td>
               </tr>
               <tr>

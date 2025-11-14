@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 
 export default function Pricing() {
-  const [billing, setBilling] = useState("monthly");
+  // Pricing is presented as weekly-focused. No billing toggle.
 
   const formatNGN = (value) =>
     new Intl.NumberFormat("en-NG", {
@@ -12,15 +12,15 @@ export default function Pricing() {
 
   // Prices converted to NGN from USD values using a conversion rate.
   // Assumption: 1 USD = 1500 NGN (change this rate if you prefer a different conversion).
-  const USD_TO_NGN = 1500;
+  const USD_TO_NGN = 1500; // Keep USD->NGN conversion constant available if needed later.
 
   const plans = [
     {
       name: "Basic",
       // original: $29/mo -> converted to NGN
-      monthly: 42 * USD_TO_NGN, // 43,500
-      yearly: 29 * USD_TO_NGN * 12,
-      desc: "Standard home cleaning Twice a week",
+      weekly: 7500, // Starting price explicitly set as requested
+      monthly: 7500 * 4,
+      desc: "Standard home cleaning",
       features: [
         "In house Sweeping",
         "Rooms Mopping",
@@ -33,8 +33,8 @@ export default function Pricing() {
     {
       name: "Standard",
       // original: $49/mo
-      monthly: 95 * USD_TO_NGN, // 73,500
-      yearly: 49 * USD_TO_NGN * 12,
+      monthly: 40 * USD_TO_NGN, // derive weekly from prior monthly conversion (fallback)
+      weekly: Math.round((40 * USD_TO_NGN) / 4),
       desc: "Basic and Deep cleaning for small homes",
       features: [
         "Deep clean",
@@ -48,8 +48,8 @@ export default function Pricing() {
     {
       name: "Premium",
       // original: $79/mo
-      monthly: 150 * USD_TO_NGN, // 118,500
-      yearly: 79 * USD_TO_NGN * 12,
+      monthly: 79 * USD_TO_NGN,
+      weekly: Math.round((79 * USD_TO_NGN) / 4),
       desc: "Full home cleaning + extras",
       features: [
         "All rooms",
@@ -68,38 +68,43 @@ export default function Pricing() {
         <div>
           <h1 className="text-4xl font-extrabold text-accent">Pricing Plans</h1>
           <p className="text-muted mt-2 max-w-xl">
-            Simple plans with transparent pricing — choose Weekly or Monthly
-            billing.
+            Simple plans with transparent pricing — weekly rates shown below.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+      </header>
+
+      {/* Hero CTA: starting price */}
+      <div className="mt-6 p-6 rounded-lg bg-gradient-to-r from-brand-light to-brand-dark text-white flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <div className="text-sm uppercase opacity-90">Starting price</div>
+          <div className="text-3xl font-extrabold mt-1">
+            From {formatNGN(7000)}{" "}
+            <span className="text-lg font-medium">/ week</span>
+          </div>
+          <div className="mt-2 opacity-90">
+            Prices vary by plan and number of rooms — request a quote for an
+            exact price.
+          </div>
+        </div>
+        <div>
           <button
-            onClick={() => setBilling("weekly")}
-            className={`px-4 py-2 rounded-full ${
-              billing === "weekly" ? "btn-primary" : "btn-accent"
-            }`}
+            type="button"
+            className="btn-primary"
+            onClick={() =>
+              window.dispatchEvent(new CustomEvent("openQuoteModal"))
+            }
           >
-            Weekly
-          </button>
-          <button
-            onClick={() => setBilling("monthly")}
-            className={`px-4 py-2 rounded-full ${
-              billing === "monthly" ? "btn-primary" : "btn-accent"
-            }`}
-          >
-            Monthly
+            Request a Quote
           </button>
         </div>
-      </header>
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
         {plans.map((p) => (
           <div key={p.name} className="card-box card-cream">
             <h3 className="text-xl font-semibold text-accent">{p.name}</h3>
             <p className="text-2xl font-bold mt-2">
-              {billing === "monthly"
-                ? `${formatNGN(p.monthly)}/mo`
-                : `${formatNGN(p.weekly ?? Math.round(p.monthly / 4))}/wk`}
+              {`${formatNGN(p.weekly ?? Math.round(p.monthly / 4))}/wk`}
             </p>
             <p className="text-muted mt-2">{p.desc}</p>
             <ul className="text-muted mt-3 list-disc pl-5 space-y-1">

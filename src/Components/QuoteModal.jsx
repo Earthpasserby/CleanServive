@@ -5,9 +5,9 @@ import React, { useEffect, useRef, useState } from "react";
 const WHATSAPP_NUMBER = "2347067876791";
 // Pricing maps kept at module scope so effects don't need them as deps
 const PLAN_RATE = {
-  Basic: 1200, // per room
-  Standard: 2000,
-  Premium: 3500,
+  Basic: { first: 7000, extra: 3000 },
+  Standard: { first: 10500, extra: 4500 },
+  Premium: { first: 18000, extra: 8000 },
 };
 
 const HOUSE_MULTIPLIER = {
@@ -99,9 +99,16 @@ export default function QuoteModal() {
       setEstimated(null);
       return;
     }
-    const base = PLAN_RATE[plan] || PLAN_RATE.Standard;
+
+    const rates = PLAN_RATE[plan] || PLAN_RATE.Standard;
+    // Formula: (FirstRoomRate + (AdditionalRooms * ExtraRate)) * HouseMultiplier
+    // If rooms is 1, it's just FirstRoomRate.
+    // If rooms > 1, it's FirstRoomRate + (rooms - 1) * ExtraRate.
+
+    const baseAmount = rates.first + (Math.max(0, rooms - 1) * rates.extra);
     const mult = HOUSE_MULTIPLIER[house] || 1;
-    const amount = Math.round(base * rooms * mult);
+
+    const amount = Math.round(baseAmount * mult);
     setEstimated(amount);
   }, [form.plan, form.rooms, form.houseType]);
 
@@ -134,10 +141,10 @@ export default function QuoteModal() {
       form.plan ? `Plan: ${form.plan}` : null,
       estimated
         ? `Estimated price: ${new Intl.NumberFormat("en-NG", {
-            style: "currency",
-            currency: "NGN",
-            maximumFractionDigits: 0,
-          }).format(estimated)}`
+          style: "currency",
+          currency: "NGN",
+          maximumFractionDigits: 0,
+        }).format(estimated)}`
         : null,
       form.specialRequests ? `Special requests: ${form.specialRequests}` : null,
       form.preferred ? `Preferred: ${form.preferred}` : null,

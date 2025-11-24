@@ -128,8 +128,9 @@ export default function QuoteModal() {
   const [estimated, setEstimated] = useState(null);
   const [errors, setErrors] = useState({});
   const [extrasOpen, setExtrasOpen] = useState(false);
-  const [showPlanDetails, setShowPlanDetails] = useState(false);
   const [step, setStep] = useState(1);
+  const [transitioning, setTransitioning] = useState(false);
+  const [showPlanDetails, setShowPlanDetails] = useState(false);
   const firstInput = useRef(null);
   const extrasRef = useRef(null);
 
@@ -211,12 +212,16 @@ export default function QuoteModal() {
 
   function handleNext() {
     if (validateStep(step)) {
+      setTransitioning(true);
       setStep((prev) => Math.min(prev + 1, 3));
+      setTimeout(() => setTransitioning(false), 500);
     }
   }
 
   function handleBack() {
+    setTransitioning(true);
     setStep((prev) => Math.max(prev - 1, 1));
+    setTimeout(() => setTransitioning(false), 500);
   }
 
   function handleChange(e) {
@@ -292,7 +297,16 @@ export default function QuoteModal() {
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    // If not on the last step, try to move to the next step instead of submitting
+    if (step < 3) {
+      handleNext();
+      return;
+    }
+
+    // Final validation before sending
     if (!validateStep(1) || !validateStep(2)) return;
+
     setSubmitting(true);
     const roomDetails = [
       form.parlours > 0 ? `${form.parlours} Parlour(s)` : null,
@@ -318,19 +332,13 @@ export default function QuoteModal() {
       form.lga ? `LGA: ${form.lga}` : null,
       form.houseType ? `House type: ${form.houseType}` : null,
       roomDetails ? `Rooms: ${roomDetails}` : null,
-      selectedExtras ? `Extras: ${selectedExtras}` : null,
-      form.cleaningSupplies ? "Include Cleaning Supplies: Yes" : "Include Cleaning Supplies: No",
       form.plan ? `Plan: ${form.plan}` : null,
       form.frequency ? `Frequency: ${form.frequency}` : null,
-      estimated
-        ? `Estimated price: ${new Intl.NumberFormat("en-NG", {
-          style: "currency",
-          currency: "NGN",
-          maximumFractionDigits: 0,
-        }).format(estimated)}`
-        : null,
-      form.specialRequests ? `Special requests: ${form.specialRequests}` : null,
-      form.preferred ? `Preferred: ${form.preferred}` : null,
+      selectedExtras ? `Extras: ${selectedExtras}` : null,
+      form.cleaningSupplies ? "Includes Cleaning Supplies" : null,
+      form.preferred ? `Preferred Date: ${form.preferred}` : null,
+      form.specialRequests ? `Special Requests: ${form.specialRequests}` : null,
+      estimated ? `Estimated Price: ₦${estimated.toLocaleString()}` : null,
     ]
       .filter(Boolean)
       .join("\n");
@@ -347,6 +355,8 @@ export default function QuoteModal() {
     }, 300);
   }
 
+  // if (!open) return null; // Removed for animation
+
   return (
     <>
       <div
@@ -354,7 +364,7 @@ export default function QuoteModal() {
           }`}
       >
         <div
-          className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"
+          className={`absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"
             }`}
           onClick={() => setOpen(false)}
         />
@@ -379,83 +389,71 @@ export default function QuoteModal() {
             </button>
           </div>
 
-          <div className="overflow-y-auto p-6">
-            {/* Progress Bar */}
-            {!submitted && (
-              <div className="mb-6">
-                <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-green-500 transition-all duration-300 ease-out"
-                    style={{ width: `${(step / 3) * 100}%` }}
-                  />
-                </div>
-                <div className="flex justify-between mt-2 text-xs font-medium text-gray-500">
-                  <span className={step >= 1 ? "text-green-600" : ""}>Contact</span>
-                  <span className={step >= 2 ? "text-green-600" : ""}>Service</span>
-                  <span className={step >= 3 ? "text-green-600" : ""}>Review</span>
-                </div>
-              </div>
-            )}
+          {/* Progress Bar */}
+          <div className="w-full bg-gray-100 h-1.5">
+            <div
+              className="bg-green-600 h-1.5 transition-all duration-500 ease-out"
+              style={{ width: `${(step / 3) * 100}%` }}
+            />
+          </div>
 
+          <div className="overflow-y-auto p-6 custom-scrollbar">
             {!submitted ? (
-              <form onSubmit={handleSubmit} className="grid gap-3">
-
+              <form onSubmit={handleSubmit} className="mt-4">
                 {/* STEP 1: CONTACT INFO */}
                 {step === 1 && (
-                  <div className="space-y-4 animate-fadeIn">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <label className="block">
-                        <span className="block text-sm font-medium text-gray-700 mb-1">Full name</span>
-                        <input
-                          ref={firstInput}
-                          name="name"
-                          value={form.name}
-                          onChange={handleChange}
-                          className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
-                          placeholder="Jane Doe"
-                        />
-                        {errors.name && <div className="text-xs text-red-600 mt-1 ml-1">{errors.name}</div>}
-                      </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fadeIn">
+                    <label className="block">
+                      <span className="block text-sm font-medium text-gray-700 mb-1">Full Name</span>
+                      <input
+                        ref={firstInput}
+                        name="name"
+                        value={form.name}
+                        onChange={handleChange}
+                        className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                        placeholder="Your Name"
+                      />
+                      {errors.name && <div className="text-xs text-red-600 mt-1 ml-1">{errors.name}</div>}
+                    </label>
 
-                      <label className="block">
-                        <span className="block text-sm font-medium text-gray-700 mb-1">Phone</span>
-                        <input
-                          name="phone"
-                          value={form.phone}
-                          onChange={handleChange}
-                          className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
-                          placeholder="+2348012345678"
-                        />
-                        {errors.phone && <div className="text-xs text-red-600 mt-1 ml-1">{errors.phone}</div>}
-                      </label>
+                    <label className="block">
+                      <span className="block text-sm font-medium text-gray-700 mb-1">Phone Number</span>
+                      <input
+                        name="phone"
+                        value={form.phone}
+                        onChange={handleChange}
+                        className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                        placeholder="+234..."
+                      />
+                      {errors.phone && <div className="text-xs text-red-600 mt-1 ml-1">{errors.phone}</div>}
+                    </label>
 
-                      <label className="block">
-                        <span className="block text-sm font-medium text-gray-700 mb-1">Email (optional)</span>
-                        <input
-                          name="email"
-                          value={form.email}
-                          onChange={handleChange}
-                          className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
-                          placeholder="you@example.com"
-                        />
-                      </label>
+                    <label className="block md:col-span-2">
+                      <span className="block text-sm font-medium text-gray-700 mb-1">Email Address (Optional)</span>
+                      <input
+                        name="email"
+                        value={form.email}
+                        onChange={handleChange}
+                        className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                        placeholder="you@example.com"
+                      />
+                    </label>
 
-                      <label className="block">
-                        <span className="block text-sm font-medium text-gray-700 mb-1">LGA</span>
-                        <select
-                          name="lga"
-                          value={form.lga}
-                          onChange={handleChange}
-                          className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5 bg-white"
-                        >
-                          <option value="">Select LGA</option>
-                          {LAGOS_LGAS.map((lga) => (
-                            <option key={lga} value={lga}>{lga}</option>
-                          ))}
-                        </select>
-                        {errors.lga && <div className="text-xs text-red-600 mt-1 ml-1">{errors.lga}</div>}
-                      </label>
-                    </div>
+                    <label className="block">
+                      <span className="block text-sm font-medium text-gray-700 mb-1">LGA</span>
+                      <select
+                        name="lga"
+                        value={form.lga}
+                        onChange={handleChange}
+                        className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                      >
+                        <option value="">Select LGA</option>
+                        {LAGOS_LGAS.map((lga) => (
+                          <option key={lga} value={lga}>{lga}</option>
+                        ))}
+                      </select>
+                      {errors.lga && <div className="text-xs text-red-600 mt-1 ml-1">{errors.lga}</div>}
+                    </label>
 
                     <label className="block">
                       <span className="block text-sm font-medium text-gray-700 mb-1">Address</span>
@@ -464,7 +462,7 @@ export default function QuoteModal() {
                         value={form.address}
                         onChange={handleChange}
                         className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
-                        placeholder="House, street, city"
+                        placeholder="Street address"
                       />
                       {errors.address && <div className="text-xs text-red-600 mt-1 ml-1">{errors.address}</div>}
                     </label>
@@ -474,9 +472,9 @@ export default function QuoteModal() {
                 {/* STEP 2: SERVICE DETAILS */}
                 {step === 2 && (
                   <div className="space-y-6 animate-fadeIn">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <label className="block">
-                        <span className="block text-sm font-medium text-gray-700 mb-1">House type</span>
+                        <span className="block text-sm font-medium text-gray-700 mb-1">House Type</span>
                         <select
                           name="houseType"
                           value={form.houseType}
@@ -484,10 +482,12 @@ export default function QuoteModal() {
                           className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
                         >
                           <option value="">Select type</option>
-                          <option value="Flat">Flat</option>
-                          <option value="Duplex">Duplex</option>
-                          <option value="Condo">Condo</option>
                           <option value="Studio">Studio</option>
+                          <option value="Flat">Flat</option>
+                          <option value="Condo">Condo</option>
+                          <option value="Apartment">Apartment</option>
+                          <option value="Townhouse">Townhouse</option>
+                          <option value="Duplex">Duplex</option>
                           <option value="Bungalow">Bungalow</option>
                           <option value="Other">Other</option>
                         </select>
@@ -637,15 +637,15 @@ export default function QuoteModal() {
                       <button
                         type="button"
                         onClick={() => setExtrasOpen(!extrasOpen)}
-                        className="w-full text-left rounded-lg border border-gray-300 bg-white px-4 py-2.5 shadow-sm focus:border-green-500 focus:ring-green-500 flex items-center justify-between"
+                        className="w-full text-left rounded-lg border border-gray-300 shadow-sm px-4 py-2.5 bg-white flex items-center justify-between hover:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500"
                       >
-                        <span className="block truncate text-gray-700">
-                          {Object.values(form.extras).filter(Boolean).length > 0
-                            ? `${Object.values(form.extras).filter(Boolean).length} Selected`
-                            : "Select extra services"}
+                        <span className="text-gray-700 truncate">
+                          {Object.entries(form.extras).filter(([_, v]) => v).length > 0
+                            ? `${Object.entries(form.extras).filter(([_, v]) => v).length} selected`
+                            : "Select extras..."}
                         </span>
-                        <svg className={`h-5 w-5 text-gray-400 transition-transform ${extrasOpen ? "rotate-180" : ""}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                        <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                       </button>
 
@@ -736,7 +736,8 @@ export default function QuoteModal() {
                     <button
                       type="button"
                       onClick={handleBack}
-                      className="px-5 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition-colors"
+                      disabled={transitioning}
+                      className="px-5 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition-colors disabled:opacity-50"
                     >
                       Back
                     </button>
@@ -754,7 +755,8 @@ export default function QuoteModal() {
                     <button
                       type="button"
                       onClick={handleNext}
-                      className="px-6 py-2.5 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-green-600/30 transition-all transform active:scale-95"
+                      disabled={transitioning}
+                      className="px-6 py-2.5 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-green-600/30 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
                     >
                       Next
                     </button>
@@ -762,7 +764,7 @@ export default function QuoteModal() {
                     <button
                       type="submit"
                       className="px-6 py-2.5 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-green-600/30 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
-                      disabled={submitting}
+                      disabled={submitting || transitioning}
                     >
                       {submitting ? "Sending..." : "Send to WhatsApp"}
                     </button>
@@ -832,7 +834,7 @@ export default function QuoteModal() {
         </div>
       </div>
       {toast && (
-        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-4 py-2 rounded shadow-md z-60 border border-gray-800">
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-4 py-2 rounded shadow-md z-60">
           {toast}
         </div>
       )}

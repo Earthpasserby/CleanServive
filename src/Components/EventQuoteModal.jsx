@@ -141,8 +141,6 @@ export default function EventQuoteModal() {
         }, 300);
     }
 
-    // if (!open) return null; // Removed for animation
-
     return (
         <>
             <div
@@ -297,110 +295,111 @@ export default function EventQuoteModal() {
                                     {errors.services && <div className="text-xs text-red-400 mt-2 ml-1">{errors.services}</div>}
                                 </div>
 
-                                <textarea
-                                    name="additionalDetails"
-                                    value={form.additionalDetails}
-                                    onChange={handleChange}
-                                    rows={3}
-                                    className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
-                                    placeholder="Any specific requirements or questions..."
-                                />
-                            </label>
+                                <label className="block">
+                                    <span className="block text-sm font-medium text-gray-300 mb-1">Additional Details</span>
+                                    <textarea
+                                        name="additionalDetails"
+                                        value={form.additionalDetails}
+                                        onChange={handleChange}
+                                        rows={3}
+                                        className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                                        placeholder="Any specific requirements or questions..."
+                                    />
+                                </label>
 
                                 {/* Review Summary */}
-                        <div className="bg-gray-800/50 rounded-xl p-4 border border-gray-700 space-y-3 mt-2">
-                            <h4 className="text-sm font-bold text-gray-300 uppercase tracking-wide border-b border-gray-700 pb-2">Review Details</h4>
-                            <div className="grid grid-cols-2 gap-4 text-sm">
-                                <div>
-                                    <span className="block text-xs text-gray-500">Contact</span>
-                                    <span className="block font-medium text-white">{form.name || "-"}</span>
-                                    <span className="block text-gray-400 text-xs">{form.phone || "-"}</span>
+                                <div className="bg-gray-800/50 rounded-xl p-4 border border-gray-700 space-y-3 mt-2">
+                                    <h4 className="text-sm font-bold text-gray-300 uppercase tracking-wide border-b border-gray-700 pb-2">Review Details</h4>
+                                    <div className="grid grid-cols-2 gap-4 text-sm">
+                                        <div>
+                                            <span className="block text-xs text-gray-500">Contact</span>
+                                            <span className="block font-medium text-white">{form.name || "-"}</span>
+                                            <span className="block text-gray-400 text-xs">{form.phone || "-"}</span>
+                                        </div>
+                                        <div>
+                                            <span className="block text-xs text-gray-500">Event</span>
+                                            <span className="block font-medium text-white">{form.eventType || "-"}</span>
+                                            <span className="block text-gray-400 text-xs truncate">{form.eventDate ? new Date(form.eventDate).toLocaleDateString() : "-"}</span>
+                                        </div>
+                                        <div className="col-span-2">
+                                            <span className="block text-xs text-gray-500">Services</span>
+                                            <span className="block font-medium text-green-400">
+                                                {Object.entries(form.services)
+                                                    .filter(([_, selected]) => selected)
+                                                    .map(([key]) => key.replace(/([A-Z])/g, ' $1').trim())
+                                                    .join(", ") || "None selected"}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <span className="block text-xs text-gray-500">Event</span>
-                                    <span className="block font-medium text-white">{form.eventType || "-"}</span>
-                                    <span className="block text-gray-400 text-xs truncate">{form.eventDate ? new Date(form.eventDate).toLocaleDateString() : "-"}</span>
+
+                                <div className="mt-6 flex items-center justify-end gap-3 pt-4 border-t border-gray-800">
+                                    <button
+                                        type="button"
+                                        onClick={() => setOpen(false)}
+                                        className="px-5 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 font-medium transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="px-6 py-2.5 rounded-lg bg-green-600 hover:bg-green-500 text-white font-semibold shadow-lg hover:shadow-green-500/30 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                                        disabled={submitting}
+                                    >
+                                        {submitting ? "Sending..." : "Get Event Quote"}
+                                    </button>
                                 </div>
-                                <div className="col-span-2">
-                                    <span className="block text-xs text-gray-500">Services</span>
-                                    <span className="block font-medium text-green-400">
-                                        {Object.entries(form.services)
-                                            .filter(([_, selected]) => selected)
-                                            .map(([key]) => key.replace(/([A-Z])/g, ' $1').trim())
-                                            .join(", ") || "None selected"}
-                                    </span>
+                            </form>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center py-12 text-center px-6">
+                                <div className="w-16 h-16 bg-green-900/50 rounded-full flex items-center justify-center mb-4 border border-green-500/30">
+                                    <svg className="w-8 h-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <h4 className="text-2xl font-bold text-white">Request Sent!</h4>
+                                <p className="text-gray-400 mt-2 max-w-xs mx-auto">
+                                    We've opened WhatsApp with your event details. We'll confirm availability shortly.
+                                </p>
+                                <div className="mt-8">
+                                    <button
+                                        type="button"
+                                        className="px-6 py-2.5 rounded-lg border border-gray-700 text-gray-300 hover:bg-gray-800 font-medium transition-colors"
+                                        onClick={() => {
+                                            setSubmitted(false);
+                                            setOpen(false);
+                                            setForm({
+                                                name: "",
+                                                phone: "",
+                                                email: "",
+                                                eventType: "",
+                                                eventDate: "",
+                                                venueAddress: "",
+                                                guestCount: "",
+                                                services: {
+                                                    preEvent: false,
+                                                    duringEvent: false,
+                                                    postEvent: false,
+                                                    dishwashing: false,
+                                                },
+                                                additionalDetails: "",
+                                            });
+                                            setErrors({});
+                                        }}
+                                    >
+                                        Close
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-
-                        <div className="mt-6 flex items-center justify-end gap-3 pt-4 border-t border-gray-800">
-                            <button
-                                type="button"
-                                onClick={() => setOpen(false)}
-                                className="px-5 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 font-medium transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                className="px-6 py-2.5 rounded-lg bg-green-600 hover:bg-green-500 text-white font-semibold shadow-lg hover:shadow-green-500/30 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
-                                disabled={submitting}
-                            >
-                                {submitting ? "Sending..." : "Get Event Quote"}
-                            </button>
-                        </div>
-                    </form>
-                    ) : (
-                    <div className="flex flex-col items-center justify-center py-12 text-center px-6">
-                        <div className="w-16 h-16 bg-green-900/50 rounded-full flex items-center justify-center mb-4 border border-green-500/30">
-                            <svg className="w-8 h-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                        </div>
-                        <h4 className="text-2xl font-bold text-white">Request Sent!</h4>
-                        <p className="text-gray-400 mt-2 max-w-xs mx-auto">
-                            We've opened WhatsApp with your event details. We'll confirm availability shortly.
-                        </p>
-                        <div className="mt-8">
-                            <button
-                                type="button"
-                                className="px-6 py-2.5 rounded-lg border border-gray-700 text-gray-300 hover:bg-gray-800 font-medium transition-colors"
-                                onClick={() => {
-                                    setSubmitted(false);
-                                    setOpen(false);
-                                    setForm({
-                                        name: "",
-                                        phone: "",
-                                        email: "",
-                                        eventType: "",
-                                        eventDate: "",
-                                        venueAddress: "",
-                                        guestCount: "",
-                                        services: {
-                                            preEvent: false,
-                                            duringEvent: false,
-                                            postEvent: false,
-                                            dishwashing: false,
-                                        },
-                                        additionalDetails: "",
-                                    });
-                                    setErrors({});
-                                }}
-                            >
-                                Close
-                            </button>
-                        </div>
-                    </div>
                         )}
+                    </div>
                 </div>
             </div>
-        </div >
-            { toast && (
+            {toast && (
                 <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-4 py-2 rounded shadow-md z-60 border border-gray-800">
                     {toast}
                 </div>
-            )
-}
+            )}
         </>
     );
 }

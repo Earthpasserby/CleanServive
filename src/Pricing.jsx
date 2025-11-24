@@ -64,7 +64,7 @@ export default function Pricing() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12 lg:py-20">
+    <div className="max-w-7xl mx-auto px-6 py-24 lg:py-20">
       <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <h1 className="text-4xl font-extrabold text-accent">Pricing Plans</h1>
@@ -75,7 +75,7 @@ export default function Pricing() {
       </header>
 
       {/* Hero CTA: starting price */}
-      <div className="mt-6 p-6 rounded-lg bg-gradient-to-r from-brand-light to-brand-dark text-white flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="mt-6 p-6 rounded-lg bg-gradient-to-r from-brand-light to-brand-dark text-gray-500 flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
           <div className="text-sm uppercase opacity-90">Starting price</div>
           <div className="text-3xl font-extrabold mt-1">
@@ -86,7 +86,7 @@ export default function Pricing() {
             exact price.
           </div>
         </div>
-        <div>
+        <div className="w-full md:w-auto">
           <button
             type="button"
             className="btn-primary"
@@ -104,7 +104,9 @@ export default function Pricing() {
           <div key={p.name} className="card-box card-cream">
             <h3 className="text-xl font-semibold text-accent">{p.name}</h3>
             <div className="mt-2">
-              <span className="text-sm text-gray-500 font-medium block">As low as</span>
+              <span className="text-sm text-gray-500 font-medium block">
+                As low as
+              </span>
               <span className="text-3xl font-bold text-accent">
                 {formatNGN(p.weekly ?? Math.round(p.monthly / 4))}
               </span>
@@ -176,7 +178,7 @@ export default function Pricing() {
         <div>
           <button
             type="button"
-            className="btn-accent"
+            className="btn-accent w-full sm:w-auto"
             onClick={() =>
               window.dispatchEvent(new CustomEvent("openQuoteModal"))
             }

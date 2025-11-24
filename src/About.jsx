@@ -257,7 +257,7 @@ export default function About() {
               Book a cleaning or request a quote in just a few clicks.
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <Link to="/pricing" className="btn-primary">
               View Plans
             </Link>

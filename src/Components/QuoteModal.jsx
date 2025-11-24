@@ -269,10 +269,10 @@ export default function QuoteModal() {
                         <option value="Flat">Flat</option>
                         <option value="Duplex">Duplex</option>
                         <option value="Condo">Condo</option>
-                        <option value="Townhouse">Townhouse</option>
+                        {/* <option value="Townhouse">Townhouse</option> */}
                         <option value="Studio">Studio</option>
                         <option value="Bungalow">Bungalow</option>
-                        <option value="Apartment">Apartment</option>
+                        {/* <option value="Apartment">Apartment</option> */}
                         <option value="Other">Other</option>
                       </select>
                       {errors.houseType && (

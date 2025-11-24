@@ -3,6 +3,7 @@ import HeroSlide from "./Components/HeroSlide";
 import Service from "./Components/Service";
 import HomeExtras from "./Components/HomeExtras";
 import JoinTeam from "./Components/JoinTeam";
+import EventDishwasher from "./Components/EventDishwasher";
 
 const Home = () => {
   return (
@@ -15,9 +16,10 @@ const Home = () => {
       <div className="w-full h-full">
         <HeroSlide />
         <CoreMessage />
-        <Service />
         <HomeExtras />
+        <EventDishwasher />
         <JoinTeam />
+        <Service />
       </div>
     </>
   );

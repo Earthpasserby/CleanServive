@@ -18,45 +18,46 @@ export default function Pricing() {
     {
       name: "Basic",
       // original: $29/mo -> converted to NGN
-      weekly: 7500, // Starting price explicitly set as requested
-      monthly: 7500 * 4,
-      desc: "Standard home cleaning",
+      weekly: 4000, // Starting price explicitly set as requested
+      monthly: 4000 * 4,
+      desc: "Basic home cleaning",
       features: [
         "In house Sweeping",
         "Rooms Mopping",
         "Dusting",
         "Trash Removal",
-        "Bathroom Cleaning",
-        "Kitchen Cleaning",
+        // "Bathroom Cleaning",
+        // "Kitchen Cleaning",
       ],
     },
     {
       name: "Standard",
       // original: $49/mo
-      monthly: 40 * USD_TO_NGN, // derive weekly from prior monthly conversion (fallback)
-      weekly: Math.round((40 * USD_TO_NGN) / 4),
-      desc: "Basic and Deep cleaning for small homes",
+      weekly: 7500,
+      monthly: 7500 * 4,
+      desc: "Standard and Deep cleaning for small homes",
       features: [
-        "Deep clean",
+        // "Deep clean",
         "Room Dressing/Mopping",
         "Bathroom Sanitization",
         "kitchen Scrubbing",
         "Appliance Cleaning",
-        "Compound Sweeping",
+        // "Compound Sweeping",
       ],
     },
     {
       name: "Premium",
       // original: $79/mo
-      monthly: 79 * USD_TO_NGN,
-      weekly: Math.round((79 * USD_TO_NGN) / 4),
+      weekly: 12000,
+      monthly: 12000 * 4,
       desc: "Full home cleaning + extras",
       features: [
+        // "Deep clean",
         "All rooms",
         "Move-in/out options",
         "Deep Cleaning",
-        "Window cleaning",
-        "lundry Service",
+        // "Window cleaning",
+        // "lundry Service",
         "Eco-friendly supplies",
       ],
     },
@@ -68,7 +69,7 @@ export default function Pricing() {
         <div>
           <h1 className="text-4xl font-extrabold text-accent">Pricing Plans</h1>
           <p className="text-muted mt-2 max-w-xl">
-            Simple plans with transparent pricing — weekly rates shown below.
+            Simple plans with transparent pricing.
           </p>
         </div>
       </header>
@@ -78,8 +79,7 @@ export default function Pricing() {
         <div>
           <div className="text-sm uppercase opacity-90">Starting price</div>
           <div className="text-3xl font-extrabold mt-1">
-            From {formatNGN(7000)}{" "}
-            <span className="text-lg font-medium">/ week</span>
+            From {formatNGN(4000)}{" "}
           </div>
           <div className="mt-2 opacity-90">
             Prices vary by plan and number of rooms — request a quote for an
@@ -103,9 +103,12 @@ export default function Pricing() {
         {plans.map((p) => (
           <div key={p.name} className="card-box card-cream">
             <h3 className="text-xl font-semibold text-accent">{p.name}</h3>
-            <p className="text-2xl font-bold mt-2">
-              {`${formatNGN(p.weekly ?? Math.round(p.monthly / 4))}/wk`}
-            </p>
+            <div className="mt-2">
+              <span className="text-sm text-gray-500 font-medium block">As low as</span>
+              <span className="text-3xl font-bold text-accent">
+                {formatNGN(p.weekly ?? Math.round(p.monthly / 4))}
+              </span>
+            </div>
             <p className="text-muted mt-2">{p.desc}</p>
             <ul className="text-muted mt-3 list-disc pl-5 space-y-1">
               {p.features.map((f) => (

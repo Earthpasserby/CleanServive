@@ -63,6 +63,7 @@ const HeroSlide = () => {
                     <img
                       src={slide.image}
                       alt={slide.title}
+                      loading={index === 0 ? "eager" : "lazy"}
                       className="w-full h-[100vh]  object-center object-cover absolute inset-0"
                     />
                   </div>

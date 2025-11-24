@@ -47,6 +47,7 @@ const Navbar = () => {
                   <img
                     src="/scrubbNewLg-removebg-preview.png"
                     alt="logo"
+                    loading="eager"
                     className="w-40 h-auto object-contain"
                   />
                 </Link>
@@ -181,11 +182,11 @@ const Navbar = () => {
               {/* )} */}
               {/* </div> */}
               <NavLink
-                to="/services"
+                to="/pricing"
                 className="nav-link px-3 py-2 rounded-md text-[14px] font-medium block"
                 onClick={() => setIsOpen(false)}
               >
-                Services
+                Pricing
               </NavLink>
               <NavLink
                 to="/about"

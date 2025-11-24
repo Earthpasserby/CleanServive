@@ -1,8 +1,8 @@
 
 const PLAN_RATE = {
-    Basic: { first: 7000, extra: 3000 },
-    Standard: { first: 10500, extra: 4500 },
-    Premium: { first: 18000, extra: 8000 },
+    Basic: { first: 4000, extra: 2000 },
+    Standard: { first: 7500, extra: 3500 },
+    Premium: { first: 12000, extra: 6000 },
 };
 
 const HOUSE_MULTIPLIER = {
@@ -24,15 +24,15 @@ function calculate(plan, rooms, houseType) {
 }
 
 const tests = [
-    { plan: 'Basic', rooms: 1, house: 'Flat', expected: 7000 },
-    { plan: 'Basic', rooms: 2, house: 'Flat', expected: 10000 },
-    { plan: 'Basic', rooms: 3, house: 'Flat', expected: 13000 },
-    { plan: 'Standard', rooms: 1, house: 'Flat', expected: 10500 },
-    { plan: 'Standard', rooms: 2, house: 'Flat', expected: 15000 },
-    { plan: 'Premium', rooms: 1, house: 'Flat', expected: 18000 },
-    { plan: 'Premium', rooms: 2, house: 'Flat', expected: 26000 },
-    { plan: 'Basic', rooms: 1, house: 'Studio', expected: 5600 }, // 7000 * 0.8
-    { plan: 'Basic', rooms: 2, house: 'Studio', expected: 8000 }, // 10000 * 0.8
+    { plan: 'Basic', rooms: 1, house: 'Flat', expected: 4000 },
+    { plan: 'Basic', rooms: 2, house: 'Flat', expected: 6000 },
+    { plan: 'Basic', rooms: 3, house: 'Flat', expected: 8000 },
+    { plan: 'Standard', rooms: 1, house: 'Flat', expected: 7500 },
+    { plan: 'Standard', rooms: 2, house: 'Flat', expected: 11000 },
+    { plan: 'Premium', rooms: 1, house: 'Flat', expected: 12000 },
+    { plan: 'Premium', rooms: 2, house: 'Flat', expected: 18000 },
+    { plan: 'Basic', rooms: 1, house: 'Studio', expected: 3200 }, // 7000 * 0.8
+    { plan: 'Basic', rooms: 2, house: 'Studio', expected: 5600 }, // 10000 * 0.8
 ];
 
 let failed = false;

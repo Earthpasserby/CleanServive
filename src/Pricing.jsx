@@ -53,7 +53,7 @@ export default function Pricing() {
         "Deep kitchen clean (degreasing)",
         "Inside cabinets (on request)",
         "Bathroom descaling & grout",
-        "Baseboards, sills & door frames",
+        // "Baseboards, sills & door frames",
         "Upholstery spot-cleaning",
         "Eco-friendly supplies included",
       ],
@@ -136,10 +136,10 @@ export default function Pricing() {
           <table className="min-w-full bg-white border">
             <thead>
               <tr className="text-left">
-                <th className="p-3">Feature</th>
-                <th className="p-3">Basic</th>
-                <th className="p-3">Standard</th>
-                <th className="p-3">Premium</th>
+                <th className="p-3 ">Feature</th>
+                <th className="p-3 text-center">Basic</th>
+                <th className="p-3 text-center">Standard</th>
+                <th className="p-3 text-center">Premium</th>
               </tr>
             </thead>
             <tbody>

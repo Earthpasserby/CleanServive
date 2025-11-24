@@ -68,6 +68,7 @@ export default function EventQuoteModal() {
         if (!form.phone.trim()) errs.phone = "Please enter a contact phone";
         if (!form.eventType.trim()) errs.eventType = "Please specify the event type";
         if (!form.eventDate) errs.eventDate = "Please select a date";
+        if (!form.venueAddress.trim()) errs.venueAddress = "Please enter the venue address";
 
         const hasService = Object.values(form.services).some(Boolean);
         if (!hasService) errs.services = "Please select at least one service";
@@ -267,6 +268,7 @@ export default function EventQuoteModal() {
                                         className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
                                         placeholder="Full address of the venue"
                                     />
+                                    {errors.venueAddress && <div className="text-xs text-red-400 mt-1 ml-1">{errors.venueAddress}</div>}
                                 </label>
 
                                 <div className="block">

@@ -55,7 +55,7 @@ export default function JoinTeam() {
           <div className="h-64 md:h-auto">
             {/* Add an image named `join-team.jpg` to `public/` or change path */}
             <img
-              src='/public/scrubb logo.png'
+              src="/scrubb logo.png"
               alt="Scrubb Team"
               className="w-full h-full object-cover"
             />

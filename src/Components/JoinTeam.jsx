@@ -1,6 +1,6 @@
 import React from "react";
 import { FaUsers, FaCheckCircle } from "react-icons/fa";
-import scrubb from "../assets/scrubb logo.png";
+// import scrubb from "../assets/scrubb logo.png";
 
 // Replace this with your actual Google Form URL
 const GOOGLE_FORM_URL = "https://forms.gle/BTCTMdHi4kZrmPhE8";
@@ -55,7 +55,7 @@ export default function JoinTeam() {
           <div className="h-64 md:h-auto">
             {/* Add an image named `join-team.jpg` to `public/` or change path */}
             <img
-              src={scrubb}
+              src='/public/scrubb logo.png'
               alt="Scrubb Team"
               className="w-full h-full object-cover"
             />

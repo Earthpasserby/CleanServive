@@ -17,48 +17,45 @@ export default function Pricing() {
   const plans = [
     {
       name: "Basic",
-      // original: $29/mo -> converted to NGN
-      weekly: 4000, // Starting price explicitly set as requested
+      weekly: 4000,
       monthly: 4000 * 4,
-      desc: "Basic home cleaning",
+      desc: "Essential cleaning for everyday upkeep.",
       features: [
-        "In house Sweeping",
-        "Rooms Mopping",
-        "Dusting",
-        "Trash Removal",
-        // "Bathroom Cleaning",
-        // "Kitchen Cleaning",
+        "Dusting surfaces & fixtures",
+        "Mopping hard floors",
+        "Trash removal",
+        "Kitchen surfaces & sink",
+        "Bathroom cleaning (toilet, shower, mirror)",
+        "Emptying bins & tidying",
       ],
     },
     {
       name: "Standard",
-      // original: $49/mo
       weekly: 7500,
       monthly: 7500 * 4,
-      desc: "Standard and Deep cleaning for small homes",
+      desc: "Detailed cleaning with attention to appliances.",
       features: [
-        // "Deep clean",
-        "Room Dressing/Mopping",
-        "Bathroom Sanitization",
-        "kitchen Scrubbing",
-        "Appliance Cleaning",
-        // "Compound Sweeping",
+        "All Basic features",
+        "Detailed dusting (vents, light fixtures)",
+        "Microwave & appliance exteriors",
+        "Spot-cleaning walls & doors",
+        "Floor edges & corners",
+        "High-traffic area focus",
       ],
     },
     {
       name: "Premium",
-      // original: $79/mo
       weekly: 12000,
       monthly: 12000 * 4,
-      desc: "Full home cleaning + extras",
+      desc: "Deep cleaning & full home refresh.",
       features: [
-        // "Deep clean",
-        "All rooms",
-        "Move-in/out options",
-        "Deep Cleaning",
-        // "Window cleaning",
-        // "lundry Service",
-        "Eco-friendly supplies",
+        "All Standard features",
+        "Deep kitchen clean (degreasing)",
+        "Inside cabinets (on request)",
+        "Bathroom descaling & grout",
+        "Baseboards, sills & door frames",
+        "Upholstery spot-cleaning",
+        "Eco-friendly supplies included",
       ],
     },
   ];
@@ -147,22 +144,46 @@ export default function Pricing() {
             </thead>
             <tbody>
               <tr>
-                <td className="p-3">Deep Clean</td>
-                <td className="p-3">—</td>
-                <td className="p-3">✓</td>
-                <td className="p-3">✓</td>
+                <td className="p-3 font-medium">Dusting & Mopping</td>
+                <td className="p-3 text-center">✓</td>
+                <td className="p-3 text-center">✓</td>
+                <td className="p-3 text-center">✓</td>
               </tr>
               <tr className="bg-gray-50">
-                <td className="p-3">Eco Supplies</td>
-                <td className="p-3">—</td>
-                <td className="p-3">—</td>
-                <td className="p-3">✓</td>
+                <td className="p-3 font-medium">Bathroom & Kitchen Surfaces</td>
+                <td className="p-3 text-center">✓</td>
+                <td className="p-3 text-center">✓</td>
+                <td className="p-3 text-center">✓</td>
               </tr>
               <tr>
-                <td className="p-3">Priority Booking</td>
-                <td className="p-3">—</td>
-                <td className="p-3">✓</td>
-                <td className="p-3">✓</td>
+                <td className="p-3 font-medium">Appliance Exteriors & Microwave</td>
+                <td className="p-3 text-center">—</td>
+                <td className="p-3 text-center">✓</td>
+                <td className="p-3 text-center">✓</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="p-3 font-medium">Spot-clean Walls & Doors</td>
+                <td className="p-3 text-center">—</td>
+                <td className="p-3 text-center">✓</td>
+                <td className="p-3 text-center">✓</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">Deep Kitchen (Degreasing)</td>
+                <td className="p-3 text-center">—</td>
+                <td className="p-3 text-center">—</td>
+                <td className="p-3 text-center">✓</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="p-3 font-medium">Descaling & Grout</td>
+                <td className="p-3 text-center">—</td>
+                <td className="p-3 text-center">—</td>
+                <td className="p-3 text-center">✓</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">Eco-friendly Supplies</td>
+                <td className="p-3 text-center">Optional</td>
+                <td className="p-3 text-center">Optional</td>
+                <td className="p-3 text-center">Included</td>
               </tr>
             </tbody>
           </table>

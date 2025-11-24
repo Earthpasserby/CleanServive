@@ -57,6 +57,7 @@ export default function JoinTeam() {
             <img
               src="/scrubb logo.png"
               alt="Scrubb Team"
+              loading="lazy"
               className="w-full h-full object-cover"
             />
           </div>

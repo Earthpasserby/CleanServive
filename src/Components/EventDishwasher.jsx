@@ -3,7 +3,7 @@ import { FaGlassCheers, FaUtensils } from "react-icons/fa";
 
 export default function EventDishwasher() {
     const openModal = () => {
-        window.dispatchEvent(new Event("openQuoteModal"));
+        window.dispatchEvent(new Event("openEventModal"));
     };
 
     return (

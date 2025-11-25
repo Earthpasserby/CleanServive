@@ -8,39 +8,42 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-brand-dark text-white mt-12">
-      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-slate-900 text-white mt-20">
+      <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-12">
         <div>
           <img
             src="/scrubbNewLg-removebg-preview.png"
             alt="logo"
-            className="w-36 h-auto object-contain"
+            className="w-32 h-auto object-contain"
           />
-        </div>
-
-        <div>
-          <h5 className="font-semibold">Contact</h5>
-          <p className="mt-2 text-muted-dark">
-            <FaPhone className="inline mr-2" /> +234 (7067) 87-6791
-          </p>
-          <p className="mt-1 text-muted-dark">
-            <FaEnvelope className="inline mr-2" /> Admin@scrubb.com
+          <p className="mt-4 text-slate-400 text-sm leading-relaxed">
+            Professional cleaning services tailored to your lifestyle. Experience the difference of a truly clean home.
           </p>
         </div>
 
         <div>
-          <h5 className="font-semibold">Quick Links</h5>
-          <ul className="mt-2 space-y-2 text-muted-dark">
-            <li>Home</li>
-            <li>About</li>
-            <li>Pricing</li>
+          <h5 className="font-bold text-lg mb-4 text-green-400">Contact</h5>
+          <p className="mt-2 text-slate-300 flex items-center gap-2 hover:text-white transition-colors">
+            <FaPhone className="text-green-500" /> +234 (7067) 87-6791
+          </p>
+          <p className="mt-3 text-slate-300 flex items-center gap-2 hover:text-white transition-colors">
+            <FaEnvelope className="text-green-500" /> Admin@scrubb.com
+          </p>
+        </div>
+
+        <div>
+          <h5 className="font-bold text-lg mb-4 text-green-400">Quick Links</h5>
+          <ul className="space-y-3 text-slate-300">
+            <li className="hover:text-white transition-colors cursor-pointer">Home</li>
+            <li className="hover:text-white transition-colors cursor-pointer">About</li>
+            <li className="hover:text-white transition-colors cursor-pointer">Pricing</li>
             <li>
               <button
                 type="button"
                 onClick={() =>
                   window.dispatchEvent(new CustomEvent("openQuoteModal"))
                 }
-                className="text-left"
+                className="text-left hover:text-white transition-colors"
               >
                 Request a Quote
               </button>
@@ -50,7 +53,7 @@ const Footer = () => {
                 href="https://forms.gle/your-form-id"
                 target="_blank"
                 rel="noreferrer noopener"
-                className="text-left"
+                className="text-left hover:text-white transition-colors"
               >
                 Join the Team
               </a>
@@ -59,16 +62,16 @@ const Footer = () => {
         </div>
 
         <div>
-          <h5 className="font-semibold">Follow Us</h5>
-          <div className="flex items-center gap-3 mt-3">
-            <a className="social-icon" href="#" aria-label="facebook">
+          <h5 className="font-bold text-lg mb-4 text-green-400">Follow Us</h5>
+          <div className="flex items-center gap-4 mt-2">
+            <a className="social-icon bg-slate-800 hover:bg-green-600 transition-all" href="#" aria-label="facebook">
               <FaFacebookF />
             </a>
-            <a className="social-icon" href="#" aria-label="twitter">
+            <a className="social-icon bg-slate-800 hover:bg-green-600 transition-all" href="#" aria-label="twitter">
               <FaTwitter />
             </a>
             <a
-              className="social-icon"
+              className="social-icon bg-slate-800 hover:bg-green-600 transition-all"
               href="https://www.instagram.com/getscrubb/"
               aria-label="instagram"
             >
@@ -78,8 +81,8 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="border-t border-white/10 text-center py-4">
-        <small className="text-muted-dark">
+      <div className="border-t border-slate-800 text-center py-8">
+        <small className="text-slate-500">
           Copyright © 2025 SCRUBB. All rights reserved.
         </small>
       </div>

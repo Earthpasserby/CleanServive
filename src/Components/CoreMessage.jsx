@@ -56,7 +56,7 @@ const CoreMessage = () => {
           </div>
           <div className=" grid sm:grid-cols-2 xl:grid-cols-1 gap-4 sm:gap-5 ">
             <div className="flex flex-col">
-              <h1 className=" font-bold text-accent  !text-[#9b741b]   text-2xl sm:text-[32px] md:ml-0 lg:ml-80 sm:ml-0">
+              <h1 className=" font-bold text-teal-700 text-2xl sm:text-[32px] md:ml-0 lg:ml-80 sm:ml-0">
                 Why Scrubb?
               </h1>
               <p className="text-muted font-medium pt-2 max-w-xl">

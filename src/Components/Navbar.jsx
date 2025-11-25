@@ -14,7 +14,7 @@ const Navbar = () => {
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 type="button"
-                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:text-white focus:ring-1 focus:ring-white focus:outline-none"
+                className="inline-flex items-center justify-center rounded-md p-2 text-slate-400 hover:text-white focus:ring-1 focus:ring-white focus:outline-none"
                 aria-controls="mobile-menu"
                 aria-expanded={isOpen}
               >

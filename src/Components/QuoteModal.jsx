@@ -370,8 +370,6 @@ export default function QuoteModal() {
     }, 300);
   }
 
-  // if (!open) return null; // Removed for animation
-
   return (
     <>
       <div
@@ -407,7 +405,7 @@ export default function QuoteModal() {
           {/* Progress Bar */}
           <div className="w-full bg-gray-50 h-1.5">
             <div
-              className="bg-green-500 h-1.5 transition-all duration-500 ease-out shadow-[0_0_10px_rgba(34,197,94,0.5)]"
+              className="bg-teal-500 h-1.5 transition-all duration-500 ease-out shadow-[0_0_10px_rgba(20,184,166,0.5)]"
               style={{ width: `${(step / 3) * 100}%` }}
             />
           </div>
@@ -425,7 +423,7 @@ export default function QuoteModal() {
                         name="name"
                         value={form.name}
                         onChange={handleChange}
-                        className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                        className="w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
                         placeholder="Your Name"
                       />
                       {errors.name && <div className="text-xs text-red-600 mt-1 ml-1">{errors.name}</div>}
@@ -437,7 +435,7 @@ export default function QuoteModal() {
                         name="phone"
                         value={form.phone}
                         onChange={handleChange}
-                        className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                        className="w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
                         placeholder="+234..."
                       />
                       {errors.phone && <div className="text-xs text-red-600 mt-1 ml-1">{errors.phone}</div>}
@@ -449,7 +447,7 @@ export default function QuoteModal() {
                         name="email"
                         value={form.email}
                         onChange={handleChange}
-                        className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                        className="w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
                         placeholder="you@example.com"
                       />
                     </label>
@@ -460,7 +458,7 @@ export default function QuoteModal() {
                         name="lga"
                         value={form.lga}
                         onChange={handleChange}
-                        className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                        className="w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
                       >
                         <option value="">Select LGA</option>
                         {LAGOS_LGAS.map((lga) => (
@@ -476,7 +474,7 @@ export default function QuoteModal() {
                         name="address"
                         value={form.address}
                         onChange={handleChange}
-                        className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                        className="w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
                         placeholder="Street address"
                       />
                       {errors.address && <div className="text-xs text-red-600 mt-1 ml-1">{errors.address}</div>}
@@ -494,7 +492,7 @@ export default function QuoteModal() {
                           name="houseType"
                           value={form.houseType}
                           onChange={handleChange}
-                          className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                          className="w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
                         >
                           <option value="">Select type</option>
                           <option value="Studio">Studio</option>
@@ -515,7 +513,7 @@ export default function QuoteModal() {
                           name="frequency"
                           value={form.frequency}
                           onChange={handleChange}
-                          className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                          className="w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
                         >
                           <option value="">Select frequency</option>
                           <option value="One-off">One-off (Standard Price)</option>
@@ -536,7 +534,7 @@ export default function QuoteModal() {
                           name="plan"
                           value={form.plan}
                           onChange={handleChange}
-                          className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                          className="w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
                         >
                           <option value="">Select plan</option>
                           <option value="Basic">Basic</option>
@@ -549,7 +547,7 @@ export default function QuoteModal() {
                       <button
                         type="button"
                         onClick={() => setShowPlanDetails(!showPlanDetails)}
-                        className="text-xs font-medium text-green-600 hover:text-green-700 flex items-center gap-1 focus:outline-none mb-2"
+                        className="text-xs font-medium text-teal-600 hover:text-teal-700 flex items-center gap-1 focus:outline-none mb-2"
                       >
                         {showPlanDetails ? "Hide plan details" : "What's included?"}
                         <svg className={`w-3 h-3 transition-transform ${showPlanDetails ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -558,77 +556,78 @@ export default function QuoteModal() {
                       </button>
 
                       <div className={`overflow-hidden transition-all duration-300 ease-in-out ${showPlanDetails ? "max-h-40 opacity-100 mb-4" : "max-h-0 opacity-0"}`}>
-                        <div className="bg-green-50 rounded-lg p-3 border border-green-100">
-                          <p className="text-xs font-semibold text-green-800 mb-1">{form.plan || "Select a"} Plan Includes:</p>
+                        <div className="bg-teal-50 rounded-lg p-3 border border-teal-100">
+                          <p className="text-xs font-semibold text-teal-800 mb-1">{form.plan || "Select a"} Plan Includes:</p>
                           <ul className="grid grid-cols-2 gap-x-2 gap-y-1">
                             {(PLAN_DETAILS[form.plan] || PLAN_DETAILS.Basic).map((feature, idx) => (
-                              <li key={idx} className="text-[10px] text-green-700 flex items-center gap-1">
-                                <span className="w-1 h-1 rounded-full bg-green-500 shrink-0" />
+                              <li key={idx} className="text-[10px] text-teal-700 flex items-center gap-1">
+                                <span className="w-1 h-1 rounded-full bg-teal-500 shrink-0" />
                                 {feature}
                               </li>
                             ))}
                           </ul>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="block">
-                      <span className="block text-sm font-medium text-gray-700 mb-3">Room Breakdown</span>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        {ROOM_CONFIG.map(({ label, key, icon }) => {
-                          const count = form[key];
-                          const isActive = count > 0;
-                          return (
-                            <div
-                              key={key}
-                              className={`relative flex flex-col items-center p-3 rounded-xl border transition-all duration-200 ${isActive
-                                ? "border-green-500 bg-green-50 shadow-sm"
-                                : "border-gray-200 bg-white hover:border-green-200 hover:shadow-sm"
-                                }`}
-                            >
-                              <div className={`p-2 rounded-full mb-2 ${isActive ? "bg-green-100 text-green-600" : "bg-gray-100 text-gray-400"}`}>
-                                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                  <path d={icon} />
-                                </svg>
-                              </div>
-                              <span className={`text-xs font-semibold mb-3 uppercase tracking-wide ${isActive ? "text-green-800" : "text-gray-500"}`}>
-                                {label}
-                              </span>
-
-                              <div className="flex items-center gap-3 w-full justify-center">
-                                <button
-                                  type="button"
-                                  onClick={() => updateCount(key, -1)}
-                                  disabled={count === 0}
-                                  className={`w-8 h-8 flex items-center justify-center rounded-full border transition-all active:scale-95 ${count === 0
-                                    ? "border-gray-100 text-gray-300 cursor-not-allowed"
-                                    : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50 shadow-sm"
-                                    }`}
-                                >
-                                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                      <div className="space-y-4">
+                        <p className="text-sm font-medium text-gray-700">Add Rooms</p>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                          {ROOM_CONFIG.map(({ label, key, icon }) => {
+                            const count = form[key];
+                            const isActive = count > 0;
+                            return (
+                              <div
+                                key={key}
+                                className={`flex flex-col items-center p-3 rounded-xl border transition-all duration-200 ${isActive
+                                  ? "border-teal-500 bg-teal-50 shadow-sm"
+                                  : "border-gray-200 bg-white hover:border-teal-200"
+                                  }`}
+                              >
+                                <div className={`w-8 h-8 mb-2 rounded-full flex items-center justify-center ${isActive ? "bg-teal-100 text-teal-600" : "bg-gray-100 text-gray-400"
+                                  }`}>
+                                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d={icon} />
                                   </svg>
-                                </button>
-
-                                <span className={`w-6 text-center font-bold text-lg ${isActive ? "text-green-700" : "text-gray-300"}`}>
-                                  {count}
+                                </div>
+                                <span className={`text-xs font-medium mb-2 ${isActive ? "text-teal-900" : "text-gray-600"}`}>
+                                  {label}
                                 </span>
 
-                                <button
-                                  type="button"
-                                  onClick={() => updateCount(key, 1)}
-                                  className="w-8 h-8 flex items-center justify-center rounded-full bg-green-600 text-white shadow-md hover:bg-green-700 hover:shadow-lg transition-all active:scale-95"
-                                >
-                                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                                  </svg>
-                                </button>
+                                <div className="flex items-center gap-3 w-full justify-center">
+                                  <button
+                                    type="button"
+                                    onClick={() => updateCount(key, -1)}
+                                    disabled={count === 0}
+                                    className={`w-8 h-8 flex items-center justify-center rounded-full border transition-all active:scale-95 ${count === 0
+                                      ? "border-gray-100 text-gray-300 cursor-not-allowed"
+                                      : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50 shadow-sm"
+                                      }`}
+                                  >
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                                    </svg>
+                                  </button>
+
+                                  <span className={`w-6 text-center font-bold text-lg ${isActive ? "text-teal-700" : "text-gray-300"}`}>
+                                    {count}
+                                  </span>
+
+                                  <button
+                                    type="button"
+                                    onClick={() => updateCount(key, 1)}
+                                    className="w-8 h-8 flex items-center justify-center rounded-full bg-teal-600 text-white shadow-md hover:bg-teal-700 hover:shadow-lg transition-all active:scale-95"
+                                  >
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                    </svg>
+                                  </button>
+                                </div>
                               </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          })}
+                        </div>
+                        {errors.rooms && <div className="text-xs text-red-600 mt-2 ml-1">{errors.rooms}</div>}
                       </div>
-                      {errors.rooms && <div className="text-xs text-red-600 mt-2 ml-1">{errors.rooms}</div>}
                     </div>
                   </div>
                 )}
@@ -673,7 +672,7 @@ export default function QuoteModal() {
                       {/* Total Price in Summary */}
                       <div className="pt-2 border-t border-gray-200 mt-2 flex justify-between items-center">
                         <span className="text-sm font-bold text-gray-700">Total Estimate</span>
-                        <span className="text-lg font-bold text-green-700">
+                        <span className="text-lg font-bold text-teal-700">
                           {estimated
                             ? new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(estimated)
                             : "₦0"}
@@ -686,7 +685,7 @@ export default function QuoteModal() {
                       <button
                         type="button"
                         onClick={() => setExtrasOpen(!extrasOpen)}
-                        className="w-full text-left rounded-lg border border-gray-300 shadow-sm px-4 py-2.5 bg-white flex items-center justify-between hover:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className="w-full text-left rounded-lg border border-gray-300 shadow-sm px-4 py-2.5 bg-white flex items-center justify-between hover:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
                       >
                         <span className="text-gray-700 truncate">
                           {Object.entries(form.extras).filter(([_, v]) => v).length > 0
@@ -713,7 +712,7 @@ export default function QuoteModal() {
                         ].map(({ label, key }) => (
                           <div key={key} className="relative flex items-center px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 last:border-0" onClick={() => toggleExtra(key)}>
                             <div className="flex h-5 items-center">
-                              <input type="checkbox" checked={form.extras[key]} onChange={() => { }} className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500" />
+                              <input type="checkbox" checked={form.extras[key]} onChange={() => { }} className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500" />
                             </div>
                             <div className="ml-3 text-sm"><label className="font-medium text-gray-700 cursor-pointer">{label}</label></div>
                           </div>
@@ -727,7 +726,7 @@ export default function QuoteModal() {
                         name="cleaningSupplies"
                         checked={form.cleaningSupplies}
                         onChange={(e) => setForm({ ...form, cleaningSupplies: e.target.checked })}
-                        className="h-5 w-5 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                        className="h-5 w-5 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
                       />
                       <span className="text-sm font-medium text-gray-700">Include Cleaning Supplies?</span>
                     </label>
@@ -741,7 +740,7 @@ export default function QuoteModal() {
                           value={form.preferred}
                           onChange={handleChange}
                           min={minDateTime}
-                          className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                          className="w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
                         />
                       </label>
 
@@ -752,7 +751,7 @@ export default function QuoteModal() {
                           value={form.specialRequests}
                           onChange={handleChange}
                           rows={2}
-                          className="w-full rounded-lg border-gray-300 focus:border-green-500 focus:ring-green-500 shadow-sm px-4 py-2.5"
+                          className="w-full rounded-lg border-gray-300 focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
                           placeholder="Any specific instructions..."
                         />
                       </label>
@@ -761,12 +760,12 @@ export default function QuoteModal() {
                     {/* price estimate */}
                     <div className="mt-2">
                       {estimated ? (
-                        <div className="flex items-center justify-between p-4 rounded-xl bg-green-50 border border-green-100">
+                        <div className="flex items-center justify-between p-4 rounded-xl bg-teal-50 border border-teal-100">
                           <div>
-                            <div className="text-sm font-medium text-green-800">Estimated Price</div>
-                            <div className="text-xs text-green-600 mt-0.5">Based on selections</div>
+                            <div className="text-sm font-medium text-teal-800">Estimated Price</div>
+                            <div className="text-xs text-teal-600 mt-0.5">Based on selections</div>
                           </div>
-                          <div className="text-2xl font-bold text-green-700">
+                          <div className="text-2xl font-bold text-teal-700">
                             {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(estimated)}
                           </div>
                         </div>
@@ -805,14 +804,14 @@ export default function QuoteModal() {
                       type="button"
                       onClick={handleNext}
                       disabled={transitioning}
-                      className="px-6 py-2.5 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-green-600/30 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                      className="px-6 py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-semibold shadow-lg hover:shadow-teal-600/30 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
                     >
                       Next
                     </button>
                   ) : (
                     <button
                       type="submit"
-                      className="px-6 py-2.5 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-green-600/30 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                      className="px-6 py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-semibold shadow-lg hover:shadow-teal-600/30 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
                       disabled={submitting || transitioning}
                     >
                       {submitting ? "Sending..." : "Send to WhatsApp"}
@@ -822,8 +821,8 @@ export default function QuoteModal() {
               </form>
             ) : (
               <div className="flex flex-col items-center justify-center py-12 text-center px-6">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                  <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mb-4">
+                  <svg className="w-8 h-8 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>

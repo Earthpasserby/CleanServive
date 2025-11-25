@@ -18,7 +18,7 @@ const Step = ({ icon, title, desc }) => (
 const Testimonial = ({ quote, name }) => (
   <div className="card-box card-cream animate-float fade-up">
     <p className="text-muted">"{quote}"</p>
-    <p className="mt-3 !text-[#0077b6] font-semibold">— {name}</p>
+    <p className="mt-3 text-teal-600 font-semibold">— {name}</p>
   </div>
 );
 
@@ -26,7 +26,7 @@ export default function HomeExtras() {
   return (
     <section className="max-w-7xl mx-auto px-4 py-12 lg:py-20">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-accent">How it works</h2>
+        <h2 className="text-3xl font-bold text-slate-900">How it works</h2>
         <p className="text-muted mt-2 max-w-2xl mx-auto">
           Booking a clean takes only a few simple steps.
         </p>
@@ -51,7 +51,7 @@ export default function HomeExtras() {
       </div>
 
       <div className="mt-24 text-center">
-        <h3 className="text-2xl font-bold  !text-[#9b741b]   text-accent">
+        <h3 className="text-2xl font-bold text-teal-700">
           What customers say
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">

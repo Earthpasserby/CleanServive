@@ -88,6 +88,16 @@ const LAGOS_LGAS = [
   "Surulere",
 ];
 
+const ROOM_CONFIG = [
+  { label: "Parlour", key: "parlours", icon: "M19 10h2a1 1 0 0 1 0 2h-1v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6H3a1 1 0 0 1 0-2h2v-1a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v1z" }, // Sofa
+  { label: "Bedroom", key: "bedrooms", icon: "M2 10h20v7h-2v-3H4v3H2v-7zm2-4h7v3H4V6zm9 0h7v3h-7V6z" }, // Bed
+  { label: "Kitchen", key: "kitchens", icon: "M4 20h16v-8H4v8zm2-6h12v4H6v-4zm6-12v8h-2V2h2zm-4 0v8H6V2h2zm8 0v8h-2V2h2z" }, // Utensils (Abstract)
+  { label: "Bathroom", key: "bathrooms", icon: "M4 12v8h16v-8H4zm2 2h2v4H6v-4zm4 0h2v4h-2v-4zm4 0h2v4h-2v-4z M12 2L4 10h16L12 2z" }, // House/Bath
+  { label: "Office", key: "officeSpaces", icon: "M4 6h16v12H4V6zm2 2v8h12V8H6zm-2-4h16v2H4V4z" }, // Briefcase
+  { label: "Garage", key: "garages", icon: "M19 13v6H5v-6H3v8h2v-2h14v2h2v-8h-2z M12 3L3 11h18L12 3z" }, // Garage
+  { label: "Store", key: "stores", icon: "M4 4h16v16H4V4zm2 2v12h12V6H6z" }, // Box
+];
+
 export default function QuoteModal() {
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -225,7 +235,12 @@ export default function QuoteModal() {
   }
 
   function handleChange(e) {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+
+    if (name === "plan" && value) {
+      setShowPlanDetails(true);
+    }
   }
 
   useEffect(() => {
@@ -370,18 +385,18 @@ export default function QuoteModal() {
         />
 
         <div
-          className={`relative w-full max-w-2xl bg-white rounded-xl shadow-2xl flex flex-col max-h-[90vh] transition-all duration-300 transform ${open ? "scale-100 opacity-100 translate-y-0" : "scale-95 opacity-0 translate-y-4"
+          className={`relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh] transition-all duration-300 transform ${open ? "scale-100 opacity-100 translate-y-0" : "scale-95 opacity-0 translate-y-4"
             }`}
         >
-          <div className="flex items-center justify-between p-6 border-b shrink-0">
+          <div className="flex items-center justify-between p-6 border-b border-gray-100 shrink-0">
             <div>
-              <h3 className="text-xl font-bold text-gray-900">Request a Quote</h3>
-              <p className="text-sm text-gray-500 mt-1">Step {step} of 3</p>
+              <h3 className="text-2xl font-bold text-gray-900 tracking-tight">Request a Quote</h3>
+              <p className="text-sm text-gray-500 mt-1 font-medium">Step {step} of 3</p>
             </div>
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="text-gray-400 hover:text-gray-600 transition-colors p-2 rounded-full hover:bg-gray-100"
+              className="text-gray-400 hover:text-gray-600 transition-colors p-2 rounded-full hover:bg-gray-50"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -390,9 +405,9 @@ export default function QuoteModal() {
           </div>
 
           {/* Progress Bar */}
-          <div className="w-full bg-gray-100 h-1.5">
+          <div className="w-full bg-gray-50 h-1.5">
             <div
-              className="bg-green-600 h-1.5 transition-all duration-500 ease-out"
+              className="bg-green-500 h-1.5 transition-all duration-500 ease-out shadow-[0_0_10px_rgba(34,197,94,0.5)]"
               style={{ width: `${(step / 3) * 100}%` }}
             />
           </div>
@@ -560,24 +575,58 @@ export default function QuoteModal() {
                     <div className="block">
                       <span className="block text-sm font-medium text-gray-700 mb-3">Room Breakdown</span>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        {[
-                          { label: "Parlour", key: "parlours" },
-                          { label: "Bedroom", key: "bedrooms" },
-                          { label: "Kitchen", key: "kitchens" },
-                          { label: "Bathroom", key: "bathrooms" },
-                          { label: "Office", key: "officeSpaces" },
-                          { label: "Garage", key: "garages" },
-                          { label: "Store", key: "stores" },
-                        ].map(({ label, key }) => (
-                          <div key={key} className="flex flex-col items-center p-3 border border-gray-200 rounded-xl bg-gray-50/50 hover:bg-gray-50 transition-colors">
-                            <span className="text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wide">{label}</span>
-                            <div className="flex items-center gap-3">
-                              <button type="button" onClick={() => updateCount(key, -1)} className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-100 text-gray-600 transition-all active:scale-95">-</button>
-                              <span className="w-4 text-center font-bold text-lg text-gray-900">{form[key]}</span>
-                              <button type="button" onClick={() => updateCount(key, 1)} className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-100 text-green-600 transition-all active:scale-95">+</button>
+                        {ROOM_CONFIG.map(({ label, key, icon }) => {
+                          const count = form[key];
+                          const isActive = count > 0;
+                          return (
+                            <div
+                              key={key}
+                              className={`relative flex flex-col items-center p-3 rounded-xl border transition-all duration-200 ${isActive
+                                ? "border-green-500 bg-green-50 shadow-sm"
+                                : "border-gray-200 bg-white hover:border-green-200 hover:shadow-sm"
+                                }`}
+                            >
+                              <div className={`p-2 rounded-full mb-2 ${isActive ? "bg-green-100 text-green-600" : "bg-gray-100 text-gray-400"}`}>
+                                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d={icon} />
+                                </svg>
+                              </div>
+                              <span className={`text-xs font-semibold mb-3 uppercase tracking-wide ${isActive ? "text-green-800" : "text-gray-500"}`}>
+                                {label}
+                              </span>
+
+                              <div className="flex items-center gap-3 w-full justify-center">
+                                <button
+                                  type="button"
+                                  onClick={() => updateCount(key, -1)}
+                                  disabled={count === 0}
+                                  className={`w-8 h-8 flex items-center justify-center rounded-full border transition-all active:scale-95 ${count === 0
+                                    ? "border-gray-100 text-gray-300 cursor-not-allowed"
+                                    : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50 shadow-sm"
+                                    }`}
+                                >
+                                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                                  </svg>
+                                </button>
+
+                                <span className={`w-6 text-center font-bold text-lg ${isActive ? "text-green-700" : "text-gray-300"}`}>
+                                  {count}
+                                </span>
+
+                                <button
+                                  type="button"
+                                  onClick={() => updateCount(key, 1)}
+                                  className="w-8 h-8 flex items-center justify-center rounded-full bg-green-600 text-white shadow-md hover:bg-green-700 hover:shadow-lg transition-all active:scale-95"
+                                >
+                                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                  </svg>
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                       {errors.rooms && <div className="text-xs text-red-600 mt-2 ml-1">{errors.rooms}</div>}
                     </div>

@@ -1,28 +1,29 @@
 @import "tailwindcss";
-/* Use Poppins for UI and Inter as fallback for system-like text */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@300;400;600;700&display=swap");
+/* Use Outfit for a modern, sleek look */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap");
 
-/* Brand variables - change these values to tune the palette */
+/* Brand variables - sleek green theme */
 :root {
-  --brand-primary: #0077b6; /* deep-sky blue - main brand color */
-  --brand-primary-dark: #005f8f; /* darker blue for hover */
-  --brand-accent: #ffc234; /* warm yellow accent - keep for highlights */
-  --brand-dark: #06283d; /* near-black navy for text */
-  --brand-muted: #6b7280; /* gray for secondary text */
+  --brand-primary: #059669; /* Emerald 600 - Fresh & Clean */
+  --brand-primary-dark: #047857; /* Emerald 700 */
+  --brand-accent: #d97706; /* Amber 600 - Warmth */
+  --brand-dark: #0f172a; /* Slate 900 - Modern Dark */
+  --brand-muted: #64748b; /* Slate 500 */
   /* Neutral / UI tokens */
-  --brand-cream: #f9f4e8; /* soft cream background used across cards */
-  --ui-muted: #989898; /* used for pagination bullets and neutral elements */
-  --pagination-bg: rgba(101, 101, 101, 0.34); /* background behind pagination */
-  --shadow-strong: rgba(27, 32, 32, 0.12);
-  --overlay-dark: rgba(0, 0, 0, 0.6);
+  --brand-cream: #f8fafc; /* Slate 50 - Very clean light bg */
+  --ui-muted: #cbd5e1; /* Slate 300 */
+  --pagination-bg: rgba(255, 255, 255, 0.8);
+  --shadow-strong: rgba(15, 23, 42, 0.08);
+  --overlay-dark: rgba(15, 23, 42, 0.7);
 }
 
 /* Apply base type */
 html,
 body {
-  font-family: "Poppins", "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+  font-family: "Outfit", "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial;
   color: var(--brand-dark);
+  background-color: #ffffff;
 }
 
 .swiper-pagination {
@@ -105,64 +106,73 @@ body {
   color: var(--brand-muted);
 }
 
-/* Accent button: pill style using brand-accent and a primary hover */
+/* Accent button */
 .btn-accent {
-  background-color: #9b741b;
+  background-color: var(--brand-accent);
   color: white;
   border: 0;
-  padding: 0.75rem 1.5rem;
-  border-radius: 9999px;
+  padding: 0.75rem 1.75rem;
+  border-radius: 1rem;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(217, 119, 6, 0.2);
 }
 .btn-accent:hover {
-  /* on hover switch to primary for better contrast */
-  background-color: var(--brand-primary);
-  color: white;
+  background-color: #b45309;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(217, 119, 6, 0.3);
 }
 
-/* Primary (blue) button style */
+/* Primary button style */
 .btn-primary {
   background-color: var(--brand-primary);
   color: white;
   border: 0;
-  padding: 0.75rem 1.5rem;
-  border-radius: 9999px;
+  padding: 0.75rem 1.75rem;
+  border-radius: 1rem;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 180ms ease, transform 120ms ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.2);
 }
 .btn-primary:hover {
   background-color: var(--brand-primary-dark);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.3);
 }
 .btn-primary:focus {
-  outline: 3px solid rgba(0, 119, 182, 0.16);
+  outline: 2px solid var(--brand-primary);
   outline-offset: 2px;
 }
 
-/* Card box style to standardize padding and border-radius */
+/* Card box style */
 .card-box {
-  padding: 1.5rem;
-  border-radius: 1rem;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-/* Primary card that blends brand primary and accent for a smooth look */
+/* Primary card */
 .card-primary {
   background: linear-gradient(
     135deg,
     var(--brand-primary) 0%,
-    var(--brand-accent) 100%
+    #047857 100%
   );
   color: white;
+  border: none;
 }
 
-/* Cream card variant keeps the soft background but uses the card-box spacing */
+/* Cream card variant - now cleaner white/slate */
 .card-cream {
-  background-color: var(--brand-cream);
+  background-color: white;
   color: var(--brand-dark);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
 }
 
 /* Gentle floating animation */

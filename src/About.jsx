@@ -49,7 +49,7 @@ export default function About() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6">
           <div className="card-box card-cream animate-float">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold">
+              <div className="w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
                 I
               </div>
               <div>
@@ -60,7 +60,7 @@ export default function About() {
           </div>
           <div className="card-box card-cream animate-float">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold">
+              <div className="w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
                 J
               </div>
               <div>
@@ -71,7 +71,7 @@ export default function About() {
           </div>
           <div className="card-box card-cream animate-float">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold">
+              <div className="w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
                 M
               </div>
               <div>
@@ -86,14 +86,14 @@ export default function About() {
       {/* Mission & Values */}
       <section className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="card-box card-cream">
-          <h3 className="text-xl font-semibold text-teal-700">Our Mission</h3>
+          <h3 className="text-xl font-semibold text-blue-700">Our Mission</h3>
           <p className="text-muted mt-2">
             To provide reliable cleaning services that create safe, healthy, and
             welcoming environments for our clients.
           </p>
         </div>
         <div className="card-box card-cream">
-          <h3 className="text-xl font-semibold text-teal-700">Our Values</h3>
+          <h3 className="text-xl font-semibold text-blue-700">Our Values</h3>
           <ul className="text-muted mt-2 list-disc pl-5 space-y-2">
             <li>Professionalism in every job</li>
             <li>Clear, fair pricing</li>

@@ -18,7 +18,7 @@ const Step = ({ icon, title, desc }) => (
 const Testimonial = ({ quote, name }) => (
   <div className="card-box card-cream animate-float fade-up">
     <p className="text-muted">"{quote}"</p>
-    <p className="mt-3 text-teal-600 font-semibold">— {name}</p>
+    <p className="mt-3 text-sky-600 font-semibold">— {name}</p>
   </div>
 );
 
@@ -51,7 +51,7 @@ export default function HomeExtras() {
       </div>
 
       <div className="mt-24 text-center">
-        <h3 className="text-2xl font-bold text-teal-700">
+        <h3 className="text-2xl font-bold text-sky-700">
           What customers say
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">

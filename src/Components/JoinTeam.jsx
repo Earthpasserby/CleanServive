@@ -12,10 +12,10 @@ export default function JoinTeam() {
         <div className="rounded-2xl overflow-hidden shadow-lg grid grid-cols-1 md:grid-cols-2">
           <div className="p-8 flex flex-col justify-center bg-brand-light">
             <div className="flex items-center gap-3">
-              <div className="p-3 rounded-full bg-white/30 text-teal-700">
+              <div className="p-3 rounded-full bg-white/30 text-sky-700">
                 <FaUsers className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-semibold text-teal-800">
+              <h3 className="text-2xl font-semibold text-sky-800">
                 Join our Scrubb team
               </h3>
             </div>

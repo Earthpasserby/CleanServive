@@ -23,17 +23,17 @@ const Footer = () => {
         </div>
 
         <div>
-          <h5 className="font-bold text-lg mb-4 text-teal-400">Contact</h5>
+          <h5 className="font-bold text-lg mb-4 text-amber-500">Contact</h5>
           <p className="mt-2 text-slate-300 flex items-center gap-2 hover:text-white transition-colors">
-            <FaPhone className="text-teal-500" /> +234 (7067) 87-6791
+            <FaPhone className="text-sky-500" /> +234 (7067) 87-6791
           </p>
           <p className="mt-3 text-slate-300 flex items-center gap-2 hover:text-white transition-colors">
-            <FaEnvelope className="text-teal-500" /> Admin@scrubb.com
+            <FaEnvelope className="text-sky-500" /> Admin@scrubb.com
           </p>
         </div>
 
         <div>
-          <h5 className="font-bold text-lg mb-4 text-teal-400">Quick Links</h5>
+          <h5 className="font-bold text-lg mb-4 text-amber-500">Quick Links</h5>
           <ul className="space-y-3 text-slate-300">
             <li className="hover:text-white transition-colors cursor-pointer">
               Home
@@ -69,24 +69,24 @@ const Footer = () => {
         </div>
 
         <div>
-          <h5 className="font-bold text-lg mb-4 text-teal-400">Follow Us</h5>
+          <h5 className="font-bold text-lg mb-4 text-amber-500">Follow Us</h5>
           <div className="flex items-center gap-4 mt-2">
             <a
-              className="social-icon bg-slate-800 hover:bg-teal-600 transition-all"
+              className="social-icon bg-slate-800 hover:bg-sky-600 transition-all"
               href="#"
               aria-label="facebook"
             >
               <FaFacebookF />
             </a>
             <a
-              className="social-icon bg-slate-800 hover:bg-teal-600 transition-all"
+              className="social-icon bg-slate-800 hover:bg-sky-600 transition-all"
               href="#"
               aria-label="twitter"
             >
               <FaTwitter />
             </a>
             <a
-              className="social-icon bg-slate-800 hover:bg-teal-600 transition-all"
+              className="social-icon bg-slate-800 hover:bg-sky-600 transition-all"
               href="https://www.instagram.com/getscrubb/"
               aria-label="instagram"
             >

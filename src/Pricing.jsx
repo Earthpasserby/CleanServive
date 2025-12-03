@@ -76,12 +76,12 @@ export default function Pricing() {
           <div
             key={plan.name}
             className={`relative flex flex-col p-8 rounded-3xl border transition-all duration-300 hover:shadow-2xl ${plan.name === "Standard"
-              ? "bg-white border-teal-200 shadow-xl scale-105 z-10"
-              : "bg-white border-slate-100 shadow-lg hover:border-teal-100"
+              ? "bg-white border-sky-200 shadow-xl scale-105 z-10"
+              : "bg-white border-slate-100 shadow-lg hover:border-sky-100"
               }`}
           >
             {plan.name === "Standard" && (
-              <div className="absolute top-0 right-0 bg-teal-600 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl uppercase tracking-wider">
+              <div className="absolute top-0 right-0 bg-sky-600 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl uppercase tracking-wider">
                 Most Popular
               </div>
             )}
@@ -102,7 +102,7 @@ export default function Pricing() {
               {plan.features.map((feature, idx) => (
                 <li key={idx} className="flex items-start gap-3 text-sm text-slate-600">
                   <svg
-                    className="w-5 h-5 text-teal-500 shrink-0"
+                    className="w-5 h-5 text-sky-500 shrink-0"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -123,8 +123,8 @@ export default function Pricing() {
               type="button"
               onClick={() => window.dispatchEvent(new CustomEvent("openQuoteModal"))}
               className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-200 ${plan.name === "Standard"
-                ? "bg-teal-600 text-white hover:bg-teal-700 shadow-lg hover:shadow-teal-600/30"
-                : "bg-teal-50 text-teal-700 hover:bg-teal-100 hover:text-teal-800"
+                ? "bg-sky-600 text-white hover:bg-sky-700 shadow-lg hover:shadow-sky-600/30"
+                : "bg-sky-50 text-sky-700 hover:bg-sky-100 hover:text-sky-800"
                 }`}
             >
               Choose {plan.name}

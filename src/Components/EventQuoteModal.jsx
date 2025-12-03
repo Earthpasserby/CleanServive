@@ -185,7 +185,7 @@ export default function EventQuoteModal() {
                                             name="name"
                                             value={form.name}
                                             onChange={handleChange}
-                                            className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
+                                            className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-sky-500 focus:ring-sky-500 shadow-sm px-4 py-2.5"
                                             placeholder="Your Name"
                                         />
                                         {errors.name && <div className="text-xs text-red-400 mt-1 ml-1">{errors.name}</div>}
@@ -197,7 +197,7 @@ export default function EventQuoteModal() {
                                             name="phone"
                                             value={form.phone}
                                             onChange={handleChange}
-                                            className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
+                                            className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-sky-500 focus:ring-sky-500 shadow-sm px-4 py-2.5"
                                             placeholder="+234..."
                                         />
                                         {errors.phone && <div className="text-xs text-red-400 mt-1 ml-1">{errors.phone}</div>}
@@ -209,7 +209,7 @@ export default function EventQuoteModal() {
                                             name="email"
                                             value={form.email}
                                             onChange={handleChange}
-                                            className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
+                                            className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-sky-500 focus:ring-sky-500 shadow-sm px-4 py-2.5"
                                             placeholder="you@example.com"
                                         />
                                     </label>
@@ -220,7 +220,7 @@ export default function EventQuoteModal() {
                                             name="eventType"
                                             value={form.eventType}
                                             onChange={handleChange}
-                                            className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
+                                            className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-sky-500 focus:ring-sky-500 shadow-sm px-4 py-2.5"
                                         >
                                             <option value="">Select Type</option>
                                             <option value="Wedding">Wedding</option>
@@ -241,7 +241,7 @@ export default function EventQuoteModal() {
                                             value={form.eventDate}
                                             onChange={handleChange}
                                             min={minDateTime}
-                                            className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
+                                            className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-sky-500 focus:ring-sky-500 shadow-sm px-4 py-2.5"
                                         />
                                         {errors.eventDate && <div className="text-xs text-red-400 mt-1 ml-1">{errors.eventDate}</div>}
                                     </label>
@@ -253,7 +253,7 @@ export default function EventQuoteModal() {
                                             name="guestCount"
                                             value={form.guestCount}
                                             onChange={handleChange}
-                                            className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
+                                            className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-sky-500 focus:ring-sky-500 shadow-sm px-4 py-2.5"
                                             placeholder="e.g. 50"
                                         />
                                     </label>
@@ -265,7 +265,7 @@ export default function EventQuoteModal() {
                                         name="venueAddress"
                                         value={form.venueAddress}
                                         onChange={handleChange}
-                                        className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
+                                        className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-blue-500 focus:ring-blue-500 shadow-sm px-4 py-2.5"
                                         placeholder="Full address of the venue"
                                     />
                                     {errors.venueAddress && <div className="text-xs text-red-400 mt-1 ml-1">{errors.venueAddress}</div>}
@@ -280,13 +280,13 @@ export default function EventQuoteModal() {
                                             { label: "Post-Event Cleanup", key: "postEvent", desc: "Deep cleaning after the event ends" },
                                             { label: "Dishwashing Service", key: "dishwashing", desc: "Professional washing of plates and cutlery" },
                                         ].map(({ label, key, desc }) => (
-                                            <label key={key} className={`flex flex-col p-3 border rounded-xl cursor-pointer transition-all ${form.services[key] ? 'border-teal-500 bg-teal-900/20' : 'border-gray-700 hover:bg-gray-800'}`}>
+                                            <label key={key} className={`flex flex-col p-3 border rounded-xl cursor-pointer transition-all ${form.services[key] ? 'border-sky-500 bg-sky-900/20' : 'border-gray-700 hover:bg-gray-800'}`}>
                                                 <div className="flex items-center gap-2 mb-1">
                                                     <input
                                                         type="checkbox"
                                                         checked={form.services[key]}
                                                         onChange={() => toggleService(key)}
-                                                        className="h-4 w-4 rounded border-gray-600 text-teal-500 focus:ring-teal-500 bg-gray-700"
+                                                        className="h-4 w-4 rounded border-gray-600 text-sky-500 focus:ring-sky-500 bg-gray-700"
                                                     />
                                                     <span className="font-medium text-white">{label}</span>
                                                 </div>
@@ -304,7 +304,7 @@ export default function EventQuoteModal() {
                                         value={form.additionalDetails}
                                         onChange={handleChange}
                                         rows={3}
-                                        className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-teal-500 focus:ring-teal-500 shadow-sm px-4 py-2.5"
+                                        className="w-full rounded-lg bg-gray-800 border-gray-700 text-white focus:border-blue-500 focus:ring-blue-500 shadow-sm px-4 py-2.5"
                                         placeholder="Any specific requirements or questions..."
                                     />
                                 </label>
@@ -325,7 +325,7 @@ export default function EventQuoteModal() {
                                         </div>
                                         <div className="col-span-2">
                                             <span className="block text-xs text-gray-500">Services</span>
-                                            <span className="block font-medium text-teal-400">
+                                            <span className="block font-medium text-sky-400">
                                                 {Object.entries(form.services)
                                                     .filter(([_, selected]) => selected)
                                                     .map(([key]) => key.replace(/([A-Z])/g, ' $1').trim())
@@ -345,7 +345,7 @@ export default function EventQuoteModal() {
                                     </button>
                                     <button
                                         type="submit"
-                                        className="px-6 py-2.5 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-semibold shadow-lg hover:shadow-teal-500/30 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                                        className="px-6 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold shadow-lg hover:shadow-sky-500/30 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
                                         disabled={submitting}
                                     >
                                         {submitting ? "Sending..." : "Get Event Quote"}
@@ -354,8 +354,8 @@ export default function EventQuoteModal() {
                             </form>
                         ) : (
                             <div className="flex flex-col items-center justify-center py-12 text-center px-6">
-                                <div className="w-16 h-16 bg-teal-900/50 rounded-full flex items-center justify-center mb-4 border border-teal-500/30">
-                                    <svg className="w-8 h-8 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div className="w-16 h-16 bg-sky-900/50 rounded-full flex items-center justify-center mb-4 border border-sky-500/30">
+                                    <svg className="w-8 h-8 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
                                 </div>

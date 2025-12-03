@@ -760,18 +760,82 @@ export default function QuoteModal() {
                     {/* price estimate */}
                     <div className="mt-2">
                       {estimated ? (
-                        <div className="flex items-center justify-between p-4 rounded-xl bg-sky-50 border border-sky-100">
-                          <div>
-                            <div className="text-sm font-medium text-sky-800">Estimated Price</div>
-                            <div className="text-xs text-sky-600 mt-0.5">Based on selections</div>
+                        <div className="bg-sky-50 rounded-xl border border-sky-100 overflow-hidden">
+                          <div className="p-4 border-b border-sky-100">
+                            <h4 className="font-bold text-sky-900 text-sm uppercase tracking-wider mb-3">Price Breakdown</h4>
+                            <div className="space-y-2 text-sm">
+                              <div className="flex justify-between text-sky-800">
+                                <span>Base Price ({form.plan})</span>
+                                <span>
+                                  {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(
+                                    PLAN_RATE[form.plan]?.first || 0
+                                  )}
+                                </span>
+                              </div>
+
+                              {/* Calculate room cost for display */}
+                              {(() => {
+                                const totalRooms = form.parlours + form.bedrooms + form.kitchens + form.bathrooms + form.officeSpaces + form.garages + form.stores;
+                                const extraRooms = Math.max(0, totalRooms - 1);
+                                const roomCost = extraRooms * (PLAN_RATE[form.plan]?.extra || 0);
+                                if (extraRooms > 0) {
+                                  return (
+                                    <div className="flex justify-between text-sky-700">
+                                      <span>Extra Rooms ({extraRooms})</span>
+                                      <span>
+                                        {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(roomCost)}
+                                      </span>
+                                    </div>
+                                  );
+                                }
+                                return null;
+                              })()}
+
+                              {/* House Type Multiplier */}
+                              {HOUSE_MULTIPLIER[form.houseType] !== 1 && (
+                                <div className="flex justify-between text-sky-700">
+                                  <span>House Type Adjustment ({form.houseType})</span>
+                                  <span className="text-xs bg-sky-200 px-1.5 py-0.5 rounded text-sky-800 font-medium">
+                                    x{HOUSE_MULTIPLIER[form.houseType]}
+                                  </span>
+                                </div>
+                              )}
+
+                              {/* Extras */}
+                              {Object.entries(form.extras).map(([key, selected]) => {
+                                if (!selected) return null;
+                                return (
+                                  <div key={key} className="flex justify-between text-slate-600 text-xs">
+                                    <span>+ {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1').trim()}</span>
+                                    <span>
+                                      {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(EXTRAS_PRICES[key] || 0)}
+                                    </span>
+                                  </div>
+                                );
+                              })}
+
+                              {/* Discount */}
+                              {FREQUENCY_DISCOUNT[form.frequency] > 0 && (
+                                <div className="flex justify-between text-green-600 font-medium pt-2 border-t border-sky-100/50">
+                                  <span>Frequency Discount ({form.frequency})</span>
+                                  <span>-{FREQUENCY_DISCOUNT[form.frequency] * 100}%</span>
+                                </div>
+                              )}
+                            </div>
                           </div>
-                          <div className="text-2xl font-bold text-sky-700">
-                            {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(estimated)}
+                          <div className="p-4 bg-sky-100/50 flex items-center justify-between">
+                            <div>
+                              <div className="text-sm font-bold text-sky-900">Total Estimate</div>
+                              <div className="text-xs text-sky-600 mt-0.5">Includes all fees</div>
+                            </div>
+                            <div className="text-2xl font-bold text-sky-700">
+                              {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(estimated)}
+                            </div>
                           </div>
                         </div>
                       ) : (
-                        <div className="text-sm text-gray-500 text-center py-2 bg-gray-50 rounded-lg border border-dashed border-gray-200">
-                          Complete previous steps to see estimate.
+                        <div className="text-sm text-gray-500 text-center py-4 bg-gray-50 rounded-lg border border-dashed border-gray-200">
+                          Complete previous steps to see your price breakdown.
                         </div>
                       )}
                     </div>

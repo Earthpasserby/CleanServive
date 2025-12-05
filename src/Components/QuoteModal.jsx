@@ -4,32 +4,56 @@ import React, { useEffect, useRef, useState } from "react";
 const WHATSAPP_NUMBER = "2347067876791";
 
 // Pricing maps
-const PLAN_RATE = {
-  Basic: { first: 4000, extra: 2000 },
-  Standard: { first: 7500, extra: 3500 },
-  Premium: { first: 12000, extra: 6000 },
+// Pricing maps
+// Pricing maps
+const PLAN_ROOM_PRICES = {
+  Basic: {
+    bedrooms: 800, parlours: 800, bathrooms: 1000, kitchens: 1500,
+    stores: 1500, garages: 2500, officeSpaces: 800
+  },
+  Standard: {
+    bedrooms: 1200, parlours: 1200, bathrooms: 1500, kitchens: 2000,
+    stores: 2000, garages: 3000, officeSpaces: 1200
+  },
+  Premium: {
+    bedrooms: 1500, parlours: 1500, bathrooms: 2000, kitchens: 2500,
+    stores: 2500, garages: 3500, officeSpaces: 1500
+  }
 };
 
-const HOUSE_MULTIPLIER = {
-  Studio: 0.8,
-  Flat: 1,
-  Condo: 1.05,
-  Apartment: 1.1,
-  Townhouse: 1.15,
-  Duplex: 1.4,
-  Bungalow: 1.2,
-  Other: 1,
+const PLAN_RATE = {
+  Basic: { first: 3000 },
+  Standard: { first: 4000 },
+  Premium: { first: 5000 },
 };
+
+
+
+
 
 const FREQUENCY_DISCOUNT = {
   "One-off": 0,
-  "Bi-monthly": 0.05,
-  Weekly: 0.1,
+  "Bi-monthly": 0,
+  Weekly: 0,
   "Twice a week": 0.15,
   "3 times a week": 0.2,
   Everyday: 0.25,
   Recurring: 0.1,
 };
+
+const FREQUENCY_DETAILS = {
+  "One-off": { label: "", multiplier: 1, monthlyFactor: 0 },
+  "Bi-monthly": { label: "(Monthly)", multiplier: 2, monthlyFactor: 1 },
+  "Weekly": { label: "(Weekly)", multiplier: 1, monthlyFactor: 4 },
+  "Twice a week": { label: "(Weekly)", multiplier: 2, monthlyFactor: 4 },
+  "3 times a week": { label: "(Weekly)", multiplier: 3, monthlyFactor: 4 },
+  "Everyday": { label: "(Daily)", multiplier: 1, monthlyFactor: 30 },
+  "Recurring": { label: "(Per Visit)", multiplier: 1, monthlyFactor: 4 },
+};
+
+
+
+
 
 const PLAN_DETAILS = {
   Basic: [
@@ -86,6 +110,14 @@ const LAGOS_LGAS = [
   "Oshodi-Isolo",
   "Shomolu",
   "Surulere",
+];
+
+const ISLAND_LGAS = [
+  "Apapa",
+  "Eti-Osa",
+  "Epe",
+  "Ibeju-Lekki",
+  "Lagos Island",
 ];
 
 const ROOM_CONFIG = [
@@ -262,16 +294,48 @@ export default function QuoteModal() {
       return;
     }
 
-    const rates = PLAN_RATE[plan] || PLAN_RATE.Standard;
-    const baseAmount = rates.first + (Math.max(0, totalRooms - 1) * rates.extra);
-    const mult = HOUSE_MULTIPLIER[house] || 1;
-    const discount = FREQUENCY_DISCOUNT[frequency] || 0;
 
+    const roomPrices = PLAN_ROOM_PRICES[plan] || PLAN_ROOM_PRICES.Standard;
+
+    // Calculate total value of all selected rooms based on plan-specific prices
+    let totalRoomValue = 0;
+    Object.entries(roomPrices).forEach(([key, price]) => {
+      totalRoomValue += (form[key] || 0) * price;
+    });
+
+
+
+    // Base amount is the total value of all selected rooms
+    // PLUS Base Price for specific frequencies (One-off, Bi-monthly, Weekly)
+    let baseAmount = totalRoomValue;
+    const frequenciesWithBasePrice = ["One-off", "Bi-monthly", "Weekly"];
+
+    if (frequenciesWithBasePrice.includes(frequency)) {
+      const rates = PLAN_RATE[plan] || PLAN_RATE.Standard;
+      baseAmount += rates.first;
+    }
+    // const mult = HOUSE_MULTIPLIER[house] || 1; // Removed as per user request
+    const discount = FREQUENCY_DISCOUNT[frequency] || 0;
     const extrasCost = Object.entries(form.extras).reduce((total, [key, selected]) => {
       return total + (selected ? (EXTRAS_PRICES[key] || 0) : 0);
     }, 0);
 
-    const amount = Math.round(((baseAmount * mult) + extrasCost) * (1 - discount));
+    // Transportation Fee
+    const isIsland = ISLAND_LGAS.includes(form.lga);
+    const transportationFee = isIsland ? 3000 : 2000;
+
+    const basePlanCost = baseAmount; // No longer multiplying by house type
+    let amount = basePlanCost;
+
+    // Add extras cost
+    amount += extrasCost;
+
+    // Apply discount to the final total (Base + Extras)
+    amount = Math.round(amount * (1 - discount));
+
+    // Add transportation fee (Fixed amount, not discounted)
+    amount += transportationFee;
+
     setEstimated(amount);
   }, [
     form.plan,
@@ -353,7 +417,8 @@ export default function QuoteModal() {
       form.cleaningSupplies ? "Includes Cleaning Supplies" : null,
       form.preferred ? `Preferred Date: ${form.preferred}` : null,
       form.specialRequests ? `Special Requests: ${form.specialRequests}` : null,
-      estimated ? `Estimated Price: ₦${estimated.toLocaleString()}` : null,
+
+      estimated ? `Estimated Price: ₦${(estimated * (FREQUENCY_DETAILS[form.frequency]?.multiplier || 1)).toLocaleString()} ${FREQUENCY_DETAILS[form.frequency]?.label || ""}` : null,
     ]
       .filter(Boolean)
       .join("\n");
@@ -499,7 +564,7 @@ export default function QuoteModal() {
                           <option value="Flat">Flat</option>
                           <option value="Condo">Condo</option>
                           <option value="Apartment">Apartment</option>
-                          <option value="Townhouse">Townhouse</option>
+                          {/* <option value="Townhouse">Townhouse</option> */}
                           <option value="Duplex">Duplex</option>
                           <option value="Bungalow">Bungalow</option>
                           <option value="Other">Other</option>
@@ -671,10 +736,14 @@ export default function QuoteModal() {
 
                       {/* Total Price in Summary */}
                       <div className="pt-2 border-t border-gray-200 mt-2 flex justify-between items-center">
-                        <span className="text-sm font-bold text-gray-700">Total Estimate</span>
+                        <span className="text-sm font-bold text-gray-700">
+                          Total Estimate {FREQUENCY_DETAILS[form.frequency]?.label && <span className="text-xs font-normal text-gray-500">{FREQUENCY_DETAILS[form.frequency].label}</span>}
+                        </span>
                         <span className="text-lg font-bold text-sky-700">
                           {estimated
-                            ? new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(estimated)
+                            ? new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(
+                              estimated * (FREQUENCY_DETAILS[form.frequency]?.multiplier || 1)
+                            )
                             : "₦0"}
                         </span>
                       </div>
@@ -764,26 +833,37 @@ export default function QuoteModal() {
                           <div className="p-4 border-b border-sky-100">
                             <h4 className="font-bold text-sky-900 text-sm uppercase tracking-wider mb-3">Price Breakdown</h4>
                             <div className="space-y-2 text-sm">
-                              <div className="flex justify-between text-sky-800">
-                                <span>Base Price ({form.plan})</span>
-                                <span>
-                                  {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(
-                                    PLAN_RATE[form.plan]?.first || 0
-                                  )}
-                                </span>
-                              </div>
+                              {/* Base Price Display (Only for specific frequencies) */}
+                              {["One-off", "Bi-monthly", "Weekly"].includes(form.frequency) && (
+                                <div className="flex justify-between text-sky-800">
+                                  <span>Base Price ({form.plan})</span>
+                                  <span>
+                                    {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(
+                                      (PLAN_RATE[form.plan]?.first || 0)
+                                    )}
+                                  </span>
+                                </div>
+                              )}
+
 
                               {/* Calculate room cost for display */}
+                              {/* Calculate room cost for display */}
                               {(() => {
-                                const totalRooms = form.parlours + form.bedrooms + form.kitchens + form.bathrooms + form.officeSpaces + form.garages + form.stores;
-                                const extraRooms = Math.max(0, totalRooms - 1);
-                                const roomCost = extraRooms * (PLAN_RATE[form.plan]?.extra || 0);
-                                if (extraRooms > 0) {
+                                const roomPrices = PLAN_ROOM_PRICES[form.plan] || PLAN_ROOM_PRICES.Standard;
+                                let totalRoomValue = 0;
+                                let totalRooms = 0;
+                                Object.entries(roomPrices).forEach(([key, price]) => {
+                                  const count = form[key] || 0;
+                                  totalRoomValue += count * price;
+                                  totalRooms += count;
+                                });
+
+                                if (totalRooms > 0) {
                                   return (
                                     <div className="flex justify-between text-sky-700">
-                                      <span>Extra Rooms ({extraRooms})</span>
+                                      <span>Room Add-ons ({totalRooms})</span>
                                       <span>
-                                        {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(roomCost)}
+                                        {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(totalRoomValue)}
                                       </span>
                                     </div>
                                   );
@@ -791,15 +871,7 @@ export default function QuoteModal() {
                                 return null;
                               })()}
 
-                              {/* House Type Multiplier */}
-                              {HOUSE_MULTIPLIER[form.houseType] !== 1 && (
-                                <div className="flex justify-between text-sky-700">
-                                  <span>House Type Adjustment ({form.houseType})</span>
-                                  <span className="text-xs bg-sky-200 px-1.5 py-0.5 rounded text-sky-800 font-medium">
-                                    x{HOUSE_MULTIPLIER[form.houseType]}
-                                  </span>
-                                </div>
-                              )}
+
 
                               {/* Extras */}
                               {Object.entries(form.extras).map(([key, selected]) => {
@@ -814,6 +886,16 @@ export default function QuoteModal() {
                                 );
                               })}
 
+                              {/* Transportation Fee */}
+                              <div className="flex justify-between text-slate-600 text-xs">
+                                <span>+ Transportation ({ISLAND_LGAS.includes(form.lga) ? "Island" : "Mainland"})</span>
+                                <span>
+                                  {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(
+                                    ISLAND_LGAS.includes(form.lga) ? 3000 : 2000
+                                  )}
+                                </span>
+                              </div>
+
                               {/* Discount */}
                               {FREQUENCY_DISCOUNT[form.frequency] > 0 && (
                                 <div className="flex justify-between text-green-600 font-medium pt-2 border-t border-sky-100/50">
@@ -821,15 +903,39 @@ export default function QuoteModal() {
                                   <span>-{FREQUENCY_DISCOUNT[form.frequency] * 100}%</span>
                                 </div>
                               )}
+
+                              {/* Frequency Multiplier */}
+                              {(FREQUENCY_DETAILS[form.frequency]?.multiplier || 1) > 1 && (
+                                <div className="flex justify-between text-sky-700 font-medium pt-2 border-t border-sky-100/50">
+                                  <span>Frequency Multiplier ({FREQUENCY_DETAILS[form.frequency]?.label})</span>
+                                  <span>x{FREQUENCY_DETAILS[form.frequency]?.multiplier}</span>
+                                </div>
+                              )}
+
+                              {/* Monthly Estimate */}
+                              {(FREQUENCY_DETAILS[form.frequency]?.monthlyFactor || 0) > 1 && (
+                                <div className="flex justify-between text-slate-500 font-medium pt-2 border-t border-sky-100/50">
+                                  <span>Estimated Monthly Cost</span>
+                                  <span>
+                                    {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(
+                                      estimated * (FREQUENCY_DETAILS[form.frequency]?.multiplier || 1) * FREQUENCY_DETAILS[form.frequency]?.monthlyFactor
+                                    )}
+                                  </span>
+                                </div>
+                              )}
                             </div>
                           </div>
                           <div className="p-4 bg-sky-100/50 flex items-center justify-between">
                             <div>
-                              <div className="text-sm font-bold text-sky-900">Total Estimate</div>
+                              <div className="text-sm font-bold text-sky-900">
+                                Total Estimate {FREQUENCY_DETAILS[form.frequency]?.label}
+                              </div>
                               <div className="text-xs text-sky-600 mt-0.5">Includes all fees</div>
                             </div>
                             <div className="text-2xl font-bold text-sky-700">
-                              {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(estimated)}
+                              {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(
+                                estimated * (FREQUENCY_DETAILS[form.frequency]?.multiplier || 1)
+                              )}
                             </div>
                           </div>
                         </div>

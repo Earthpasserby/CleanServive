@@ -336,6 +336,14 @@ export default function QuoteModal() {
     // Add transportation fee (Fixed amount, not discounted)
     amount += transportationFee;
 
+    // Bulk Discount: 19% off if Monthly Cost > 80,000
+    const monthlyFactor = FREQUENCY_DETAILS[frequency]?.monthlyFactor || 0;
+    const estimatedMonthlyCost = amount * monthlyFactor;
+
+    if (estimatedMonthlyCost > 80000) {
+      amount = Math.round(amount * (1 - 0.19));
+    }
+
     setEstimated(amount);
   }, [
     form.plan,
@@ -897,6 +905,45 @@ export default function QuoteModal() {
                               </div>
 
                               {/* Discount */}
+                              {/* Discount */}
+                              {(() => {
+                                // Reconstruct pre-bulk total to check eligibility
+                                const roomPrices = PLAN_ROOM_PRICES[form.plan] || PLAN_ROOM_PRICES.Standard;
+                                let totalRoomValue = 0;
+                                Object.entries(roomPrices).forEach(([key, price]) => {
+                                  totalRoomValue += (form[key] || 0) * price;
+                                });
+
+                                let baseAmount = totalRoomValue;
+                                if (["One-off", "Bi-monthly", "Weekly"].includes(form.frequency)) {
+                                  baseAmount += (PLAN_RATE[form.plan]?.first || 0);
+                                }
+
+                                const extrasCost = Object.entries(form.extras).reduce((total, [key, selected]) => {
+                                  return total + (selected ? (EXTRAS_PRICES[key] || 0) : 0);
+                                }, 0);
+
+                                let amount = baseAmount + extrasCost;
+                                const freqDiscount = FREQUENCY_DISCOUNT[form.frequency] || 0;
+                                amount = Math.round(amount * (1 - freqDiscount));
+
+                                const isIsland = ISLAND_LGAS.includes(form.lga);
+                                amount += (isIsland ? 3000 : 2000);
+
+                                const monthlyFactor = FREQUENCY_DETAILS[form.frequency]?.monthlyFactor || 0;
+                                const preBulkMonthlyCost = amount * monthlyFactor;
+
+                                if (preBulkMonthlyCost > 80000) {
+                                  return (
+                                    <div className="flex justify-between text-green-600 font-medium pt-2 border-t border-sky-100/50">
+                                      <span>Bulk Discount (Monthly &gt; 80k)</span>
+                                      <span>-19%</span>
+                                    </div>
+                                  );
+                                }
+                                return null;
+                              })()}
+
                               {FREQUENCY_DISCOUNT[form.frequency] > 0 && (
                                 <div className="flex justify-between text-green-600 font-medium pt-2 border-t border-sky-100/50">
                                   <span>Frequency Discount ({form.frequency})</span>
@@ -913,16 +960,7 @@ export default function QuoteModal() {
                               )}
 
                               {/* Monthly Estimate */}
-                              {(FREQUENCY_DETAILS[form.frequency]?.monthlyFactor || 0) > 1 && (
-                                <div className="flex justify-between text-slate-500 font-medium pt-2 border-t border-sky-100/50">
-                                  <span>Estimated Monthly Cost</span>
-                                  <span>
-                                    {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(
-                                      estimated * (FREQUENCY_DETAILS[form.frequency]?.multiplier || 1) * FREQUENCY_DETAILS[form.frequency]?.monthlyFactor
-                                    )}
-                                  </span>
-                                </div>
-                              )}
+
                             </div>
                           </div>
                           <div className="p-4 bg-sky-100/50 flex items-center justify-between">

@@ -417,7 +417,7 @@ export default function QuoteModal() {
       form.plan ? `Plan: ${form.plan}` : null,
       form.frequency ? `Frequency: ${form.frequency}` : null,
       selectedExtras ? `Extras: ${selectedExtras}` : null,
-      form.cleaningSupplies ? "Includes Cleaning Supplies" : null,
+      form.cleaningSupplies ? "Request for cleaning supplies" : null,
       form.preferred ? `Preferred Date: ${form.preferred}` : null,
       form.specialRequests ? `Special Requests: ${form.specialRequests}` : null,
 
@@ -800,7 +800,7 @@ export default function QuoteModal() {
                         onChange={(e) => setForm({ ...form, cleaningSupplies: e.target.checked })}
                         className="h-5 w-5 rounded border-gray-300 text-sky-600 focus:ring-sky-500"
                       />
-                      <span className="text-sm font-medium text-gray-700">Include Cleaning Supplies?</span>
+                      <span className="text-sm font-medium text-gray-700">Request for cleaning supplies</span>
                     </label>
 
                     <div className="grid grid-cols-1 gap-4">

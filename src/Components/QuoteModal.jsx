@@ -327,22 +327,16 @@ export default function QuoteModal() {
     const basePlanCost = baseAmount; // No longer multiplying by house type
     let amount = basePlanCost;
 
-    // Add extras cost
-    amount += extrasCost;
-
-    // Apply discount to the final total (Base + Extras)
+    // Apply discount to the final total (Base)
     amount = Math.round(amount * (1 - discount));
+
+    // Add extras cost (Not discounted)
+    amount += extrasCost;
 
     // Add transportation fee (Fixed amount, not discounted)
     amount += transportationFee;
 
-    // Bulk Discount: 19% off if Monthly Cost > 80,000
-    const monthlyFactor = FREQUENCY_DETAILS[frequency]?.monthlyFactor || 0;
-    const estimatedMonthlyCost = amount * monthlyFactor;
 
-    if (estimatedMonthlyCost > 80000) {
-      amount = Math.round(amount * (1 - 0.19));
-    }
 
     setEstimated(amount);
   }, [

@@ -300,7 +300,8 @@ export default function QuoteModal() {
     // Calculate total value of all selected rooms based on plan-specific prices
     let totalRoomValue = 0;
     Object.entries(roomPrices).forEach(([key, price]) => {
-      totalRoomValue += (form[key] || 0) * price;
+      const effectivePrice = form.frequency === "One-off" ? 2200 : price;
+      totalRoomValue += (form[key] || 0) * effectivePrice;
     });
 
 
@@ -856,7 +857,8 @@ export default function QuoteModal() {
                                 let totalRooms = 0;
                                 Object.entries(roomPrices).forEach(([key, price]) => {
                                   const count = form[key] || 0;
-                                  totalRoomValue += count * price;
+                                  const effectivePrice = form.frequency === "One-off" ? 2200 : price;
+                                  totalRoomValue += count * effectivePrice;
                                   totalRooms += count;
                                 });
 

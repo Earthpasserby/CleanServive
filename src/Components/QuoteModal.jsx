@@ -334,10 +334,12 @@ export default function QuoteModal() {
     // Add extras cost (Not discounted)
     amount += extrasCost;
 
-    // Add transportation fee (Fixed amount, not discounted)
+    // Add transportation fee
     amount += transportationFee;
 
-
+    // Calculate VAT (7.5%)
+    const vat = amount * 0.075;
+    amount += vat;
 
     setEstimated(amount);
   }, [
@@ -957,6 +959,16 @@ export default function QuoteModal() {
 
                               {/* Monthly Estimate */}
 
+
+                              {/* VAT Display */}
+                              <div className="flex justify-between text-gray-600 font-medium pt-2 border-t border-sky-100/50">
+                                <span>VAT (7.5%)</span>
+                                <span>
+                                  {new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(
+                                    (estimated / 1.075) * 0.075 * (FREQUENCY_DETAILS[form.frequency]?.multiplier || 1)
+                                  )}
+                                </span>
+                              </div>
                             </div>
                           </div>
                           <div className="p-4 bg-sky-100/50 flex items-center justify-between">

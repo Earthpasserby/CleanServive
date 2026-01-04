@@ -25,7 +25,7 @@ const Footer = () => {
         <div>
           <h5 className="font-bold text-lg mb-4 text-amber-500">Contact</h5>
           <p className="mt-2 text-slate-300 flex items-center gap-2 hover:text-white transition-colors">
-            <FaPhone className="text-sky-500" /> +234 (7067) 87-6791
+            {/* <FaPhone className="text-sky-500" /> +234 (7067) 87-6791 */}
           </p>
           <p className="mt-3 text-slate-300 flex items-center gap-2 hover:text-white transition-colors">
             <FaEnvelope className="text-sky-500" /> Admin@scrubb.com
@@ -57,7 +57,7 @@ const Footer = () => {
             </li>
             <li>
               <a
-                href="https://forms.gle/your-form-id"
+                href="https://forms.gle/BTCTMdHi4kZrmPhE8"
                 target="_blank"
                 rel="noreferrer noopener"
                 className="text-left hover:text-white transition-colors"

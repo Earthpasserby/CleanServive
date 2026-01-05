@@ -39,7 +39,7 @@ export default function About() {
       {/* </div> */}
 
       {/* Team */}
-      <section className="mt-12">
+      <section className="mt-18">
         <h2 className="text-2xl font-bold text-slate-900">Meet the Team</h2>
         <p className="text-muted mt-2 max-w-2xl">
           Our crew is experienced, background-checked and trained to deliver

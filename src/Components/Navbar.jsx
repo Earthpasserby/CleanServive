@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const isHome = location.pathname === "/";
 
   // Handle scroll effect
   useEffect(() => {
@@ -17,12 +19,12 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-            ? "bg-white/90 backdrop-blur-md shadow-sm py-2"
-            : "bg-transparent py-4"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || !isHome
+          ? "bg-white/90 backdrop-blur-md shadow-sm py-2"
+          : "bg-transparent py-3"
           }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex-shrink-0">
@@ -30,7 +32,7 @@ const Navbar = () => {
                 <img
                   src="/scrubbNewLg-removebg-preview.png"
                   alt="Scrubb Logo"
-                  className="w-32 sm:w-40 h-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                  className="w-36 sm:w-36 h-auto object-contain transition-transform duration-300 group-hover:scale-105"
                 />
               </Link>
             </div>
@@ -41,7 +43,11 @@ const Navbar = () => {
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
-                    `text-sm font-medium transition-colors duration-200 hover:text-sky-600 ${isActive ? "text-sky-600" : "text-gray-700"
+                    `text-base font-medium transition-colors duration-200 hover:text-sky-600 ${isActive
+                      ? "text-sky-600"
+                      : scrolled || !isHome
+                        ? "text-slate-600"
+                        : "text-white"
                     }`
                   }
                 >
@@ -50,7 +56,11 @@ const Navbar = () => {
                 <NavLink
                   to="/pricing"
                   className={({ isActive }) =>
-                    `text-sm font-medium transition-colors duration-200 hover:text-sky-600 ${isActive ? "text-sky-600" : "text-gray-700"
+                    `text-base font-medium transition-colors duration-200 hover:text-sky-600 ${isActive
+                      ? "text-sky-600"
+                      : scrolled || !isHome
+                        ? "text-slate-600"
+                        : "text-white"
                     }`
                   }
                 >
@@ -59,7 +69,11 @@ const Navbar = () => {
                 <NavLink
                   to="/about"
                   className={({ isActive }) =>
-                    `text-sm font-medium transition-colors duration-200 hover:text-sky-600 ${isActive ? "text-sky-600" : "text-gray-700"
+                    `text-base font-medium transition-colors duration-200 hover:text-sky-600 ${isActive
+                      ? "text-sky-600"
+                      : scrolled || !isHome
+                        ? "text-slate-600"
+                        : "text-white"
                     }`
                   }
                 >
@@ -73,7 +87,7 @@ const Navbar = () => {
                 onClick={() =>
                   window.dispatchEvent(new CustomEvent("openQuoteModal"))
                 }
-                className="px-5 py-2.5 rounded-full bg-sky-600 text-white text-sm font-semibold shadow-lg shadow-sky-200 hover:bg-sky-700 hover:shadow-sky-300 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0"
+                className="px-6 py-2.5 rounded-full bg-sky-600 text-white text-base font-semibold shadow-md  hover:bg-sky-700 hover:shadow-lg hover:shadow-sky-200 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0"
               >
                 Request a Quote
               </button>
@@ -123,8 +137,8 @@ const Navbar = () => {
         {/* Mobile Menu Overlay */}
         <div
           className={`absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-t border-gray-100 shadow-xl transition-all duration-300 origin-top transform md:hidden ${isOpen
-              ? "opacity-100 scale-y-100 visible"
-              : "opacity-0 scale-y-95 invisible"
+            ? "opacity-100 scale-y-100 visible"
+            : "opacity-0 scale-y-95 invisible"
             }`}
         >
           <div className="px-4 py-6 space-y-4">

@@ -61,7 +61,7 @@ export default function Pricing() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-24 lg:py-36 font-sans">
+    <div className="max-w-7xl mx-auto px-6 py-36 lg:py-36 font-sans">
       <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-12">
         <div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">Pricing Plans</h1>

@@ -229,7 +229,11 @@ export default function QuoteModal() {
     const errs = {};
     if (currentStep === 1) {
       if (!form.name.trim()) errs.name = "Please enter your name";
-      if (!form.phone.trim()) errs.phone = "Please enter a contact phone";
+      if (!form.phone.trim()) {
+        errs.phone = "Please enter a contact phone";
+      } else if (form.phone.replace(/[^0-9]/g, "").length < 10) {
+        errs.phone = "Please enter a valid phone number";
+      }
       if (!form.address.trim()) errs.address = "Please enter your address";
       if (!form.lga) errs.lga = "Please select an LGA";
     } else if (currentStep === 2) {
@@ -379,6 +383,43 @@ export default function QuoteModal() {
     window.open(url, "_blank");
   }
 
+  // Placeholder for Google Apps Script Web App URL
+  // TODO: Replace this with your actual deployed Web App URL
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJ-yhUYqQ94zdh7YQ6zdOwv0k9m-t1WxBFilel9e7MqBV-Qvu0ooviDvSHEFwu_gz9/exec";
+
+  function submitToGoogleSheets(formData) {
+    if (GOOGLE_SCRIPT_URL === "YOUR_WEB_APP_URL_HERE") {
+      console.warn("Google Sheets URL not set. Skipping submission.");
+      return;
+    }
+
+    // Convert to URL parameters (application/x-www-form-urlencoded)
+    // This is much more reliable for Google Apps Script than JSON
+    const params = new URLSearchParams();
+    params.append("timestamp", new Date().toISOString());
+    params.append("name", formData.name);
+    params.append("phone", formData.phone);
+    params.append("email", formData.email);
+    params.append("lga", formData.lga);
+    params.append("address", formData.address);
+    params.append("houseType", formData.houseType);
+    params.append("plan", formData.plan);
+    params.append("frequency", formData.frequency);
+    params.append("price", estimated ? (estimated * (FREQUENCY_DETAILS[formData.frequency]?.multiplier || 1)) : 0);
+    params.append("details", `Rooms: ${formData.parlours}P, ${formData.bedrooms}B, ${formData.kitchens}K... Extras: ${Object.entries(formData.extras).filter(([k, v]) => v).map(([k]) => k).join(",")}`);
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: params.toString(),
+    })
+      .then(() => console.log("Submitted to Google Sheets"))
+      .catch((err) => console.error("Error submitting to Google Sheets:", err));
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -392,6 +433,10 @@ export default function QuoteModal() {
     if (!validateStep(1) || !validateStep(2)) return;
 
     setSubmitting(true);
+
+    // Submit to Google Sheets (Fire and forget - doesn't block WhatsApp)
+    submitToGoogleSheets(form);
+
     const roomDetails = [
       form.parlours > 0 ? `${form.parlours} Parlour(s)` : null,
       form.bedrooms > 0 ? `${form.bedrooms} Bedroom(s)` : null,

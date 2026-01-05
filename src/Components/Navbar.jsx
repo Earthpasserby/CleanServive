@@ -1,215 +1,185 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false); // Mobile menu state
-  // dropdown menu removed (not currently used)
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <>
-      <nav className="w-full fixed top-0 left-0 right-0 z-50 bg-white  shadow-md">
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
+            ? "bg-white/90 backdrop-blur-md shadow-sm py-2"
+            : "bg-transparent py-4"
+          }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative flex h-16 items-center justify-between">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <Link to="/" className="flex items-center gap-2 group">
+                <img
+                  src="/scrubbNewLg-removebg-preview.png"
+                  alt="Scrubb Logo"
+                  className="w-32 sm:w-40 h-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                />
+              </Link>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-8">
+              <div className="flex space-x-6">
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    `text-sm font-medium transition-colors duration-200 hover:text-sky-600 ${isActive ? "text-sky-600" : "text-gray-700"
+                    }`
+                  }
+                >
+                  Home
+                </NavLink>
+                <NavLink
+                  to="/pricing"
+                  className={({ isActive }) =>
+                    `text-sm font-medium transition-colors duration-200 hover:text-sky-600 ${isActive ? "text-sky-600" : "text-gray-700"
+                    }`
+                  }
+                >
+                  Pricing
+                </NavLink>
+                <NavLink
+                  to="/about"
+                  className={({ isActive }) =>
+                    `text-sm font-medium transition-colors duration-200 hover:text-sky-600 ${isActive ? "text-sky-600" : "text-gray-700"
+                    }`
+                  }
+                >
+                  About Us
+                </NavLink>
+              </div>
+
+              {/* CTA Button */}
+              <button
+                type="button"
+                onClick={() =>
+                  window.dispatchEvent(new CustomEvent("openQuoteModal"))
+                }
+                className="px-5 py-2.5 rounded-full bg-sky-600 text-white text-sm font-semibold shadow-lg shadow-sky-200 hover:bg-sky-700 hover:shadow-sky-300 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0"
+              >
+                Request a Quote
+              </button>
+            </div>
+
             {/* Mobile Menu Button */}
-            <div className="absolute inset-y-0 right-0 flex items-center sm:hidden">
+            <div className="md:hidden flex items-center">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                type="button"
-                className="inline-flex items-center justify-center rounded-md p-2 text-slate-400 hover:text-white focus:ring-1 focus:ring-white focus:outline-none"
-                aria-controls="mobile-menu"
-                aria-expanded={isOpen}
+                className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 focus:outline-none transition-colors"
+                aria-label="Toggle menu"
               >
                 {isOpen ? (
                   <svg
-                    className="size-6"
+                    className="w-6 h-6"
                     fill="none"
-                    viewBox="0 0 24 24"
                     stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <path d="M6 18L18 6M6 6l12 12" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 ) : (
                   <svg
-                    className="size-6"
+                    className="w-6 h-6"
                     fill="none"
-                    viewBox="0 0 24 24"
                     stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
                   </svg>
                 )}
               </button>
             </div>
-            {/* Logo and Navigation Links */}
-            <div className="flex items-center justify-between w-full">
-              <div className="flex-shrink-0">
-                <Link to="/" className="inline-flex items-center gap-2">
-                  {/* Logo: import from assets so bundler includes it in the build */}
-                  <img
-                    src="/scrubbNewLg-removebg-preview.png"
-                    alt="logo"
-                    loading="eager"
-                    className="w-40 h-auto object-contain"
-                  />
-                </Link>
-              </div>
-              <div className="hidden sm:flex sm:space-x-12 mx-auto">
-                <div className="ml-10 flex items-baseline space-x-10">
-                  <NavLink
-                    to="/"
-                    className="nav-link px-3 py-2 rounded-md text-[16px] font-medium"
-                  >
-                    Home
-                  </NavLink>
-
-                  <NavLink
-                    to="/pricing"
-                    className="nav-link px-3 py-2 rounded-md text-[16px] font-medium"
-                  >
-                    Pricing
-                  </NavLink>
-                  <NavLink
-                    to="/about"
-                    className="nav-link px-3 py-2 rounded-md text-[16px] font-medium"
-                  >
-                    About Us
-                  </NavLink>
-                </div>
-              </div>
-              <div className="hidden sm:block">
-                <button
-                  type="button"
-                  onClick={() =>
-                    window.dispatchEvent(new CustomEvent("openQuoteModal"))
-                  }
-                  className="nav-link px-3 py-2 rounded-md text-[16px] font-medium"
-                >
-                  Request a Quote
-                </button>
-              </div>
-            </div>
           </div>
         </div>
 
-        {/* Mobile Navigation Menu */}
-        {isOpen && (
-          <div className="sm:hidden absolute top-16 left-0 w-full bg-white shadow-md ">
-            <div className="px-2 pt-2 pb-3 space-y-2">
-              <NavLink
-                end
-                to="/"
-                className="nav-link px-3 py-2 rounded-md text-[14px] font-medium block"
-                onClick={() => setIsOpen(false)}
-              >
-                Home
-              </NavLink>
-              {/* Dropdown for Our Services */}
-              {/* <div className="relative dropdown-menu"> */}
-              {/* <button */}
-              {/* onClick={(e) => { */}
-              {/* e.stopPropagation(); // Prevent closing when clicking the button */}
-              {/* setDropdownOpen(!dropdownOpen); */}
-              {/* }} */}
-              {/* className="text-gray-700  px-3 py-2 focus:outline-none flex items-center gap-1 hover:bg-red-100  hover:text-red-700" */}
-              {/* > */}
-              {/* Our Services */}
-              {/* <svg */}
-              {/* className="w-4 h-4 mt-1" */}
-              {/* fill="none" */}
-              {/* stroke="currentColor" */}
-              {/* viewBox="0 0 24 24" */}
-              {/* > */}
-              {/* <path d="M19 9l-7 7-7-7" /> */}
-              {/* </svg> */}
-              {/* </button> */}
-              {/* Dropdown Menu */}
-              {/* {dropdownOpen && ( */}
-              {/* <div className="absolute left-0 mt-2  text-[12px] px-4 py-2 bg-white border-1 border-red-100 rounded-md shadow-lg z-50 grid grid-cols-2 gap-4 p-2 mb-4"> */}
-              {/* <Link */}
-              {/* // to="/service" // className="block px-4 py-2 text-gray-700 */}
-              {/* hover:bg-red-100 hover:text-red-700" // onClick= */}
-              {/* {() => setDropdownOpen(false)} */}
-              {/* // ><img */}
-              {/* // to="/" // alt="Service Icon" // className="inline-block w-4 */}
-              {/* h-4 mr-2 " // /> */}
-              {/* School service */}
-              {/* </Link> */}
-              {/* <Link */}
-              {/* // to="/visaservice" // className="block px-4 py-2 text-gray-700 */}
-              {/* hover:bg-red-100 hover:text-red-700" // onClick= */}
-              {/* {() => setDropdownOpen(false)} */}
-              {/* // ><img */}
-              {/* // to="/" // alt="Service Icon" // className="inline-block w-4 */}
-              {/* h-4 mr-2 " // /> */}
-              {/* Visa service */}
-              {/* </Link> */}
-              {/* <Link */}
-              {/* // to="/ticket" // className="block px-4 py-2 text-gray-700 */}
-              {/* hover:bg-red-100 hover:text-red-700" // onClick= */}
-              {/* {() => setDropdownOpen(false)} */}
-              {/* // ><img */}
-              {/* // to="/" // alt="Service Icon" // className="inline-block w-6 */}
-              {/* h-6 mr-2 " // /> */}
-              {/* Ticketing & Reservation */}
-              {/* </Link> */}
-              {/* <Link */}
-              {/* // to="/birthservice" // className="block px-4 py-2 */}
-              {/* text-gray-700 hover:bg-red-100 hover:text-red-700" // onClick= */}
-              {/* {() => setDropdownOpen(false)} */}
-              {/* // ><img */}
-              {/* // to="/" // alt="Service Icon" // className="inline-block w-6 */}
-              {/* h-6 mr-2 " // /> */}
-              {/* Birth abroad service */}
-              {/* </Link> */}
-              {/* <Link */}
-              {/* // to="/holidaypack" // className="block px-4 py-2 text-gray-700 */}
-              {/* hover:bg-red-100 hover:text-red-700" // onClick= */}
-              {/* {() => setDropdownOpen(false)} */}
-              {/* // ><img */}
-              {/* // to="/" // alt="Service Icon" // className="inline-block w-5 */}
-              {/* h-5 mr-2 " // /> */}
-              {/* Holiday packages */}
-              {/* </Link> */}
-              {/* <Link */}
-              {/* // to="/relocateserv" // className="block px-4 py-2 */}
-              {/* text-gray-700 hover:bg-red-100 hover:text-red-700" // onClick= */}
-              {/* {() => setDropdownOpen(false)} */}
-              {/* // ><img */}
-              {/* // to="/" // alt="Service Icon" // className="inline-block w-6 */}
-              {/* h-6 mr-2 " // /> */}
-              {/* Relocation service */}
-              {/* </Link> */}
-              {/* </div> */}
-              {/* )} */}
-              {/* </div> */}
-              <NavLink
-                to="/pricing"
-                className="nav-link px-3 py-2 rounded-md text-[14px] font-medium block"
-                onClick={() => setIsOpen(false)}
-              >
-                Pricing
-              </NavLink>
-              <NavLink
-                to="/about"
-                className="nav-link px-3 py-2 rounded-md text-[14px] font-medium block"
-                onClick={() => setIsOpen(false)}
-              >
-                About
-              </NavLink>
+        {/* Mobile Menu Overlay */}
+        <div
+          className={`absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-t border-gray-100 shadow-xl transition-all duration-300 origin-top transform md:hidden ${isOpen
+              ? "opacity-100 scale-y-100 visible"
+              : "opacity-0 scale-y-95 invisible"
+            }`}
+        >
+          <div className="px-4 py-6 space-y-4">
+            <NavLink
+              to="/"
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `block px-4 py-3 rounded-xl text-base font-medium transition-colors ${isActive
+                  ? "bg-sky-50 text-sky-700"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                }`
+              }
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/pricing"
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `block px-4 py-3 rounded-xl text-base font-medium transition-colors ${isActive
+                  ? "bg-sky-50 text-sky-700"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                }`
+              }
+            >
+              Pricing
+            </NavLink>
+            <NavLink
+              to="/about"
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `block px-4 py-3 rounded-xl text-base font-medium transition-colors ${isActive
+                  ? "bg-sky-50 text-sky-700"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                }`
+              }
+            >
+              About
+            </NavLink>
+            <div className="pt-2">
               <button
-                type="button"
-                className="nav-link px-3 py-2 rounded-md text-[14px] font-medium block text-left"
                 onClick={() => {
                   window.dispatchEvent(new CustomEvent("openQuoteModal"));
                   setIsOpen(false);
                 }}
+                className="w-full py-3.5 rounded-xl bg-sky-600 text-white font-semibold shadow-lg shadow-sky-200 active:scale-[0.98] transition-all"
               >
                 Request a Quote
               </button>
             </div>
           </div>
-        )}
+        </div>
       </nav>
     </>
   );
 };
+
 export default Navbar;

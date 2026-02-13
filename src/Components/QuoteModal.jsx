@@ -523,8 +523,25 @@ export default function QuoteModal() {
   }
 
   // Paystack Configuration
-  // TODO: Replace with your actual Paystack Public Key
-  const PAYSTACK_PUBLIC_KEY = "pk_test_YOUR_PUBLIC_KEY_HERE";
+  // Paystack public key (frontend-safe). Do NOT put secret keys in the client.
+  const PAYSTACK_PUBLIC_KEY = "pk_test_6da6aeb6c6d4a540463092009e4fb64745cf9dab";
+  const API_BASE_URL =
+    import.meta?.env?.VITE_API_BASE_URL || "http://localhost:5000";
+
+  async function verifyPayment(reference) {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/verify-payment`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reference }),
+      });
+      const data = await res.json();
+      return data?.status === true;
+    } catch (err) {
+      console.error("Verify payment failed:", err);
+      return false;
+    }
+  }
 
   // Calculate amount for paystack
   let paystackAmount = 0;
@@ -546,7 +563,15 @@ export default function QuoteModal() {
 
   const initializePayment = usePaystackPayment(config);
 
-  const onSuccess = (reference) => {
+  const onSuccess = async (reference) => {
+    const verified = await verifyPayment(reference.reference);
+    if (!verified) {
+      setSubmitting(false);
+      setToast("Payment verification failed. Please contact support.");
+      setTimeout(() => setToast(""), 3000);
+      return;
+    }
+
     // 1. Submit to Google Sheets
     submitToGoogleSheets(form);
 

@@ -1,7 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
-require("dotenv").config();
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -9,9 +10,49 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Placeholder for Paystack Secret Key
-// User must create a .env file with PAYSTACK_SECRET_KEY=sk_test_...
-const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY || "sk_test_YOUR_SECRET_KEY_HERE";
+// Paystack Secret Key (must be provided via .env)
+const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
+if (!PAYSTACK_SECRET_KEY) {
+    throw new Error("PAYSTACK_SECRET_KEY is missing. Set it in backend/.env");
+}
+
+app.post("/api/initialize-payment", async (req, res) => {
+    const { email, amount, metadata, reference, callback_url } = req.body;
+
+    if (!email || !amount) {
+        return res.status(400).json({
+            status: false,
+            message: "Email and amount are required",
+        });
+    }
+
+    try {
+        const response = await axios.post(
+            "https://api.paystack.co/transaction/initialize",
+            {
+                email,
+                amount, // amount in kobo
+                metadata,
+                reference,
+                callback_url,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+
+        return res.json(response.data);
+    } catch (error) {
+        console.error("Paystack initialize error:", error.response?.data || error.message);
+        return res.status(500).json({
+            status: false,
+            message: "Initialization server error",
+        });
+    }
+});
 
 app.post("/api/verify-payment", async (req, res) => {
     const { reference } = req.body;
@@ -37,8 +78,13 @@ app.post("/api/verify-payment", async (req, res) => {
             return res.status(400).json({ status: false, message: "Payment verification failed" });
         }
     } catch (error) {
-        console.error("Paystack verification error:", error.response?.data || error.message);
-        return res.status(500).json({ status: false, message: "Verification server error" });
+        const status = error.response?.status || 500;
+        const payload = error.response?.data || {
+            status: false,
+            message: "Verification server error",
+        };
+        console.error("Paystack verification error:", payload);
+        return res.status(status).json(payload);
     }
 });
 

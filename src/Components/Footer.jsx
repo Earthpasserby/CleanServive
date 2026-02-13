@@ -28,7 +28,7 @@ const Footer = () => {
             {/* <FaPhone className="text-sky-500" /> +234 (7067) 87-6791 */}
           </p>
           <p className="mt-3 text-slate-300 flex items-center gap-2 hover:text-white transition-colors">
-            <FaEnvelope className="text-sky-500" /> Admin@scrubb.com
+            <FaEnvelope className="text-sky-500" /> admin@scrubb.com
           </p>
         </div>
 
@@ -87,7 +87,7 @@ const Footer = () => {
             </a>
             <a
               className="social-icon bg-slate-800 hover:bg-sky-600 transition-all"
-              href="https://www.instagram.com/getscrubb/"
+              href="https://www.instagram.com/scrubb_service?igsh=MTVvaHhsbGxmdGhoNg%3D%3D&utm_source=qr"
               aria-label="instagram"
             >
               <FaInstagram />

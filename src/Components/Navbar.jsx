@@ -31,7 +31,7 @@ const Navbar = () => {
               <Link to="/" className="flex items-center gap-2 group">
                 <img
                   src="/scrubbNewLg-removebg-preview.png"
-                  alt="Scrubb Logo"
+                  alt="ScrubbPro Logo"
                   className="w-36 sm:w-36 h-auto object-contain transition-transform duration-300 group-hover:scale-105"
                 />
               </Link>

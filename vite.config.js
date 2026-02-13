@@ -12,8 +12,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'SCRUBB Cleaning Services',
-        short_name: 'SCRUBB',
+        name: 'ScrubbPro Cleaning Services',
+        short_name: 'ScrubbPro',
         description: 'Professional cleaning services on demand',
         theme_color: '#ffffff',
         icons: [

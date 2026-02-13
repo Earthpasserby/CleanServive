@@ -16,13 +16,13 @@ export default function JoinTeam() {
                 <FaUsers className="w-6 h-6" />
               </div>
               <h3 className="text-2xl font-semibold text-sky-800">
-                Join our Scrubb team
+                Join our ScrubbPro team
               </h3>
             </div>
 
             <p className="mt-4 text-slate-600">
               We're expanding our team. If you're reliable, hardworking and take
-              pride in delivering exceptional Scrubb, apply now — it only takes
+              pride in delivering exceptional ScrubbPro, apply now — it only takes
               a minute to fill the short form. We'll review your application and
               get in touch.
             </p>
@@ -56,7 +56,7 @@ export default function JoinTeam() {
             {/* Add an image named `join-team.jpg` to `public/` or change path */}
             <img
               src="/scrubb logo.png"
-              alt="Scrubb Team"
+              alt="ScrubbPro Team"
               loading="lazy"
               className="w-full h-full object-cover"
             />

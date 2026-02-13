@@ -28,7 +28,7 @@ const Footer = () => {
             {/* <FaPhone className="text-sky-500" /> +234 (7067) 87-6791 */}
           </p>
           <p className="mt-3 text-slate-300 flex items-center gap-2 hover:text-white transition-colors">
-            <FaEnvelope className="text-sky-500" /> admin@scrubb.com
+            <FaEnvelope className="text-sky-500" /> admin@scrubbpro.com
           </p>
         </div>
 
@@ -98,7 +98,7 @@ const Footer = () => {
 
       <div className="border-t border-slate-800 text-center py-8">
         <small className="text-slate-500">
-          Copyright © 2025 SCRUBB. All rights reserved.
+          Copyright © 2025 ScrubbPro. All rights reserved.
         </small>
       </div>
     </footer>

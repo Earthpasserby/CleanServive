@@ -294,7 +294,7 @@ export default function QuoteModal() {
         form.garages +
         form.stores;
 
-      if (totalRooms === 0 && !(serviceType === "regular" && form.houseType === "Studio")) {
+      if (totalRooms === 0 && !isStudio) {
         errs.rooms = "Please add at least one room";
       }
     }
@@ -377,7 +377,6 @@ export default function QuoteModal() {
       return;
     }
 
-    const isStudio = house === "Studio";
     const roomPrices = PLAN_ROOM_PRICES[plan] || PLAN_ROOM_PRICES.Standard;
 
     // Calculate total value of all selected rooms based on plan-specific prices
@@ -864,7 +863,7 @@ export default function QuoteModal() {
                           className="w-full rounded-lg border-gray-300 focus:border-sky-500 focus:ring-sky-500 shadow-sm px-4 py-2.5"
                         >
                           <option value="">Select type</option>
-                          <option value="Studio">Studio</option>
+                          <option value="Studio">Studio(Selfcon)</option>
                           <option value="Flat">Flat</option>
                           <option value="ServicedApartment">
                             Serviced Apartment
@@ -1375,6 +1374,7 @@ export default function QuoteModal() {
                             <h4 className="font-bold text-sky-900 text-sm uppercase tracking-wider mb-3">
                               Price Breakdown
                               {form.plan ? ` • ${form.plan}` : ""}
+                              {form.frequency ? ` • ${form.frequency}` : ""}
                             </h4>
                             <div className="space-y-2 text-sm">
                               {serviceType === "regular" ? (

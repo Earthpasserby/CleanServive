@@ -53,7 +53,7 @@ export default function About() {
                 I
               </div>
               <div>
-                <h4 className="text-lg font-semibold">Iwuno Samuel</h4>
+                <h4 className="text-lg font-semibold">Samuel I</h4>
                 <p className="text-muted text-sm">Operations Manager</p>
               </div>
             </div>
@@ -64,7 +64,7 @@ export default function About() {
                 J
               </div>
               <div>
-                <h4 className="text-lg font-semibold">Joshua Craig</h4>
+                <h4 className="text-lg font-semibold">Rita E</h4>
                 <p className="text-muted text-sm">Senior Technician</p>
               </div>
             </div>
@@ -75,7 +75,7 @@ export default function About() {
                 M
               </div>
               <div>
-                <h4 className="text-lg font-semibold">Mariam Khan</h4>
+                <h4 className="text-lg font-semibold">Chibuike I</h4>
                 <p className="text-muted text-sm">Customer Success</p>
               </div>
             </div>
@@ -231,19 +231,19 @@ export default function About() {
             <p className="text-muted">
               "Fast, thorough and professional. My apartment looks brand new!"
             </p>
-            <p className="mt-3 font-semibold">— Sarah L.</p>
+            <p className="mt-3 font-semibold">— Chisom E.</p>
           </div>
           <div className="card-box card-cream">
             <p className="text-muted">
               "Great communication and very accommodating to our schedule."
             </p>
-            <p className="mt-3 font-semibold">— Daniel R.</p>
+            <p className="mt-3 font-semibold">— William N.</p>
           </div>
           <div className="card-box card-cream">
             <p className="text-muted">
               "Excellent value and attention to detail. Highly recommended."
             </p>
-            <p className="mt-3 font-semibold">— Maria K.</p>
+            <p className="mt-3 font-semibold">— Fatimah D.</p>
           </div>
         </div>
       </section>

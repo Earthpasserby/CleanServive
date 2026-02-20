@@ -51,21 +51,19 @@ export default function HomeExtras() {
       </div>
 
       <div className="mt-24 text-center">
-        <h3 className="text-2xl font-bold text-sky-700">
-          What customers say
-        </h3>
+        <h3 className="text-2xl font-bold text-sky-700">What customers say</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
           <Testimonial
             quote="They arrived on time and did an amazing job."
-            name="Olivia"
+            name="Titi"
           />
           <Testimonial
             quote="Great attention to detail and polite staff."
-            name="James"
+            name="Diaso"
           />
           <Testimonial
             quote="Easy booking and fantastic service."
-            name="Lina"
+            name="Fatima"
           />
         </div>
       </div>

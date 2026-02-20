@@ -1,10 +1,4 @@
-import {
-  FaFacebookF,
-  FaInstagram,
-  FaTwitter,
-  FaEnvelope,
-  FaPhone,
-} from "react-icons/fa";
+import { FaInstagram, FaEnvelope, FaPhone } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -73,21 +67,7 @@ const Footer = () => {
           <div className="flex items-center gap-4 mt-2">
             <a
               className="social-icon bg-slate-800 hover:bg-sky-600 transition-all"
-              href="#"
-              aria-label="facebook"
-            >
-              <FaFacebookF />
-            </a>
-            <a
-              className="social-icon bg-slate-800 hover:bg-sky-600 transition-all"
-              href="#"
-              aria-label="twitter"
-            >
-              <FaTwitter />
-            </a>
-            <a
-              className="social-icon bg-slate-800 hover:bg-sky-600 transition-all"
-              href="https://www.instagram.com/scrubb_service?igsh=MTVvaHhsbGxmdGhoNg%3D%3D&utm_source=qr"
+              href="https://www.instagram.com/scrubbpro/"
               aria-label="instagram"
             >
               <FaInstagram />

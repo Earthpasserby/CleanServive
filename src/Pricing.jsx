@@ -83,7 +83,7 @@ export default function Pricing() {
 
       <div className="max-w-7xl mx-auto px-6 py-24 md:py-36 relative z-10">
         <header className="text-center max-w-3xl mx-auto mb-16 md:mb-24">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-100 text-sky-700 text-sm font-semibold mb-6 shadow-sm">
+          <div className="inline-flex mt-12 items-center gap-2 px-3 py-1 rounded-full bg-sky-100 text-sky-700 text-sm font-semibold mb-6 shadow-sm">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
@@ -101,11 +101,10 @@ export default function Pricing() {
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`relative flex flex-col p-8 rounded-[2rem] border transition-all duration-300 hover:-translate-y-2 ${
-                plan.popular
-                  ? "bg-white border-blue-200 shadow-2xl xl:scale-105 z-10"
-                  : "bg-white/80 backdrop-blur-sm border-slate-200 shadow-xl hover:shadow-2xl hover:border-sky-200"
-              }`}
+              className={`relative flex flex-col p-8 rounded-[2rem] border transition-all duration-300 hover:-translate-y-2 ${plan.popular
+                ? "bg-white border-blue-200 shadow-2xl xl:scale-105 z-10"
+                : "bg-white/80 backdrop-blur-sm border-slate-200 shadow-xl hover:shadow-2xl hover:border-sky-200"
+                }`}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-0 right-0 flex justify-center">
@@ -160,11 +159,10 @@ export default function Pricing() {
               <button
                 type="button"
                 onClick={() => window.dispatchEvent(new CustomEvent("openQuoteModal"))}
-                className={`w-full py-4 px-6 rounded-xl font-bold text-base transition-all duration-200 flex items-center justify-center gap-2 group ${
-                  plan.popular
-                    ? "bg-gradient-to-r from-blue-600 to-sky-500 text-white hover:from-blue-700 hover:to-sky-600 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
-                    : "bg-slate-100 text-slate-700 hover:bg-sky-50 hover:text-sky-700"
-                }`}
+                className={`w-full py-4 px-6 rounded-xl font-bold text-base transition-all duration-200 flex items-center justify-center gap-2 group ${plan.popular
+                  ? "bg-gradient-to-r from-blue-600 to-sky-500 text-white hover:from-blue-700 hover:to-sky-600 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
+                  : "bg-slate-100 text-slate-700 hover:bg-sky-50 hover:text-sky-700"
+                  }`}
               >
                 <span>Select {plan.name}</span>
                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -181,7 +179,7 @@ export default function Pricing() {
           <div className="mb-6 flex justify-center">
             <div className="p-4 bg-sky-100 rounded-full text-sky-600">
               <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
               </svg>
             </div>
           </div>
@@ -189,9 +187,9 @@ export default function Pricing() {
           <p className="text-slate-600 md:text-lg mb-8 max-w-2xl mx-auto">
             We also offer Post-Construction cleanup, deep Move In/Out services, and organization blocks. Request a custom quote to get pricing tailored just for you.
           </p>
-          <button 
-             onClick={() => window.dispatchEvent(new CustomEvent("openQuoteModal"))}
-             className="px-8 py-3 bg-white text-sky-700 border border-sky-200 font-bold rounded-xl shadow-sm hover:shadow-md hover:border-sky-300 transition-all flex items-center gap-2 mx-auto group">
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent("openQuoteModal"))}
+            className="px-8 py-3 bg-white text-sky-700 border border-sky-200 font-bold rounded-xl shadow-sm hover:shadow-md hover:border-sky-300 transition-all flex items-center gap-2 mx-auto group">
             <span>Get Custom Quote</span>
             <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

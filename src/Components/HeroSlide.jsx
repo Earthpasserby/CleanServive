@@ -12,8 +12,8 @@ import woman from "../assets/woman.jpg";
 const slides = [
   {
     image: holdingBucket,
-    span: "Standard Cleaninng",
-    title: "providing the best cleaning services for your home and office.",
+    span: "Standard Cleaning",
+    title: "Providing the best cleaning services for your home and office.",
     buttonText: "Request a Quote",
     //     link: "/faqs",
   },

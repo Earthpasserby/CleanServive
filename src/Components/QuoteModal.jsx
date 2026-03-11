@@ -11,28 +11,28 @@ const INSPECTION_FEE = 10000;
 // Pricing maps
 const PLAN_ROOM_PRICES = {
   Basic: {
-    bedrooms: 4000,
+    bedrooms: 3500,
     parlours: 4000,
-    bathrooms: 2000,
-    kitchens: 3000,
-    stores: 2000,
-    garages: 2000,
-    officeSpaces: 2000,
+    bathrooms: 4000,
+    kitchens: 5000,
+    stores: 5000,
+    garages: 5000,
+    officeSpaces: 5000,
   },
   Standard: {
     bedrooms: 5000,
-    parlours: 6000,
-    bathrooms: 2500,
-    kitchens: 5000,
-    stores: 3000,
-    garages: 3000,
-    officeSpaces: 3000,
+    parlours: 5500,
+    bathrooms: 6000,
+    kitchens: 7000,
+    stores: 5000,
+    garages: 5000,
+    officeSpaces: 5000,
   },
   Premium: {
     bedrooms: 8000,
-    parlours: 7000,
-    bathrooms: 3000,
-    kitchens: 7000,
+    parlours: 9000,
+    bathrooms: 10000,
+    kitchens: 12000,
     stores: 5000,
     garages: 5000,
     officeSpaces: 5000,
@@ -40,15 +40,15 @@ const PLAN_ROOM_PRICES = {
 };
 
 const PLAN_RATE = {
-  Basic: { first: 4000 },
-  Standard: { first: 7500 },
-  Premium: { first: 12000 },
+  Basic: { first: 15000 },
+  Standard: { first: 30000 },
+  Premium: { first: 60000 },
 };
 
 const STUDIO_PLAN_PRICE = {
-  Basic: 30000,
-  Standard: 50000,
-  Premium: 70000,
+  Basic: 35000,
+  Standard: 40000,
+  Premium: 60000,
 };
 
 const FREQUENCY_DISCOUNT = {
@@ -294,7 +294,7 @@ export default function QuoteModal() {
         form.garages +
         form.stores;
 
-      if (totalRooms === 0 && !isStudio) {
+      if (serviceType === "regular" && totalRooms === 0 && !isStudio) {
         errs.rooms = "Please add at least one room";
       }
     }
@@ -359,10 +359,7 @@ export default function QuoteModal() {
 
     // Special logic for Non-Regular Services
     if (serviceType !== "regular") {
-      if (totalRooms === 0) {
-        setEstimated(null);
-        return;
-      }
+
       const isIsland = ISLAND_LGAS.includes(form.lga);
       const transportationFee = isIsland ? 4000 : 3000;
       const base = INSPECTION_FEE;
@@ -524,7 +521,8 @@ export default function QuoteModal() {
 
   // Paystack Configuration
   // Paystack public key (frontend-safe). Do NOT put secret keys in the client.
-  const PAYSTACK_PUBLIC_KEY = "pk_test_6da6aeb6c6d4a540463092009e4fb64745cf9dab";
+  const PAYSTACK_PUBLIC_KEY =
+    "pk_live_fd3475874d758ab37aa0f1d90fe3283ce584b71d";
   const API_BASE_URL =
     import.meta?.env?.VITE_API_BASE_URL || "http://localhost:5000";
 
@@ -580,16 +578,18 @@ export default function QuoteModal() {
       serviceType === "regular" && form.houseType === "Studio"
         ? "Studio"
         : [
-            form.parlours > 0 ? `${form.parlours} Parlour(s)` : null,
-            form.bedrooms > 0 ? `${form.bedrooms} Bedroom(s)` : null,
-            form.kitchens > 0 ? `${form.kitchens} Kitchen(s)` : null,
-            form.bathrooms > 0 ? `${form.bathrooms} Bathroom(s)` : null,
-            form.officeSpaces > 0 ? `${form.officeSpaces} Office Space(s)` : null,
-            form.garages > 0 ? `${form.garages} Garage(s)` : null,
-            form.stores > 0 ? `${form.stores} Store(s)` : null,
-          ]
-            .filter(Boolean)
-            .join(", ");
+          form.parlours > 0 ? `${form.parlours} Parlour(s)` : null,
+          form.bedrooms > 0 ? `${form.bedrooms} Bedroom(s)` : null,
+          form.kitchens > 0 ? `${form.kitchens} Kitchen(s)` : null,
+          form.bathrooms > 0 ? `${form.bathrooms} Bathroom(s)` : null,
+          form.officeSpaces > 0
+            ? `${form.officeSpaces} Office Space(s)`
+            : null,
+          form.garages > 0 ? `${form.garages} Garage(s)` : null,
+          form.stores > 0 ? `${form.stores} Store(s)` : null,
+        ]
+          .filter(Boolean)
+          .join(", ");
 
     const selectedExtras = Object.entries(form.extras)
       .filter(([_, selected]) => selected)
@@ -685,23 +685,20 @@ export default function QuoteModal() {
   return (
     <>
       <div
-        className={`fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 transition-all duration-300 ${
-          open ? "visible opacity-100" : "invisible opacity-0"
-        }`}
+        className={`fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 transition-all duration-300 ${open ? "visible opacity-100" : "invisible opacity-0"
+          }`}
       >
         <div
-          className={`absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${
-            open ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"
+            }`}
           onClick={() => setOpen(false)}
         />
 
         <div
-          className={`relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh] transition-all duration-300 transform ${
-            open
-              ? "scale-100 opacity-100 translate-y-0"
-              : "scale-95 opacity-0 translate-y-4"
-          }`}
+          className={`relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh] transition-all duration-300 transform ${open
+            ? "scale-100 opacity-100 translate-y-0"
+            : "scale-95 opacity-0 translate-y-4"
+            }`}
         >
           <div className="flex items-center justify-between p-6 border-b border-gray-100 shrink-0">
             <div>
@@ -765,11 +762,10 @@ export default function QuoteModal() {
                             key={type.id}
                             type="button"
                             onClick={() => setServiceType(type.id)}
-                            className={`py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                              serviceType === type.id
-                                ? "bg-sky-600 text-white shadow-md scale-105"
-                                : "bg-white text-gray-600 border border-gray-200 hover:border-sky-300 hover:text-sky-600"
-                            }`}
+                            className={`py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${serviceType === type.id
+                              ? "bg-sky-600 text-white shadow-md scale-105"
+                              : "bg-white text-gray-600 border border-gray-200 hover:border-sky-300 hover:text-sky-600"
+                              }`}
                           >
                             {type.label}
                           </button>
@@ -1033,71 +1029,69 @@ export default function QuoteModal() {
                       </label>
                     )}
 
-                    <div className="space-y-4">
-                      <p className="text-sm font-medium text-gray-700">
-                        Add Rooms
-                      </p>
-                      {isStudio && (
-                        <p className="text-xs text-slate-500">
-                          Studio uses a fixed plan price. Room selection is
-                          disabled.
+                    {serviceType === "regular" && (
+                      <div className="space-y-4">
+                        <p className="text-sm font-medium text-gray-700">
+                          Add Rooms
                         </p>
-                      )}
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                        {ROOM_CONFIG.map(({ label, key, icon }) => {
-                          const count = form[key];
-                          const isActive = count > 0;
-                          return (
-                            <div
-                              key={key}
-                              className={`flex flex-col items-center p-3 rounded-xl border transition-all duration-200 ${
-                                isActive
+                        {isStudio && (
+                          <p className="text-xs text-slate-500">
+                            Studio uses a fixed plan price. Room selection is
+                            disabled.
+                          </p>
+                        )}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                          {ROOM_CONFIG.map(({ label, key, icon }) => {
+                            const count = form[key];
+                            const isActive = count > 0;
+                            return (
+                              <div
+                                key={key}
+                                className={`flex flex-col items-center p-3 rounded-xl border transition-all duration-200 ${isActive
                                   ? "border-sky-500 bg-sky-50 shadow-sm"
                                   : "border-gray-200 bg-white hover:border-sky-200"
-                              }`}
-                            >
-                              <div
-                                className={`w-8 h-8 mb-2 rounded-full flex items-center justify-center ${
-                                  isActive
+                                  }`}
+                              >
+                                <div
+                                  className={`w-8 h-8 mb-2 rounded-full flex items-center justify-center ${isActive
                                     ? "bg-sky-100 text-sky-600"
                                     : "bg-gray-100 text-gray-400"
-                                }`}
-                              >
-                                <svg
-                                  className="w-4 h-4"
-                                  fill="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path d={icon} />
-                                </svg>
-                              </div>
-                              <span
-                                className={`text-xs font-medium mb-2 ${isActive ? "text-sky-900" : "text-gray-600"}`}
-                              >
-                                {label}
-                              </span>
-
-                              <div className="flex items-center gap-3 w-full justify-center">
-                                <button
-                                  type="button"
-                                  onClick={() => updateCount(key, -1)}
-                                  disabled={count === 0 || isStudio}
-                                  className={`w-8 h-8 flex items-center justify-center rounded-full border transition-all active:scale-95 ${
-                                    count === 0 || isStudio
-                                      ? "border-gray-100 text-gray-300 cursor-not-allowed"
-                                      : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50 shadow-sm"
-                                  }`}
+                                    }`}
                                 >
                                   <svg
                                     className="w-4 h-4"
-                                    fill="none"
+                                    fill="currentColor"
                                     viewBox="0 0 24 24"
-                                    stroke="currentColor"
                                   >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
+                                    <path d={icon} />
+                                  </svg>
+                                </div>
+                                <span
+                                  className={`text-xs font-medium mb-2 ${isActive ? "text-sky-900" : "text-gray-600"}`}
+                                >
+                                  {label}
+                                </span>
+
+                                <div className="flex items-center gap-3 w-full justify-center">
+                                  <button
+                                    type="button"
+                                    onClick={() => updateCount(key, -1)}
+                                    disabled={count === 0 || isStudio}
+                                    className={`w-8 h-8 flex items-center justify-center rounded-full border transition-all active:scale-95 ${count === 0 || isStudio
+                                      ? "border-gray-100 text-gray-300 cursor-not-allowed"
+                                      : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50 shadow-sm"
+                                      }`}
+                                  >
+                                    <svg
+                                      className="w-4 h-4"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
                                       d="M20 12H4"
                                     />
                                   </svg>
@@ -1113,11 +1107,10 @@ export default function QuoteModal() {
                                   type="button"
                                   onClick={() => updateCount(key, 1)}
                                   disabled={isStudio}
-                                  className={`w-8 h-8 flex items-center justify-center rounded-full shadow-md transition-all active:scale-95 ${
-                                    isStudio
-                                      ? "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none"
-                                      : "bg-sky-600 text-white hover:bg-sky-700 hover:shadow-lg"
-                                  }`}
+                                  className={`w-8 h-8 flex items-center justify-center rounded-full shadow-md transition-all active:scale-95 ${isStudio
+                                    ? "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none"
+                                    : "bg-sky-600 text-white hover:bg-sky-700 hover:shadow-lg"
+                                    }`}
                                 >
                                   <svg
                                     className="w-4 h-4"
@@ -1144,6 +1137,7 @@ export default function QuoteModal() {
                         </div>
                       )}
                     </div>
+                    )}
                   </div>
                 )}
 
@@ -1198,21 +1192,21 @@ export default function QuoteModal() {
                             {isStudio
                               ? "Studio"
                               : [
-                                  form.parlours > 0
-                                    ? `${form.parlours} Parlour`
-                                    : null,
-                                  form.bedrooms > 0
-                                    ? `${form.bedrooms} Bed`
-                                    : null,
-                                  form.kitchens > 0
-                                    ? `${form.kitchens} Kitchen`
-                                    : null,
-                                  form.bathrooms > 0
-                                    ? `${form.bathrooms} Bath`
-                                    : null,
-                                ]
-                                  .filter(Boolean)
-                                  .join(", ") || "None selected"}
+                                form.parlours > 0
+                                  ? `${form.parlours} Parlour`
+                                  : null,
+                                form.bedrooms > 0
+                                  ? `${form.bedrooms} Bed`
+                                  : null,
+                                form.kitchens > 0
+                                  ? `${form.kitchens} Kitchen`
+                                  : null,
+                                form.bathrooms > 0
+                                  ? `${form.bathrooms} Bath`
+                                  : null,
+                              ]
+                                .filter(Boolean)
+                                .join(", ") || "None selected"}
                             {!isStudio &&
                               (form.officeSpaces > 0 ||
                                 form.garages > 0 ||
@@ -1232,16 +1226,16 @@ export default function QuoteModal() {
                         <span className="text-lg font-bold text-sky-700">
                           {estimated
                             ? new Intl.NumberFormat("en-NG", {
-                                style: "currency",
-                                currency: "NGN",
-                                maximumFractionDigits: 0,
-                              }).format(
-                                serviceType === "regular"
-                                  ? estimated *
-                                      (FREQUENCY_DETAILS[form.frequency]
-                                        ?.multiplier || 1)
-                                  : estimated,
-                              )
+                              style: "currency",
+                              currency: "NGN",
+                              maximumFractionDigits: 0,
+                            }).format(
+                              serviceType === "regular"
+                                ? estimated *
+                                (FREQUENCY_DETAILS[form.frequency]
+                                  ?.multiplier || 1)
+                                : estimated,
+                            )
                             : "₦0"}
                         </span>
                       </div>
@@ -1250,7 +1244,7 @@ export default function QuoteModal() {
                       {serviceType === "regular" &&
                         estimated &&
                         FREQUENCY_DETAILS[form.frequency]?.monthlyFactor >
-                          0 && (
+                        0 && (
                           <div className="pt-2 border-t border-gray-100 mt-1 flex justify-between items-center">
                             <span className="text-xs font-medium text-gray-500">
                               Estimated Monthly Cost
@@ -1262,86 +1256,88 @@ export default function QuoteModal() {
                                 maximumFractionDigits: 0,
                               }).format(
                                 estimated *
-                                  (FREQUENCY_DETAILS[form.frequency]
-                                    ?.multiplier || 1) *
-                                  (FREQUENCY_DETAILS[form.frequency]
-                                    ?.monthlyFactor || 1),
+                                (FREQUENCY_DETAILS[form.frequency]
+                                  ?.multiplier || 1) *
+                                (FREQUENCY_DETAILS[form.frequency]
+                                  ?.monthlyFactor || 1),
                               )}
                             </span>
                           </div>
                         )}
                     </div>
 
-                    <div className="block relative" ref={extrasRef}>
-                      <span className="block text-sm font-medium text-gray-700 mb-1">
-                        Extra Services
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => setExtrasOpen(!extrasOpen)}
-                        className="w-full text-left rounded-lg border border-gray-300 shadow-sm px-4 py-2.5 bg-white flex items-center justify-between hover:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                      >
-                        <span className="text-gray-700 truncate">
-                          {Object.entries(form.extras).filter(([_, v]) => v)
-                            .length > 0
-                            ? `${Object.entries(form.extras).filter(([_, v]) => v).length} selected`
-                            : "Select extras..."}
+                    {serviceType === "regular" && (
+                      <div className="block relative" ref={extrasRef}>
+                        <span className="block text-sm font-medium text-gray-700 mb-1">
+                          Extra Services
                         </span>
-                        <svg
-                          className="w-5 h-5 text-gray-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
+                        <button
+                          type="button"
+                          onClick={() => setExtrasOpen(!extrasOpen)}
+                          className="w-full text-left rounded-lg border border-gray-300 shadow-sm px-4 py-2.5 bg-white flex items-center justify-between hover:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      </button>
-
-                      <div
-                        className={`absolute z-20 mt-1 w-full rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 max-h-60 overflow-auto focus:outline-none py-1 transition-all duration-200 origin-top transform ${extrasOpen ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"}`}
-                      >
-                        {[
-                          { label: "Balcony (₦2,000)", key: "balcony" },
-                          { label: "Wardrobe (₦3,000)", key: "wardrobe" },
-                          { label: "Fridge (₦2,000)", key: "fridge" },
-                          { label: "Fan (₦500)", key: "fan" },
-                          { label: "Oven (₦1,500)", key: "oven" },
-                          { label: "Laundry (₦4,000)", key: "laundry" },
-                          { label: "Ironing (₦2,500)", key: "ironing" },
-                          {
-                            label: "Kitchen Cabinet (₦1,500)",
-                            key: "kitchenCabinet",
-                          },
-                          { label: "Compound (₦5,000)", key: "compound" },
-                          { label: "Car Washing (₦5,000)", key: "carWashing" },
-                        ].map(({ label, key }) => (
-                          <div
-                            key={key}
-                            className="relative flex items-center px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 last:border-0"
-                            onClick={() => toggleExtra(key)}
+                          <span className="text-gray-700 truncate">
+                            {Object.entries(form.extras).filter(([_, v]) => v)
+                              .length > 0
+                              ? `${Object.entries(form.extras).filter(([_, v]) => v).length} selected`
+                              : "Select extras..."}
+                          </span>
+                          <svg
+                            className="w-5 h-5 text-gray-400"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
                           >
-                            <div className="flex h-5 items-center">
-                              <input
-                                type="checkbox"
-                                checked={form.extras[key]}
-                                onChange={() => {}}
-                                className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-500"
-                              />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </button>
+
+                        <div
+                          className={`absolute z-20 mt-1 w-full rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 max-h-60 overflow-auto focus:outline-none py-1 transition-all duration-200 origin-top transform ${extrasOpen ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"}`}
+                        >
+                          {[
+                            { label: "Balcony (₦2,000)", key: "balcony" },
+                            { label: "Wardrobe (₦3,000)", key: "wardrobe" },
+                            { label: "Fridge (₦2,000)", key: "fridge" },
+                            { label: "Fan (₦500)", key: "fan" },
+                            { label: "Oven (₦1,500)", key: "oven" },
+                            { label: "Laundry (₦4,000)", key: "laundry" },
+                            { label: "Ironing (₦2,500)", key: "ironing" },
+                            {
+                              label: "Kitchen Cabinet (₦1,500)",
+                              key: "kitchenCabinet",
+                            },
+                            { label: "Compound (₦5,000)", key: "compound" },
+                            { label: "Car Washing (₦5,000)", key: "carWashing" },
+                          ].map(({ label, key }) => (
+                            <div
+                              key={key}
+                              className="relative flex items-center px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 last:border-0"
+                              onClick={() => toggleExtra(key)}
+                            >
+                              <div className="flex h-5 items-center">
+                                <input
+                                  type="checkbox"
+                                  checked={form.extras[key]}
+                                  onChange={() => { }}
+                                  className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-500"
+                                />
+                              </div>
+                              <div className="ml-3 text-sm">
+                                <label className="font-medium text-gray-700 cursor-pointer">
+                                  {label}
+                                </label>
+                              </div>
                             </div>
-                            <div className="ml-3 text-sm">
-                              <label className="font-medium text-gray-700 cursor-pointer">
-                                {label}
-                              </label>
-                            </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
 
                     <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                       <input
@@ -1525,24 +1521,24 @@ export default function QuoteModal() {
                                   {/* Frequency Multiplier */}
                                   {(FREQUENCY_DETAILS[form.frequency]
                                     ?.multiplier || 1) > 1 && (
-                                    <div className="flex justify-between text-sky-700 font-medium pt-2 border-t border-sky-100/50">
-                                      <span>
-                                        Frequency Multiplier (
-                                        {
-                                          FREQUENCY_DETAILS[form.frequency]
-                                            ?.label
-                                        }
-                                        )
-                                      </span>
-                                      <span>
-                                        x
-                                        {
-                                          FREQUENCY_DETAILS[form.frequency]
-                                            ?.multiplier
-                                        }
-                                      </span>
-                                    </div>
-                                  )}
+                                      <div className="flex justify-between text-sky-700 font-medium pt-2 border-t border-sky-100/50">
+                                        <span>
+                                          Frequency Multiplier (
+                                          {
+                                            FREQUENCY_DETAILS[form.frequency]
+                                              ?.label
+                                          }
+                                          )
+                                        </span>
+                                        <span>
+                                          x
+                                          {
+                                            FREQUENCY_DETAILS[form.frequency]
+                                              ?.multiplier
+                                          }
+                                        </span>
+                                      </div>
+                                    )}
 
                                   {/* VAT Display */}
                                   <div className="flex justify-between text-gray-600 font-medium pt-2 border-t border-sky-100/50">
@@ -1554,9 +1550,9 @@ export default function QuoteModal() {
                                         maximumFractionDigits: 0,
                                       }).format(
                                         (estimated / 1.075) *
-                                          0.075 *
-                                          (FREQUENCY_DETAILS[form.frequency]
-                                            ?.multiplier || 1),
+                                        0.075 *
+                                        (FREQUENCY_DETAILS[form.frequency]
+                                          ?.multiplier || 1),
                                       )}
                                     </span>
                                   </div>
@@ -1684,8 +1680,8 @@ export default function QuoteModal() {
                                 maximumFractionDigits: 0,
                               }).format(
                                 estimated *
-                                  (FREQUENCY_DETAILS[form.frequency]
-                                    ?.multiplier || 1),
+                                (FREQUENCY_DETAILS[form.frequency]
+                                  ?.multiplier || 1),
                               )}
                             </div>
                           </div>

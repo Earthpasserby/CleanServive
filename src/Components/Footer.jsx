@@ -11,8 +11,8 @@ const Footer = () => {
             className="w-32 h-auto object-contain"
           />
           <p className="mt-4 text-slate-400 text-sm leading-relaxed">
-            Professional cleaning services tailored to your lifestyle.
-            Experience the difference of a truly clean home.
+            Professional cleaning services for every space and every need.
+            Experience the difference of a truly spotless environment.
           </p>
         </div>
 

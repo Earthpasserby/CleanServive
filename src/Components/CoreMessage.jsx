@@ -11,69 +11,58 @@ const CoreMessage = () => {
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-5 xl:gap-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-24">
             <div className="card-box card-primary text-white sm:hidden xl:inline-block animate-float">
-              <img src={polisher} alt="group" className="w-[42px]" />
+              <img src={pressure} alt="group" className="w-[42px]" loading="lazy" />
               <h1 className="font-medium text-[16px] text-sm pt-2">
-                Excellent client service
+                Parenting
               </h1>
               <p className="text-white opacity-90 font-normal text-sm pt-2">
-                Our team goes above and beyond to ensure your needs are met with
-                personalized attention, making your experience seamless and
-                stress-free.
+                Juggling work and kids? Let us handle the sweeping and scrubbing so you can spend your precious time on what truly matters—your family.
               </p>
             </div>
             <div className="card-box card-cream">
-              <img src={pressure} alt="group" className="w-[42px]" />
+              <img src={polisher} alt="group" className="w-[42px]" loading="lazy" />
               <h1 className="text-accent font-medium text-[16px] text-sm pt-2">
-                High success rate
+                Working Class
               </h1>
               <p className="text-muted font-normal text-sm pt-2">
-                We pride ourselves on an impressive 95% success rate, helping
-                countless clients achieve their dreams of living an healthy
-                life.
+                Come home to a spotless space after a long day at work. Regain your weekends and leave the dust, grime, and deep cleaning to our expert team.
               </p>
             </div>
             <div className="card-box card-cream">
-              <img src={broom} alt="group" className="w-[42px]" />
+              <img src={broom} alt="group" className="w-[42px]" loading="lazy" />
               <h1 className="text-accent font-medium text-[16px] text-sm pt-2">
-                Professionalism
+                Post-Construction
               </h1>
               <p className="text-muted font-normal text-sm pt-2">
-                With years of expertise and a highly trained team, we handle
-                every aspect of your environment with the utmost
-                professionalism, ensuring your peace of mind.
+                Just finished a renovation or new build? We tackle the heavy dust, debris, and tough messes, leaving your flawless new space move-in ready.
               </p>
             </div>
             <div className="card-box card-primary text-white sm:col-span-2 xl:col-span-1 animate-float">
-              <img src={pressure} alt="group" className="w-[42px]" />
+              <img src={pressure} alt="group" className="w-[42px]" loading="lazy" />
               <h1 className="font-medium text-[16px] text-sm pt-2">
-                Worth every penny
+                B2B & Offices
               </h1>
               <p className="text-white opacity-90 font-normal text-sm pt-2">
-                Our extensive packages gives you trusted access to the best
-                services at every core.
+                A clean workspace boosts productivity and impresses clients. We provide reliable, discreet, and thorough cleaning tailored to businesses of all sizes.
               </p>
             </div>
           </div>
-          <div className=" grid sm:grid-cols-2 xl:grid-cols-1 gap-4 sm:gap-5 ">
-            <div className="flex flex-col">
-              <h1 className=" font-bold text-sky-700 text-2xl sm:text-[32px] md:ml-0 lg:ml-80 sm:ml-0">
-                Why ScrubbPro?
-              </h1>
-              <p className="text-muted font-medium pt-2 max-w-xl">
-                At our core, we are dedicated to providing exceptional scrub,
-                with a concise detailing which highlights our commitment to a
-                sparkling evnvironment.
-              </p>
-              <button
-                type="button"
-                className="btn-primary w-fit mt-4"
-                onClick={() =>
-                  window.dispatchEvent(new CustomEvent("openQuoteModal"))
-                }
-              >
-                Request a Quote
-              </button>
-            </div>
+          <div className="flex flex-col justify-center xl:pl-12 gap-5 mb-16 xl:mb-0">
+            <h1 className="font-bold text-sky-700 text-3xl sm:text-4xl text-left">
+              Why ScrubbPro?
+            </h1>
+            <p className="text-muted font-normal text-base sm:text-lg leading-relaxed max-w-xl text-left">
+              At ScrubbPro, we understand that every client has unique needs. Whether you're a busy parent, a hardworking professional, recovering from renovations, or a growing business, we provide exceptional, tailored cleaning services that let you focus on what you do best.
+            </p>
+            <button
+              type="button"
+              className="btn-primary w-fit mt-2 px-8 py-3 text-lg shadow-md hover:shadow-lg transition-all"
+              onClick={() =>
+                window.dispatchEvent(new CustomEvent("openQuoteModal"))
+              }
+            >
+              Request a Quote
+            </button>
           </div>
         </div>
       </div>

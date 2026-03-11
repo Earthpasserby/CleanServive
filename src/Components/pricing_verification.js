@@ -1,7 +1,7 @@
 const PLAN_RATE = {
-  Basic: { first: 4000, extra: 4000 },
-  Standard: { first: 7500, extra: 7500 },
-  Premium: { first: 12000, extra: 12000 },
+  Basic: { first: 15000, extra: 15000 },
+  Standard: { first: 30000, extra: 30000 },
+  Premium: { first: 60000, extra: 60000 },
 };
 
 const HOUSE_MULTIPLIER = {

@@ -18,7 +18,7 @@ const Step = ({ icon, title, desc }) => (
 const Testimonial = ({ quote, name }) => (
   <div className="card-box card-cream animate-float fade-up">
     <p className="text-muted">"{quote}"</p>
-    <p className="mt-3 text-sky-600 font-semibold">— {name}</p>
+    <p className="mt-3 text-sky-600 font-semibold">- {name}</p>
   </div>
 );
 
@@ -46,7 +46,7 @@ export default function HomeExtras() {
         <Step
           icon={<FaHandsHelping />}
           title="Relax"
-          desc="Enjoy a fresh, clean space — satisfaction guaranteed."
+          desc="Enjoy a fresh, clean space - satisfaction guaranteed."
         />
       </div>
 
@@ -66,6 +66,13 @@ export default function HomeExtras() {
             name="Fatima"
           />
         </div>
+        <button
+          type="button"
+          className="btn-primary mt-8"
+          onClick={() => window.dispatchEvent(new CustomEvent("openQuoteModal"))}
+        >
+          Get a Free Quote
+        </button>
       </div>
     </section>
   );

@@ -648,16 +648,18 @@ export default function QuoteModal() {
 
     const message = messageParts.filter(Boolean).join("\n");
 
+    setSubmitted(true);
+    setSubmitting(false);
+
     setTimeout(() => {
       try {
         sendToWhatsApp(message);
-        setToast("Payment Successful! Opening WhatsApp...");
+        setToast("Opening WhatsApp...");
         setTimeout(() => setToast(""), 3000);
-        setSubmitted(true);
-      } finally {
-        setSubmitting(false);
+      } catch (err) {
+        console.error(err);
       }
-    }, 300);
+    }, 2000);
   };
 
   const onClose = () => {
@@ -1731,7 +1733,7 @@ export default function QuoteModal() {
                       className="px-6 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg hover:shadow-blue-600/30 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
                       disabled={submitting || transitioning}
                     >
-                      {submitting ? "Sending..." : "Send to WhatsApp"}
+                      {submitting ? "Processing..." : "Checkout"}
                     </button>
                   )}
                 </div>
@@ -1754,11 +1756,10 @@ export default function QuoteModal() {
                   </svg>
                 </div>
                 <h4 className="text-2xl font-bold text-gray-900">
-                  Request Sent!
+                  Payment Successful!
                 </h4>
                 <p className="text-gray-500 mt-2 max-w-xs mx-auto">
-                  We've opened WhatsApp with your quote details. Hit send to
-                  start the conversation.
+                  You are being redirected to WhatsApp to confirm your booking and details.
                 </p>
                 <div className="mt-8">
                   <button

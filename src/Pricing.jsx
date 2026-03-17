@@ -266,7 +266,7 @@ export default function Pricing() {
                 }
                 className={`w-full py-4 px-6 rounded-xl font-bold text-base transition-all duration-200 flex items-center justify-center gap-2 group ${
                   plan.popular
-                    ? "bg-gradient-to-r from-blue-600 to-sky-500 text-white hover:from-blue-700 hover:to-sky-600 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
+                    ? "bg-gradient-to-r from-sky-600 to-sky-700 text-white hover:from-blue-700 hover:to-sky-600 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
                     : "bg-slate-100 text-slate-700 hover:bg-sky-50 hover:text-sky-700"
                 }`}
               >
@@ -327,7 +327,7 @@ export default function Pricing() {
                       {plan.name}
                     </h3>
                     <span
-                      className={`text-xs font-semibold text-${plan.accent}-600 bg-${plan.accent}-50 px-2 py-1 rounded-full`}
+                      className="text-xs font-semibold text-sky-600 bg-sky-50 px-2 py-1 rounded-full"
                     >
                       {plan.cadence}
                     </span>

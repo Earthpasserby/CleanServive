@@ -39,6 +39,40 @@ export default function About() {
       {/* </div> */}
 
       {/* Team */}
+      <section className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="card-box card-cream">
+          <h2 className="text-2xl font-bold text-slate-900">Brand Story</h2>
+          <p className="text-muted mt-3 leading-relaxed">
+            CleanService started with a simple promise: make professional
+            cleaning reliable, transparent, and easy to book. We blend trained
+            teams, clear pricing, and modern tools to keep homes and workplaces
+            healthy. Every visit is designed to reduce stress, protect your
+            space, and let you focus on what matters.
+          </p>
+        </div>
+        <div className="card-box card-cream">
+          <h2 className="text-2xl font-bold text-slate-900">Brand Imagery</h2>
+          <p className="text-muted mt-3">
+            Bright spaces, fresh surfaces, and calm order. Our visuals focus on
+            trust, care, and the quiet satisfaction of a spotless environment.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 text-sm text-slate-700">
+            <div className="p-3 rounded-lg bg-white border border-slate-200">
+              Sunlit rooms with crisp, clean lines
+            </div>
+            <div className="p-3 rounded-lg bg-white border border-slate-200">
+              Organized desks and polished work areas
+            </div>
+            <div className="p-3 rounded-lg bg-white border border-slate-200">
+              Friendly, uniformed professionals in action
+            </div>
+            <div className="p-3 rounded-lg bg-white border border-slate-200">
+              Subtle eco-friendly tools and supplies
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="mt-18">
         <h2 className="text-2xl font-bold text-slate-900">Meet the Team</h2>
         <p className="text-muted mt-2 max-w-2xl">

@@ -345,7 +345,7 @@ export default function EventQuoteModal() {
                                     </button>
                                     <button
                                         type="submit"
-                                        className="px-6 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold shadow-lg hover:shadow-sky-500/30 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                                        className="px-6 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-semibold shadow-lg hover:shadow-sky-200 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
                                         disabled={submitting}
                                     >
                                         {submitting ? "Sending..." : "Get Event Quote"}

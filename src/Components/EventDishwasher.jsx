@@ -38,7 +38,7 @@ export default function EventDishwasher() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
             onClick={openModal}
-            className="group relative px-8 py-4 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-full shadow-lg hover:shadow-sky-500/30 transition-all duration-300 transform hover:-translate-y-1"
+            className="group relative px-8 py-4 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-full shadow-lg hover:shadow-sky-200 transition-all duration-300 transform hover:-translate-y-1"
           >
             <span className="relative z-10 flex items-center gap-2">
               Book Event Cleaners

@@ -136,8 +136,7 @@ body {
 
 /* Accent button */
 .btn-accent {
-  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
-  /* Amber to Orange */
+  background-color: #0284c7;
   color: white;
   border: 0;
   padding: 0.75rem 1.75rem;
@@ -147,18 +146,18 @@ body {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px -2px rgba(245, 158, 11, 0.4);
+  box-shadow: 0 10px 20px -12px rgba(14, 165, 233, 0.45);
 }
 
 .btn-accent:hover {
-  background-color: #b45309;
+  background-color: #0369a1;
   transform: translateY(-1px);
-  box-shadow: 0 10px 15px -3px rgba(217, 119, 6, 0.3);
+  box-shadow: 0 12px 24px -12px rgba(14, 165, 233, 0.45);
 }
 
 /* Primary button style */
 .btn-primary {
-  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  background-color: #0284c7;
   color: white;
   border: 0;
   padding: 0.75rem 1.75rem;
@@ -168,13 +167,13 @@ body {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px -2px rgba(14, 165, 233, 0.4);
+  box-shadow: 0 10px 20px -12px rgba(14, 165, 233, 0.45);
 }
 
 .btn-primary:hover {
-  background-color: var(--brand-primary-dark);
+  background-color: #0369a1;
   transform: translateY(-1px);
-  box-shadow: 0 10px 15px -3px rgba(2, 132, 199, 0.3);
+  box-shadow: 0 12px 24px -12px rgba(14, 165, 233, 0.45);
 }
 
 .btn-primary:focus {

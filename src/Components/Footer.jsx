@@ -5,11 +5,7 @@ const Footer = () => {
     <footer className="bg-slate-900 text-white mt-20">
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-12">
         <div>
-          <img
-            src="/scrubbNewLg-removebg-preview.png"
-            alt="logo"
-            className="w-32 h-auto object-contain"
-          />
+          <img src="/sb.png" alt="logo" className="w-32 h-auto object-contain" />
           <p className="mt-4 text-slate-400 text-sm leading-relaxed">
             Professional cleaning services for every space and every need.
             Experience the difference of a truly spotless environment.

@@ -152,16 +152,55 @@ const ROOM_CONFIG = [
     icon: "M4 12v8h16v-8H4zm2 2h2v4H6v-4zm4 0h2v4h-2v-4zm4 0h2v4h-2v-4z M12 2L4 10h16L12 2z",
   }, // House/Bath
   {
-    label: "Office",
-    key: "officeSpaces",
-    icon: "M4 6h16v12H4V6zm2 2v8h12V8H6zm-2-4h16v2H4V4z",
-  }, // Briefcase
-  {
     label: "Garage",
     key: "garages",
     icon: "M19 13v6H5v-6H3v8h2v-2h14v2h2v-8h-2z M12 3L3 11h18L12 3z",
   }, // Garage
   { label: "Store", key: "stores", icon: "M4 4h16v16H4V4zm2 2v12h12V6H6z" }, // Box
+];
+
+const ROOM_PRICE_LABELS = {
+  bedrooms: "Bedroom",
+  parlours: "Parlour",
+  bathrooms: "Bathroom",
+  kitchens: "Kitchen",
+  stores: "Store",
+  garages: "Garage",
+  officeSpaces: "Office/Workspace",
+};
+
+const OFFICE_HOUSE_TYPES = new Set(["Office", "Workspace", "CoWorking"]);
+
+const OFFICE_SERVICE_PLANS = [
+  {
+    name: "Basic  Care",
+    cadence: "Weekly cleaning",
+    items: ["Trash removal", "Bathroom cleaning"],
+  },
+  {
+    name: "Standard",
+    cadence: "3x weekly cleaning",
+    items: ["Desk dusting", "Floor care", "Restroom sanitation"],
+  },
+  {
+    name: "Premium",
+    cadence: "Daily cleaning",
+    items: [
+      "Deep sanitation",
+      "Window cleaning",
+      "Carpet care",
+      "Dedicated staff",
+    ],
+  },
+];
+
+const OPTIONAL_SERVICES = [
+  { key: "carpetCleaning", label: "Carpet cleaning" },
+  { key: "fumigation", label: "Fumigation" },
+  { key: "postConstruction", label: "Post-construction cleaning" },
+  { key: "wasteDisposal", label: "Waste disposal" },
+  { key: "sanitization", label: "Sanitization" },
+  { key: "windowExterior", label: "Window exterior cleaning" },
 ];
 
 export default function QuoteModal() {
@@ -196,6 +235,14 @@ export default function QuoteModal() {
       compound: false,
       carWashing: false,
     },
+    optionalServices: {
+      carpetCleaning: false,
+      fumigation: false,
+      postConstruction: false,
+      wasteDisposal: false,
+      sanitization: false,
+      windowExterior: false,
+    },
     cleaningSupplies: false,
     specialRequests: "",
     plan: "",
@@ -209,9 +256,11 @@ export default function QuoteModal() {
   const [step, setStep] = useState(1);
   const [transitioning, setTransitioning] = useState(false);
   const [showPlanDetails, setShowPlanDetails] = useState(false);
+  const [showPricingDetails, setShowPricingDetails] = useState(false);
   const firstInput = useRef(null);
   const extrasRef = useRef(null);
   const isStudio = serviceType === "regular" && form.houseType === "Studio";
+  const isOfficeType = OFFICE_HOUSE_TYPES.has(form.houseType);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -240,6 +289,15 @@ export default function QuoteModal() {
     );
   }
   const minDateTime = formatLocalDateInput(new Date());
+
+  function formatLabel(key) {
+    return key
+      .charAt(0)
+      .toUpperCase()
+      .concat(key.slice(1))
+      .replace(/([A-Z])/g, " $1")
+      .trim();
+  }
 
   useEffect(() => {
     const handler = () => {
@@ -294,7 +352,12 @@ export default function QuoteModal() {
         form.garages +
         form.stores;
 
-      if (serviceType === "regular" && totalRooms === 0 && !isStudio) {
+      if (
+        serviceType === "regular" &&
+        totalRooms === 0 &&
+        !isStudio &&
+        !isOfficeType
+      ) {
         errs.rooms = "Please add at least one room";
       }
     }
@@ -330,6 +393,29 @@ export default function QuoteModal() {
         next.garages = 0;
         next.stores = 0;
       }
+      if (name === "houseType" && OFFICE_HOUSE_TYPES.has(value)) {
+        next.parlours = 0;
+        next.bedrooms = 0;
+        next.kitchens = 0;
+        next.bathrooms = 0;
+        next.officeSpaces = 0;
+        next.garages = 0;
+        next.stores = 0;
+        next.plan = "";
+        next.frequency = "";
+        next.extras = {
+          balcony: false,
+          wardrobe: false,
+          fridge: false,
+          fan: false,
+          oven: false,
+          laundry: false,
+          ironing: false,
+          kitchenCabinet: false,
+          compound: false,
+          carWashing: false,
+        };
+      }
       return next;
     });
 
@@ -357,9 +443,7 @@ export default function QuoteModal() {
       return;
     }
 
-    // Special logic for Non-Regular Services
-    if (serviceType !== "regular") {
-
+    if (serviceType !== "regular" || isOfficeType) {
       const isIsland = ISLAND_LGAS.includes(form.lga);
       const transportationFee = isIsland ? 4000 : 3000;
       const base = INSPECTION_FEE;
@@ -439,10 +523,11 @@ export default function QuoteModal() {
   ]);
 
   const updateCount = (field, delta) => {
-    setForm((prev) => ({
-      ...prev,
-      [field]: Math.max(0, prev[field] + delta),
-    }));
+    setForm((prev) => {
+      const nextValue = Math.max(0, prev[field] + delta);
+      const next = { ...prev, [field]: nextValue };
+      return next;
+    });
   };
 
   const toggleExtra = (key) => {
@@ -451,6 +536,16 @@ export default function QuoteModal() {
       extras: {
         ...prev.extras,
         [key]: !prev.extras[key],
+      },
+    }));
+  };
+
+  const toggleOptionalService = (key) => {
+    setForm((prev) => ({
+      ...prev,
+      optionalServices: {
+        ...prev.optionalServices,
+        [key]: !prev.optionalServices[key],
       },
     }));
   };
@@ -492,16 +587,27 @@ export default function QuoteModal() {
         : 0,
     );
 
+    const isOfficeHouseType = OFFICE_HOUSE_TYPES.has(formData.houseType);
     const roomsLabel =
-      serviceType === "regular" && formData.houseType === "Studio"
-        ? "Studio"
-        : `${formData.parlours}P, ${formData.bedrooms}B, ${formData.kitchens}K...`;
+      serviceType === "regular" && isOfficeHouseType
+        ? "Office/Workspace"
+        : serviceType === "regular" && formData.houseType === "Studio"
+          ? "Studio"
+          : `${formData.parlours}P, ${formData.bedrooms}B, ${formData.kitchens}K...`;
     let detailsString = `Rooms: ${roomsLabel} Extras: ${Object.entries(
       formData.extras,
     )
       .filter(([k, v]) => v)
       .map(([k]) => k)
       .join(",")}`;
+    const optionalServicesLabel = OPTIONAL_SERVICES.filter(
+      ({ key }) => formData.optionalServices?.[key],
+    )
+      .map(({ label }) => label)
+      .join(", ");
+    if (optionalServicesLabel) {
+      detailsString += ` | Optional: ${optionalServicesLabel}`;
+    }
     if (serviceType !== "regular") {
       detailsString += ` | Debris Description: ${formData.debrisDescription}`;
     }
@@ -561,35 +667,24 @@ export default function QuoteModal() {
 
   const initializePayment = usePaystackPayment(config);
 
-  const onSuccess = async (reference) => {
-    const verified = await verifyPayment(reference.reference);
-    if (!verified) {
-      setSubmitting(false);
-      setToast("Payment verification failed. Please contact support.");
-      setTimeout(() => setToast(""), 3000);
-      return;
-    }
-
-    // 1. Submit to Google Sheets
-    submitToGoogleSheets(form);
-
-    // 2. Construct WhatsApp Message
-    const roomDetails =
-      serviceType === "regular" && form.houseType === "Studio"
+  function buildQuoteMessage({ paid, paymentReference }) {
+    const roomDetails = isOfficeType
+      ? "Office/Workspace"
+      : serviceType === "regular" && form.houseType === "Studio"
         ? "Studio"
         : [
-          form.parlours > 0 ? `${form.parlours} Parlour(s)` : null,
-          form.bedrooms > 0 ? `${form.bedrooms} Bedroom(s)` : null,
-          form.kitchens > 0 ? `${form.kitchens} Kitchen(s)` : null,
-          form.bathrooms > 0 ? `${form.bathrooms} Bathroom(s)` : null,
-          form.officeSpaces > 0
-            ? `${form.officeSpaces} Office Space(s)`
-            : null,
-          form.garages > 0 ? `${form.garages} Garage(s)` : null,
-          form.stores > 0 ? `${form.stores} Store(s)` : null,
-        ]
-          .filter(Boolean)
-          .join(", ");
+            form.parlours > 0 ? `${form.parlours} Parlour(s)` : null,
+            form.bedrooms > 0 ? `${form.bedrooms} Bedroom(s)` : null,
+            form.kitchens > 0 ? `${form.kitchens} Kitchen(s)` : null,
+            form.bathrooms > 0 ? `${form.bathrooms} Bathroom(s)` : null,
+            form.officeSpaces > 0
+              ? `${form.officeSpaces} Office/Workspace(s)`
+              : null,
+            form.garages > 0 ? `${form.garages} Garage(s)` : null,
+            form.stores > 0 ? `${form.stores} Store(s)` : null,
+          ]
+            .filter(Boolean)
+            .join(", ");
 
     const selectedExtras = Object.entries(form.extras)
       .filter(([_, selected]) => selected)
@@ -603,6 +698,83 @@ export default function QuoteModal() {
       )
       .join(", ");
 
+    const selectedOptionalServices = OPTIONAL_SERVICES.filter(
+      ({ key }) => form.optionalServices?.[key],
+    )
+      .map(({ label }) => label)
+      .join(", ");
+
+    const messageParts = [
+      paid ? "New quote request (PAID)" : "New quote request",
+      paymentReference ? `Payment Reference: ${paymentReference}` : null,
+      `Service Type: ${serviceType === "regular" ? "Regular Cleaning" : serviceType === "post-construction" ? "Post-Construction Cleaning" : "Move-In/Out Cleaning"}`,
+      `Name: ${form.name}`,
+      `Phone: ${form.phone}`,
+      form.email ? `Email: ${form.email}` : null,
+      form.address ? `Address: ${form.address}` : null,
+      form.lga ? `LGA: ${form.lga}` : null,
+      form.houseType ? `House type: ${form.houseType}` : null,
+      roomDetails ? `Rooms: ${roomDetails}` : null,
+    ];
+
+    if (serviceType === "regular") {
+      messageParts.push(form.plan ? `Plan: ${form.plan}` : null);
+      if (!isOfficeType) {
+        messageParts.push(
+          form.frequency ? `Frequency: ${form.frequency}` : null,
+        );
+      }
+    } else {
+      messageParts.push(`Debris/Items Details: ${form.debrisDescription}`);
+      messageParts.push("NOTE: Customer paid Inspection Fee.");
+    }
+
+    messageParts.push(selectedExtras ? `Extras: ${selectedExtras}` : null);
+    messageParts.push(
+      selectedOptionalServices
+        ? `Optional services: ${selectedOptionalServices}`
+        : null,
+    );
+    messageParts.push(
+      form.cleaningSupplies ? "Request for cleaning supplies" : null,
+    );
+    messageParts.push(
+      form.preferred ? `Preferred Date: ${form.preferred}` : null,
+    );
+    messageParts.push(
+      form.specialRequests ? `Special Requests: ${form.specialRequests}` : null,
+    );
+
+    if (paid && estimated) {
+      if (serviceType === "regular") {
+        messageParts.push(
+          `Amount Paid: â‚¦${(
+            estimated * (FREQUENCY_DETAILS[form.frequency]?.multiplier || 1)
+          ).toLocaleString()} ${FREQUENCY_DETAILS[form.frequency]?.label || ""}`,
+        );
+      } else {
+        messageParts.push(
+          `Inspection Fee Paid: â‚¦${estimated.toLocaleString()}`,
+        );
+      }
+    }
+
+    return messageParts.filter(Boolean).join("\n");
+  }
+
+  /* const onSuccessLegacy = async (reference) => {
+    const verified = await verifyPayment(reference.reference);
+    if (!verified) {
+      setSubmitting(false);
+      setToast("Payment verification failed. Please contact support.");
+      setTimeout(() => setToast(""), 3000);
+      return;
+    }
+
+    // 1. Submit to Google Sheets
+    submitToGoogleSheets(form);
+
+    // 2. Construct WhatsApp Message
     const messageParts = [
       "New quote request (PAID)",
       `Payment Reference: ${reference.reference}`,
@@ -626,6 +798,11 @@ export default function QuoteModal() {
 
     messageParts.push(selectedExtras ? `Extras: ${selectedExtras}` : null);
     messageParts.push(
+      selectedOptionalServices
+        ? `Optional services: ${selectedOptionalServices}`
+        : null,
+    );
+    messageParts.push(
       form.cleaningSupplies ? "Request for cleaning supplies" : null,
     );
     messageParts.push(
@@ -647,6 +824,38 @@ export default function QuoteModal() {
     messageParts.push(amountDisplay);
 
     const message = messageParts.filter(Boolean).join("\n");
+
+    setSubmitted(true);
+    setSubmitting(false);
+
+    setTimeout(() => {
+      try {
+        sendToWhatsApp(message);
+        setToast("Opening WhatsApp...");
+        setTimeout(() => setToast(""), 3000);
+      } catch (err) {
+        console.error(err);
+      }
+    }, 2000);
+  }; */
+
+  const onSuccess = async (reference) => {
+    const verified = await verifyPayment(reference.reference);
+    if (!verified) {
+      setSubmitting(false);
+      setToast("Payment verification failed. Please contact support.");
+      setTimeout(() => setToast(""), 3000);
+      return;
+    }
+
+    // 1. Submit to Google Sheets
+    submitToGoogleSheets(form);
+
+    // 2. Construct WhatsApp Message
+    const message = buildQuoteMessage({
+      paid: true,
+      paymentReference: reference.reference,
+    });
 
     setSubmitted(true);
     setSubmitting(false);
@@ -687,20 +896,23 @@ export default function QuoteModal() {
   return (
     <>
       <div
-        className={`fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 transition-all duration-300 ${open ? "visible opacity-100" : "invisible opacity-0"
-          }`}
+        className={`fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 transition-all duration-300 ${
+          open ? "visible opacity-100" : "invisible opacity-0"
+        }`}
       >
         <div
-          className={`absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"
-            }`}
+          className={`absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${
+            open ? "opacity-100" : "opacity-0"
+          }`}
           onClick={() => setOpen(false)}
         />
 
         <div
-          className={`relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh] transition-all duration-300 transform ${open
-            ? "scale-100 opacity-100 translate-y-0"
-            : "scale-95 opacity-0 translate-y-4"
-            }`}
+          className={`relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh] transition-all duration-300 transform ${
+            open
+              ? "scale-100 opacity-100 translate-y-0"
+              : "scale-95 opacity-0 translate-y-4"
+          }`}
         >
           <div className="flex items-center justify-between p-6 border-b border-gray-100 shrink-0">
             <div>
@@ -764,10 +976,11 @@ export default function QuoteModal() {
                             key={type.id}
                             type="button"
                             onClick={() => setServiceType(type.id)}
-                            className={`py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${serviceType === type.id
-                              ? "bg-sky-600 text-white shadow-md scale-105"
-                              : "bg-white text-gray-600 border border-gray-200 hover:border-sky-300 hover:text-sky-600"
-                              }`}
+                            className={`py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                              serviceType === type.id
+                                ? "bg-sky-600 text-white shadow-md scale-105"
+                                : "bg-white text-gray-600 border border-gray-200 hover:border-sky-300 hover:text-sky-600"
+                            }`}
                           >
                             {type.label}
                           </button>
@@ -888,6 +1101,9 @@ export default function QuoteModal() {
                           <option value="">Select type</option>
                           <option value="Studio">Studio(Selfcon)</option>
                           <option value="Flat">Flat</option>
+                          <option value="Office">Office</option>
+                          <option value="Workspace">Workspace</option>
+                          <option value="CoWorking">Co-working Space</option>
                           <option value="ServicedApartment">
                             Serviced Apartment
                           </option>
@@ -904,7 +1120,7 @@ export default function QuoteModal() {
                         )}
                       </label>
 
-                      {serviceType === "regular" && (
+                      {serviceType === "regular" && !isOfficeType && (
                         <label className="block">
                           <span className="block text-sm font-medium text-gray-700 mb-1">
                             Frequency
@@ -949,9 +1165,14 @@ export default function QuoteModal() {
                             className="w-full rounded-lg border-gray-300 focus:border-sky-500 focus:ring-sky-500 shadow-sm px-4 py-2.5"
                           >
                             <option value="">Select plan</option>
-                            <option value="Basic">Basic</option>
-                            <option value="Standard">Standard</option>
-                            <option value="Premium">Premium</option>
+                            {(isOfficeType
+                              ? OFFICE_SERVICE_PLANS.map((plan) => plan.name)
+                              : ["Basic", "Standard", "Premium"]
+                            ).map((plan) => (
+                              <option key={plan} value={plan}>
+                                {plan}
+                              </option>
+                            ))}
                           </select>
                           {errors.plan && (
                             <div className="text-xs text-red-600 mt-1 ml-1">
@@ -960,49 +1181,210 @@ export default function QuoteModal() {
                           )}
                         </label>
 
-                        <button
-                          type="button"
-                          onClick={() => setShowPlanDetails(!showPlanDetails)}
-                          className="text-xs font-medium text-sky-600 hover:text-sky-700 flex items-center gap-1 focus:outline-none mb-2"
-                        >
-                          {showPlanDetails
-                            ? "Hide plan details"
-                            : "What's included?"}
-                          <svg
-                            className={`w-3 h-3 transition-transform ${showPlanDetails ? "rotate-180" : ""}`}
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
+                        {isOfficeType && (
+                          <div className="text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded-lg p-3 mb-2">
+                            Office, workspace, and co-working requests include
+                            an inspection fee (same as post-construction).
+                          </div>
+                        )}
+
+                        {isOfficeType && (
+                          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+                            {OFFICE_SERVICE_PLANS.map((plan) => {
+                              const isSelected = form.plan === plan.name;
+                              return (
+                                <button
+                                  key={plan.name}
+                                  type="button"
+                                  onClick={() =>
+                                    setForm((prev) => ({
+                                      ...prev,
+                                      plan: plan.name,
+                                    }))
+                                  }
+                                  className={`text-left rounded-2xl border p-4 transition-all ${
+                                    isSelected
+                                      ? "border-sky-400 bg-sky-50 shadow-lg"
+                                      : "border-slate-200 bg-white hover:border-sky-200 hover:shadow-md"
+                                  }`}
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <h4 className="text-sm font-bold text-slate-900">
+                                      {plan.name}
+                                    </h4>
+                                    <span
+                                      className={`text-[11px] font-semibold ${isSelected ? "text-sky-700" : "text-slate-500"}`}
+                                    >
+                                      {plan.cadence}
+                                    </span>
+                                  </div>
+                                  <ul className="mt-3 space-y-1 text-xs text-slate-600">
+                                    {plan.items.map((item) => (
+                                      <li
+                                        key={item}
+                                        className="flex items-center gap-2"
+                                      >
+                                        <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+                                        {item}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+
+                        {!isOfficeType && (
+                          <>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setShowPlanDetails(!showPlanDetails)
+                              }
+                              className="text-xs font-medium text-sky-600 hover:text-sky-700 flex items-center gap-1 focus:outline-none mb-2"
+                            >
+                              {showPlanDetails
+                                ? "Hide plan details"
+                                : "What's included?"}
+                              <svg
+                                className={`w-3 h-3 transition-transform ${showPlanDetails ? "rotate-180" : ""}`}
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M19 9l-7 7-7-7"
+                                />
+                              </svg>
+                            </button>
+
+                            <div
+                              className={`overflow-hidden transition-all duration-300 ease-in-out ${showPlanDetails ? "max-h-40 opacity-100 mb-4" : "max-h-0 opacity-0"}`}
+                            >
+                              <div className="bg-sky-50 rounded-lg p-3 border border-sky-100">
+                                <p className="text-xs font-semibold text-sky-800 mb-1">
+                                  {form.plan || "Select a"} Plan Includes:
+                                </p>
+                                <ul className="grid grid-cols-2 gap-x-2 gap-y-1">
+                                  {(
+                                    PLAN_DETAILS[form.plan] ||
+                                    PLAN_DETAILS.Basic
+                                  ).map((feature, idx) => (
+                                    <li
+                                      key={idx}
+                                      className="text-[10px] text-sky-700 flex items-center gap-1"
+                                    >
+                                      <span className="w-1 h-1 rounded-full bg-sky-500 shrink-0" />
+                                      {feature}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    )}
+
+                    {serviceType === "regular" && !isOfficeType && (
+                      <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm font-semibold text-slate-800">
+                            Pricing guide
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setShowPricingDetails(!showPricingDetails)
+                            }
+                            className="text-xs font-medium text-sky-600 hover:text-sky-700"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 9l-7 7-7-7"
-                            />
-                          </svg>
-                        </button>
+                            {showPricingDetails
+                              ? "Hide pricing"
+                              : "Show pricing"}
+                          </button>
+                        </div>
+                        <p className="text-xs text-slate-500 mt-1">
+                          Studio has a fixed plan price. Room add-ons vary by
+                          plan. Transportation and VAT are added at checkout.
+                        </p>
 
                         <div
-                          className={`overflow-hidden transition-all duration-300 ease-in-out ${showPlanDetails ? "max-h-40 opacity-100 mb-4" : "max-h-0 opacity-0"}`}
+                          className={`overflow-hidden transition-all duration-300 ease-in-out ${showPricingDetails ? "max-h-[600px] opacity-100 mt-3" : "max-h-0 opacity-0"}`}
                         >
-                          <div className="bg-sky-50 rounded-lg p-3 border border-sky-100">
-                            <p className="text-xs font-semibold text-sky-800 mb-1">
-                              {form.plan || "Select a"} Plan Includes:
-                            </p>
-                            <ul className="grid grid-cols-2 gap-x-2 gap-y-1">
-                              {(
-                                PLAN_DETAILS[form.plan] || PLAN_DETAILS.Basic
-                              ).map((feature, idx) => (
-                                <li
-                                  key={idx}
-                                  className="text-[10px] text-sky-700 flex items-center gap-1"
-                                >
-                                  <span className="w-1 h-1 rounded-full bg-sky-500 shrink-0" />
-                                  {feature}
-                                </li>
-                              ))}
-                            </ul>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            {Object.keys(PLAN_ROOM_PRICES).map((plan) => (
+                              <div
+                                key={plan}
+                                className={`rounded-lg border p-3 ${
+                                  form.plan === plan
+                                    ? "border-sky-200 bg-white"
+                                    : "border-slate-200 bg-white"
+                                }`}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <span className="text-sm font-bold text-slate-800">
+                                    {plan}
+                                  </span>
+                                  <span className="text-[11px] text-slate-500">
+                                    Studio:{" "}
+                                    {new Intl.NumberFormat("en-NG", {
+                                      style: "currency",
+                                      currency: "NGN",
+                                      maximumFractionDigits: 0,
+                                    }).format(STUDIO_PLAN_PRICE[plan] || 0)}
+                                  </span>
+                                </div>
+                                <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-slate-600">
+                                  {Object.entries(PLAN_ROOM_PRICES[plan])
+                                    .filter(([key]) => key !== "officeSpaces")
+                                    .map(([key, price]) => (
+                                      <div
+                                        key={`${plan}-${key}`}
+                                        className="flex items-center justify-between gap-2"
+                                      >
+                                        <span>
+                                          {ROOM_PRICE_LABELS[key] ||
+                                            formatLabel(key)}
+                                        </span>
+                                        <span>
+                                          {new Intl.NumberFormat("en-NG", {
+                                            style: "currency",
+                                            currency: "NGN",
+                                            maximumFractionDigits: 0,
+                                          }).format(price)}
+                                        </span>
+                                      </div>
+                                    ))}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className="mt-3 text-[11px] text-slate-500">
+                            Extras:{" "}
+                            {Object.entries(EXTRAS_PRICES)
+                              .map(
+                                ([key, price]) =>
+                                  `${formatLabel(key)} ${new Intl.NumberFormat(
+                                    "en-NG",
+                                    {
+                                      style: "currency",
+                                      currency: "NGN",
+                                      maximumFractionDigits: 0,
+                                    },
+                                  ).format(price)}`,
+                              )
+                              .join(", ")}
+                            .
+                          </div>
+                          <div className="mt-2 text-[11px] text-slate-500">
+                            Transportation: Mainland NGN 3,000, Island NGN
+                            4,000. VAT 7.5% applies.
                           </div>
                         </div>
                       </div>
@@ -1031,7 +1413,7 @@ export default function QuoteModal() {
                       </label>
                     )}
 
-                    {serviceType === "regular" && (
+                    {serviceType === "regular" && !isOfficeType && (
                       <div className="space-y-4">
                         <p className="text-sm font-medium text-gray-700">
                           Add Rooms
@@ -1049,16 +1431,18 @@ export default function QuoteModal() {
                             return (
                               <div
                                 key={key}
-                                className={`flex flex-col items-center p-3 rounded-xl border transition-all duration-200 ${isActive
-                                  ? "border-sky-500 bg-sky-50 shadow-sm"
-                                  : "border-gray-200 bg-white hover:border-sky-200"
-                                  }`}
+                                className={`flex flex-col items-center p-3 rounded-xl border transition-all duration-200 ${
+                                  isActive
+                                    ? "border-sky-500 bg-sky-50 shadow-sm"
+                                    : "border-gray-200 bg-white hover:border-sky-200"
+                                }`}
                               >
                                 <div
-                                  className={`w-8 h-8 mb-2 rounded-full flex items-center justify-center ${isActive
-                                    ? "bg-sky-100 text-sky-600"
-                                    : "bg-gray-100 text-gray-400"
-                                    }`}
+                                  className={`w-8 h-8 mb-2 rounded-full flex items-center justify-center ${
+                                    isActive
+                                      ? "bg-sky-100 text-sky-600"
+                                      : "bg-gray-100 text-gray-400"
+                                  }`}
                                 >
                                   <svg
                                     className="w-4 h-4"
@@ -1079,10 +1463,11 @@ export default function QuoteModal() {
                                     type="button"
                                     onClick={() => updateCount(key, -1)}
                                     disabled={count === 0 || isStudio}
-                                    className={`w-8 h-8 flex items-center justify-center rounded-full border transition-all active:scale-95 ${count === 0 || isStudio
-                                      ? "border-gray-100 text-gray-300 cursor-not-allowed"
-                                      : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50 shadow-sm"
-                                      }`}
+                                    className={`w-8 h-8 flex items-center justify-center rounded-full border transition-all active:scale-95 ${
+                                      count === 0 || isStudio
+                                        ? "border-gray-100 text-gray-300 cursor-not-allowed"
+                                        : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50 shadow-sm"
+                                    }`}
                                   >
                                     <svg
                                       className="w-4 h-4"
@@ -1094,51 +1479,52 @@ export default function QuoteModal() {
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth={2}
-                                      d="M20 12H4"
-                                    />
-                                  </svg>
-                                </button>
+                                        d="M20 12H4"
+                                      />
+                                    </svg>
+                                  </button>
 
-                                <span
-                                  className={`w-6 text-center font-bold text-lg ${isActive ? "text-sky-700" : "text-gray-300"}`}
-                                >
-                                  {count}
-                                </span>
-
-                                <button
-                                  type="button"
-                                  onClick={() => updateCount(key, 1)}
-                                  disabled={isStudio}
-                                  className={`w-8 h-8 flex items-center justify-center rounded-full shadow-md transition-all active:scale-95 ${isStudio
-                                    ? "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none"
-                                    : "bg-sky-600 text-white hover:bg-sky-700 hover:shadow-lg"
-                                    }`}
-                                >
-                                  <svg
-                                    className="w-4 h-4"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
+                                  <span
+                                    className={`w-6 text-center font-bold text-lg ${isActive ? "text-sky-700" : "text-gray-300"}`}
                                   >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M12 4v16m8-8H4"
-                                    />
-                                  </svg>
-                                </button>
+                                    {count}
+                                  </span>
+
+                                  <button
+                                    type="button"
+                                    onClick={() => updateCount(key, 1)}
+                                    disabled={isStudio}
+                                    className={`w-8 h-8 flex items-center justify-center rounded-full shadow-md transition-all active:scale-95 ${
+                                      isStudio
+                                        ? "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none"
+                                        : "bg-sky-600 text-white hover:bg-sky-700 hover:shadow-lg"
+                                    }`}
+                                  >
+                                    <svg
+                                      className="w-4 h-4"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 4v16m8-8H4"
+                                      />
+                                    </svg>
+                                  </button>
+                                </div>
                               </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      {errors.rooms && (
-                        <div className="text-xs text-red-600 mt-2 ml-1">
-                          {errors.rooms}
+                            );
+                          })}
                         </div>
-                      )}
-                    </div>
+                        {errors.rooms && (
+                          <div className="text-xs text-red-600 mt-2 ml-1">
+                            {errors.rooms}
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
                 )}
@@ -1193,27 +1579,33 @@ export default function QuoteModal() {
                           <span className="block font-medium text-gray-900">
                             {isStudio
                               ? "Studio"
-                              : [
-                                form.parlours > 0
-                                  ? `${form.parlours} Parlour`
-                                  : null,
-                                form.bedrooms > 0
-                                  ? `${form.bedrooms} Bed`
-                                  : null,
-                                form.kitchens > 0
-                                  ? `${form.kitchens} Kitchen`
-                                  : null,
-                                form.bathrooms > 0
-                                  ? `${form.bathrooms} Bath`
-                                  : null,
-                              ]
-                                .filter(Boolean)
-                                .join(", ") || "None selected"}
-                            {!isStudio &&
-                              (form.officeSpaces > 0 ||
-                                form.garages > 0 ||
-                                form.stores > 0) &&
-                              "..."}
+                              : isOfficeType
+                                ? "Office/Workspace"
+                                : [
+                                    form.parlours > 0
+                                      ? `${form.parlours} Parlour`
+                                      : null,
+                                    form.bedrooms > 0
+                                      ? `${form.bedrooms} Bed`
+                                      : null,
+                                    form.kitchens > 0
+                                      ? `${form.kitchens} Kitchen`
+                                      : null,
+                                    form.bathrooms > 0
+                                      ? `${form.bathrooms} Bath`
+                                      : null,
+                                    form.officeSpaces > 0
+                                      ? `${form.officeSpaces} Office/Workspace`
+                                      : null,
+                                    form.garages > 0
+                                      ? `${form.garages} Garage`
+                                      : null,
+                                    form.stores > 0
+                                      ? `${form.stores} Store`
+                                      : null,
+                                  ]
+                                    .filter(Boolean)
+                                    .join(", ") || "None selected"}
                           </span>
                         </div>
                       </div>
@@ -1222,22 +1614,24 @@ export default function QuoteModal() {
                       <div className="pt-2 border-t border-gray-200 mt-2 flex justify-between items-center">
                         <span className="text-sm font-bold text-gray-700">
                           {serviceType === "regular"
-                            ? `Total Estimate ${FREQUENCY_DETAILS[form.frequency]?.label ? FREQUENCY_DETAILS[form.frequency].label : ""}`
+                            ? isOfficeType
+                              ? "Inspection Fee"
+                              : `Total Estimate ${FREQUENCY_DETAILS[form.frequency]?.label ? FREQUENCY_DETAILS[form.frequency].label : ""}`
                             : "Inspection Fee"}
                         </span>
                         <span className="text-lg font-bold text-sky-700">
                           {estimated
                             ? new Intl.NumberFormat("en-NG", {
-                              style: "currency",
-                              currency: "NGN",
-                              maximumFractionDigits: 0,
-                            }).format(
-                              serviceType === "regular"
-                                ? estimated *
-                                (FREQUENCY_DETAILS[form.frequency]
-                                  ?.multiplier || 1)
-                                : estimated,
-                            )
+                                style: "currency",
+                                currency: "NGN",
+                                maximumFractionDigits: 0,
+                              }).format(
+                                serviceType === "regular"
+                                  ? estimated *
+                                      (FREQUENCY_DETAILS[form.frequency]
+                                        ?.multiplier || 1)
+                                  : estimated,
+                              )
                             : "₦0"}
                         </span>
                       </div>
@@ -1246,7 +1640,7 @@ export default function QuoteModal() {
                       {serviceType === "regular" &&
                         estimated &&
                         FREQUENCY_DETAILS[form.frequency]?.monthlyFactor >
-                        0 && (
+                          0 && (
                           <div className="pt-2 border-t border-gray-100 mt-1 flex justify-between items-center">
                             <span className="text-xs font-medium text-gray-500">
                               Estimated Monthly Cost
@@ -1258,17 +1652,17 @@ export default function QuoteModal() {
                                 maximumFractionDigits: 0,
                               }).format(
                                 estimated *
-                                (FREQUENCY_DETAILS[form.frequency]
-                                  ?.multiplier || 1) *
-                                (FREQUENCY_DETAILS[form.frequency]
-                                  ?.monthlyFactor || 1),
+                                  (FREQUENCY_DETAILS[form.frequency]
+                                    ?.multiplier || 1) *
+                                  (FREQUENCY_DETAILS[form.frequency]
+                                    ?.monthlyFactor || 1),
                               )}
                             </span>
                           </div>
                         )}
                     </div>
 
-                    {serviceType === "regular" && (
+                    {serviceType === "regular" && !isOfficeType && (
                       <div className="block relative" ref={extrasRef}>
                         <span className="block text-sm font-medium text-gray-700 mb-1">
                           Extra Services
@@ -1315,7 +1709,10 @@ export default function QuoteModal() {
                               key: "kitchenCabinet",
                             },
                             { label: "Compound (₦5,000)", key: "compound" },
-                            { label: "Car Washing (₦5,000)", key: "carWashing" },
+                            {
+                              label: "Car Washing (₦5,000)",
+                              key: "carWashing",
+                            },
                           ].map(({ label, key }) => (
                             <div
                               key={key}
@@ -1326,7 +1723,7 @@ export default function QuoteModal() {
                                 <input
                                   type="checkbox"
                                   checked={form.extras[key]}
-                                  onChange={() => { }}
+                                  onChange={() => {}}
                                   className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-500"
                                 />
                               </div>
@@ -1340,6 +1737,33 @@ export default function QuoteModal() {
                         </div>
                       </div>
                     )}
+
+                    <div className="space-y-2">
+                      <span className="block text-sm font-medium text-gray-700">
+                        Optional Services (Upsell)
+                      </span>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {OPTIONAL_SERVICES.map(({ key, label }) => (
+                          <label
+                            key={key}
+                            className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={form.optionalServices?.[key] || false}
+                              onChange={() => toggleOptionalService(key)}
+                              className="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-500"
+                            />
+                            <span className="text-sm text-gray-700">
+                              {label}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                      <p className="text-xs text-slate-500">
+                        These are separate line items on the invoice.
+                      </p>
+                    </div>
 
                     <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                       <input
@@ -1401,128 +1825,205 @@ export default function QuoteModal() {
                             </h4>
                             <div className="space-y-2 text-sm">
                               {serviceType === "regular" ? (
-                                <>
-                                  {/* Calculate room cost for display */}
-                                  {(() => {
-                                    const roomPrices =
-                                      PLAN_ROOM_PRICES[form.plan] ||
-                                      PLAN_ROOM_PRICES.Standard;
-                                    let totalRoomValue = 0;
-                                    let totalRooms = 0;
-                                    if (isStudio) {
-                                      totalRoomValue =
-                                        STUDIO_PLAN_PRICE[form.plan] || 0;
-                                      return (
-                                        <div className="flex justify-between text-sky-700">
-                                          <span>Studio Plan</span>
-                                          <span>
-                                            {new Intl.NumberFormat("en-NG", {
-                                              style: "currency",
-                                              currency: "NGN",
-                                              maximumFractionDigits: 0,
-                                            }).format(totalRoomValue)}
-                                          </span>
-                                        </div>
-                                      );
-                                    }
-
-                                    Object.entries(roomPrices).forEach(
-                                      ([key, price]) => {
-                                        const count = form[key] || 0;
-                                        totalRoomValue += count * price;
-                                        totalRooms += count;
-                                      },
-                                    );
-
-                                    if (totalRooms > 0) {
-                                      return (
-                                        <div className="flex justify-between text-sky-700">
-                                          <span>
-                                            Room Add-ons ({totalRooms})
-                                          </span>
-                                          <span>
-                                            {new Intl.NumberFormat("en-NG", {
-                                              style: "currency",
-                                              currency: "NGN",
-                                              maximumFractionDigits: 0,
-                                            }).format(totalRoomValue)}
-                                          </span>
-                                        </div>
-                                      );
-                                    }
-                                    return null;
-                                  })()}
-
-                                  {/* Extras */}
-                                  {Object.entries(form.extras).map(
-                                    ([key, selected]) => {
-                                      if (!selected) return null;
-                                      return (
-                                        <div
-                                          key={key}
-                                          className="flex justify-between text-slate-600 text-xs"
-                                        >
-                                          <span>
-                                            +{" "}
-                                            {key.charAt(0).toUpperCase() +
-                                              key
-                                                .slice(1)
-                                                .replace(/([A-Z])/g, " $1")
-                                                .trim()}
-                                          </span>
-                                          <span>
-                                            {new Intl.NumberFormat("en-NG", {
-                                              style: "currency",
-                                              currency: "NGN",
-                                              maximumFractionDigits: 0,
-                                            }).format(EXTRAS_PRICES[key] || 0)}
-                                          </span>
-                                        </div>
-                                      );
-                                    },
-                                  )}
-
-                                  {/* Transportation Fee */}
-                                  <div className="flex justify-between text-slate-600 text-xs">
-                                    <span>
-                                      + Transportation (
-                                      {ISLAND_LGAS.includes(form.lga)
-                                        ? "Island"
-                                        : "Mainland"}
-                                      )
-                                    </span>
-                                    <span>
-                                      {new Intl.NumberFormat("en-NG", {
-                                        style: "currency",
-                                        currency: "NGN",
-                                        maximumFractionDigits: 0,
-                                      }).format(
-                                        ISLAND_LGAS.includes(form.lga)
-                                          ? 4000
-                                          : 3000,
-                                      )}
-                                    </span>
-                                  </div>
-
-                                  {/* Discount */}
-
-                                  {FREQUENCY_DISCOUNT[form.frequency] > 0 && (
-                                    <div className="flex justify-between text-green-600 font-medium pt-2 border-t border-sky-100/50">
+                                isOfficeType ? (
+                                  <>
+                                    <div className="flex justify-between text-sky-800">
+                                      <span>Inspection Fee</span>
                                       <span>
-                                        Frequency Discount ({form.frequency})
-                                      </span>
-                                      <span>
-                                        -
-                                        {FREQUENCY_DISCOUNT[form.frequency] *
-                                          100}
-                                        %
+                                        {new Intl.NumberFormat("en-NG", {
+                                          style: "currency",
+                                          currency: "NGN",
+                                          maximumFractionDigits: 0,
+                                        }).format(INSPECTION_FEE)}
                                       </span>
                                     </div>
-                                  )}
 
-                                  {/* Frequency Multiplier */}
-                                  {(FREQUENCY_DETAILS[form.frequency]
-                                    ?.multiplier || 1) > 1 && (
+                                    {/* Optional Services (Quoted Separately) */}
+                                    {OPTIONAL_SERVICES.filter(
+                                      ({ key }) => form.optionalServices?.[key],
+                                    ).map(({ key, label }) => (
+                                      <div
+                                        key={key}
+                                        className="flex justify-between text-slate-500 text-xs"
+                                      >
+                                        <span>+ {label}</span>
+                                        <span>Quoted separately</span>
+                                      </div>
+                                    ))}
+
+                                    {/* Transportation Fee */}
+                                    <div className="flex justify-between text-slate-600 text-xs">
+                                      <span>
+                                        + Transportation (
+                                        {ISLAND_LGAS.includes(form.lga)
+                                          ? "Island"
+                                          : "Mainland"}
+                                        )
+                                      </span>
+                                      <span>
+                                        {new Intl.NumberFormat("en-NG", {
+                                          style: "currency",
+                                          currency: "NGN",
+                                          maximumFractionDigits: 0,
+                                        }).format(
+                                          ISLAND_LGAS.includes(form.lga)
+                                            ? 4000
+                                            : 3000,
+                                        )}
+                                      </span>
+                                    </div>
+
+                                    <div className="flex justify-between text-gray-600 font-medium pt-2 border-t border-sky-100/50">
+                                      <span>VAT (7.5%)</span>
+                                      <span>
+                                        {new Intl.NumberFormat("en-NG", {
+                                          style: "currency",
+                                          currency: "NGN",
+                                          maximumFractionDigits: 0,
+                                        }).format(
+                                          estimated - estimated / 1.075,
+                                        )}
+                                      </span>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    {/* Calculate room cost for display */}
+                                    {(() => {
+                                      const roomPrices =
+                                        PLAN_ROOM_PRICES[form.plan] ||
+                                        PLAN_ROOM_PRICES.Standard;
+                                      let totalRoomValue = 0;
+                                      let totalRooms = 0;
+                                      if (isStudio) {
+                                        totalRoomValue =
+                                          STUDIO_PLAN_PRICE[form.plan] || 0;
+                                        return (
+                                          <div className="flex justify-between text-sky-700">
+                                            <span>Studio Plan</span>
+                                            <span>
+                                              {new Intl.NumberFormat("en-NG", {
+                                                style: "currency",
+                                                currency: "NGN",
+                                                maximumFractionDigits: 0,
+                                              }).format(totalRoomValue)}
+                                            </span>
+                                          </div>
+                                        );
+                                      }
+
+                                      Object.entries(roomPrices).forEach(
+                                        ([key, price]) => {
+                                          const count = form[key] || 0;
+                                          totalRoomValue += count * price;
+                                          totalRooms += count;
+                                        },
+                                      );
+
+                                      if (totalRooms > 0) {
+                                        return (
+                                          <div className="flex justify-between text-sky-700">
+                                            <span>
+                                              Room Add-ons ({totalRooms})
+                                            </span>
+                                            <span>
+                                              {new Intl.NumberFormat("en-NG", {
+                                                style: "currency",
+                                                currency: "NGN",
+                                                maximumFractionDigits: 0,
+                                              }).format(totalRoomValue)}
+                                            </span>
+                                          </div>
+                                        );
+                                      }
+                                      return null;
+                                    })()}
+
+                                    {/* Extras */}
+                                    {Object.entries(form.extras).map(
+                                      ([key, selected]) => {
+                                        if (!selected) return null;
+                                        return (
+                                          <div
+                                            key={key}
+                                            className="flex justify-between text-slate-600 text-xs"
+                                          >
+                                            <span>
+                                              +{" "}
+                                              {key.charAt(0).toUpperCase() +
+                                                key
+                                                  .slice(1)
+                                                  .replace(/([A-Z])/g, " $1")
+                                                  .trim()}
+                                            </span>
+                                            <span>
+                                              {new Intl.NumberFormat("en-NG", {
+                                                style: "currency",
+                                                currency: "NGN",
+                                                maximumFractionDigits: 0,
+                                              }).format(
+                                                EXTRAS_PRICES[key] || 0,
+                                              )}
+                                            </span>
+                                          </div>
+                                        );
+                                      },
+                                    )}
+
+                                    {/* Optional Services (Quoted Separately) */}
+                                    {OPTIONAL_SERVICES.filter(
+                                      ({ key }) => form.optionalServices?.[key],
+                                    ).map(({ key, label }) => (
+                                      <div
+                                        key={key}
+                                        className="flex justify-between text-slate-500 text-xs"
+                                      >
+                                        <span>+ {label}</span>
+                                        <span>Quoted separately</span>
+                                      </div>
+                                    ))}
+
+                                    {/* Transportation Fee */}
+                                    <div className="flex justify-between text-slate-600 text-xs">
+                                      <span>
+                                        + Transportation (
+                                        {ISLAND_LGAS.includes(form.lga)
+                                          ? "Island"
+                                          : "Mainland"}
+                                        )
+                                      </span>
+                                      <span>
+                                        {new Intl.NumberFormat("en-NG", {
+                                          style: "currency",
+                                          currency: "NGN",
+                                          maximumFractionDigits: 0,
+                                        }).format(
+                                          ISLAND_LGAS.includes(form.lga)
+                                            ? 4000
+                                            : 3000,
+                                        )}
+                                      </span>
+                                    </div>
+
+                                    {/* Discount */}
+
+                                    {FREQUENCY_DISCOUNT[form.frequency] > 0 && (
+                                      <div className="flex justify-between text-green-600 font-medium pt-2 border-t border-sky-100/50">
+                                        <span>
+                                          Frequency Discount ({form.frequency})
+                                        </span>
+                                        <span>
+                                          -
+                                          {FREQUENCY_DISCOUNT[form.frequency] *
+                                            100}
+                                          %
+                                        </span>
+                                      </div>
+                                    )}
+
+                                    {/* Frequency Multiplier */}
+                                    {(FREQUENCY_DETAILS[form.frequency]
+                                      ?.multiplier || 1) > 1 && (
                                       <div className="flex justify-between text-sky-700 font-medium pt-2 border-t border-sky-100/50">
                                         <span>
                                           Frequency Multiplier (
@@ -1542,76 +2043,85 @@ export default function QuoteModal() {
                                       </div>
                                     )}
 
-                                  {/* VAT Display */}
-                                  <div className="flex justify-between text-gray-600 font-medium pt-2 border-t border-sky-100/50">
-                                    <span>VAT (7.5%)</span>
-                                    <span>
-                                      {new Intl.NumberFormat("en-NG", {
-                                        style: "currency",
-                                        currency: "NGN",
-                                        maximumFractionDigits: 0,
-                                      }).format(
-                                        (estimated / 1.075) *
-                                        0.075 *
-                                        (FREQUENCY_DETAILS[form.frequency]
-                                          ?.multiplier || 1),
-                                      )}
-                                    </span>
-                                  </div>
-
-                                  {/* Weekly/Monthly Estimates */}
-                                  {(() => {
-                                    const details =
-                                      FREQUENCY_DETAILS[form.frequency] || {};
-                                    let weeklyEstimate = null;
-                                    let monthlyEstimate = null;
-
-                                    if (details.label === "(Weekly)") {
-                                      weeklyEstimate =
-                                        estimated * (details.multiplier || 1);
-                                      monthlyEstimate = weeklyEstimate * 4;
-                                    } else if (details.label === "(Daily)") {
-                                      weeklyEstimate = estimated * 7;
-                                      monthlyEstimate = estimated * 30;
-                                    } else if (details.label === "(Monthly)") {
-                                      monthlyEstimate =
-                                        estimated * (details.multiplier || 1);
-                                    }
-
-                                    if (!weeklyEstimate && !monthlyEstimate) {
-                                      return null;
-                                    }
-
-                                    return (
-                                      <>
-                                        {weeklyEstimate && (
-                                          <div className="flex justify-between text-slate-600 text-xs">
-                                            <span>Estimated Weekly</span>
-                                            <span>
-                                              {new Intl.NumberFormat("en-NG", {
-                                                style: "currency",
-                                                currency: "NGN",
-                                                maximumFractionDigits: 0,
-                                              }).format(weeklyEstimate)}
-                                            </span>
-                                          </div>
+                                    {/* VAT Display */}
+                                    <div className="flex justify-between text-gray-600 font-medium pt-2 border-t border-sky-100/50">
+                                      <span>VAT (7.5%)</span>
+                                      <span>
+                                        {new Intl.NumberFormat("en-NG", {
+                                          style: "currency",
+                                          currency: "NGN",
+                                          maximumFractionDigits: 0,
+                                        }).format(
+                                          (estimated / 1.075) *
+                                            0.075 *
+                                            (FREQUENCY_DETAILS[form.frequency]
+                                              ?.multiplier || 1),
                                         )}
-                                        {monthlyEstimate && (
-                                          <div className="flex justify-between text-slate-600 text-xs">
-                                            <span>Estimated Monthly</span>
-                                            <span>
-                                              {new Intl.NumberFormat("en-NG", {
-                                                style: "currency",
-                                                currency: "NGN",
-                                                maximumFractionDigits: 0,
-                                              }).format(monthlyEstimate)}
-                                            </span>
-                                          </div>
-                                        )}
-                                      </>
-                                    );
-                                  })()}
-                                </>
+                                      </span>
+                                    </div>
+
+                                    {/* Weekly/Monthly Estimates */}
+                                    {(() => {
+                                      const details =
+                                        FREQUENCY_DETAILS[form.frequency] || {};
+                                      let weeklyEstimate = null;
+                                      let monthlyEstimate = null;
+
+                                      if (details.label === "(Weekly)") {
+                                        weeklyEstimate =
+                                          estimated * (details.multiplier || 1);
+                                        monthlyEstimate = weeklyEstimate * 4;
+                                      } else if (details.label === "(Daily)") {
+                                        weeklyEstimate = estimated * 7;
+                                        monthlyEstimate = estimated * 30;
+                                      } else if (
+                                        details.label === "(Monthly)"
+                                      ) {
+                                        monthlyEstimate =
+                                          estimated * (details.multiplier || 1);
+                                      }
+
+                                      if (!weeklyEstimate && !monthlyEstimate) {
+                                        return null;
+                                      }
+
+                                      return (
+                                        <>
+                                          {weeklyEstimate && (
+                                            <div className="flex justify-between text-slate-600 text-xs">
+                                              <span>Estimated Weekly</span>
+                                              <span>
+                                                {new Intl.NumberFormat(
+                                                  "en-NG",
+                                                  {
+                                                    style: "currency",
+                                                    currency: "NGN",
+                                                    maximumFractionDigits: 0,
+                                                  },
+                                                ).format(weeklyEstimate)}
+                                              </span>
+                                            </div>
+                                          )}
+                                          {monthlyEstimate && (
+                                            <div className="flex justify-between text-slate-600 text-xs">
+                                              <span>Estimated Monthly</span>
+                                              <span>
+                                                {new Intl.NumberFormat(
+                                                  "en-NG",
+                                                  {
+                                                    style: "currency",
+                                                    currency: "NGN",
+                                                    maximumFractionDigits: 0,
+                                                  },
+                                                ).format(monthlyEstimate)}
+                                              </span>
+                                            </div>
+                                          )}
+                                        </>
+                                      );
+                                    })()}
+                                  </>
+                                )
                               ) : (
                                 <>
                                   {/* Specialized Service Breakdown */}
@@ -1625,6 +2135,19 @@ export default function QuoteModal() {
                                       }).format(INSPECTION_FEE)}
                                     </span>
                                   </div>
+
+                                  {/* Optional Services (Quoted Separately) */}
+                                  {OPTIONAL_SERVICES.filter(
+                                    ({ key }) => form.optionalServices?.[key],
+                                  ).map(({ key, label }) => (
+                                    <div
+                                      key={key}
+                                      className="flex justify-between text-slate-500 text-xs"
+                                    >
+                                      <span>+ {label}</span>
+                                      <span>Quoted separately</span>
+                                    </div>
+                                  ))}
 
                                   <div className="flex justify-between text-slate-600 text-xs">
                                     <span>
@@ -1682,8 +2205,8 @@ export default function QuoteModal() {
                                 maximumFractionDigits: 0,
                               }).format(
                                 estimated *
-                                (FREQUENCY_DETAILS[form.frequency]
-                                  ?.multiplier || 1),
+                                  (FREQUENCY_DETAILS[form.frequency]
+                                    ?.multiplier || 1),
                               )}
                             </div>
                           </div>
@@ -1723,14 +2246,14 @@ export default function QuoteModal() {
                       type="button"
                       onClick={handleNext}
                       disabled={transitioning}
-                      className="px-6 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg hover:shadow-blue-600/30 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                      className="px-6 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-semibold shadow-lg hover:shadow-sky-200 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
                     >
                       Next
                     </button>
                   ) : (
                     <button
                       type="submit"
-                      className="px-6 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg hover:shadow-blue-600/30 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                      className="px-6 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-semibold shadow-lg hover:shadow-sky-200 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
                       disabled={submitting || transitioning}
                     >
                       {submitting ? "Processing..." : "Checkout"}
@@ -1759,7 +2282,8 @@ export default function QuoteModal() {
                   Payment Successful!
                 </h4>
                 <p className="text-gray-500 mt-2 max-w-xs mx-auto">
-                  You are being redirected to WhatsApp to confirm your booking and details.
+                  You are being redirected to WhatsApp to confirm your booking
+                  and details.
                 </p>
                 <div className="mt-8">
                   <button
@@ -1794,6 +2318,14 @@ export default function QuoteModal() {
                           kitchenCabinet: false,
                           compound: false,
                           carWashing: false,
+                        },
+                        optionalServices: {
+                          carpetCleaning: false,
+                          fumigation: false,
+                          postConstruction: false,
+                          wasteDisposal: false,
+                          sanitization: false,
+                          windowExterior: false,
                         },
                         cleaningSupplies: false,
                         specialRequests: "",

@@ -20,9 +20,9 @@ export default function JoinTeam() {
 
             <p className="mt-4 text-slate-600">
               We're expanding our team. If you're reliable, hardworking and take
-              pride in delivering exceptional cleaning, apply now - it only takes
-              a minute to fill the short form. We'll review your application and
-              get in touch.
+              pride in delivering exceptional cleaning, apply now - it only
+              takes a minute to fill the short form. We'll review your
+              application and get in touch.
             </p>
 
             <ul className="mt-6 space-y-2 text-slate-600">
@@ -52,7 +52,7 @@ export default function JoinTeam() {
 
           <div className="h-64 md:h-auto">
             <img
-              src="/scrubb logo.png"
+              src="/scrubbProB.png"
               alt="ScrubbPro Team"
               loading="lazy"
               className="w-full h-full object-cover"

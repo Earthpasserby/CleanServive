@@ -30,7 +30,7 @@ const Navbar = () => {
             <div className="flex-shrink-0">
               <Link to="/" className="flex items-center gap-2 group">
                 <img
-                  src="/scrubbNewLg-removebg-preview.png"
+                  src="/sb.png"
                   alt="ScrubbPro Logo"
                   className="w-36 sm:w-36 h-auto object-contain transition-transform duration-300 group-hover:scale-105"
                 />

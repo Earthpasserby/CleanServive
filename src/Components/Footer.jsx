@@ -1,4 +1,5 @@
 import { FaInstagram, FaEnvelope, FaPhone } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -10,6 +11,9 @@ const Footer = () => {
             Professional cleaning services for every space and every need.
             Experience the difference of a truly spotless environment.
           </p>
+          <span className="mt-2 block text-xs text-slate-500 uppercase tracking-[0.3em]">
+            keep your hands clean and ours dirty
+          </span>
         </div>
 
         <div>
@@ -25,14 +29,29 @@ const Footer = () => {
         <div>
           <h5 className="font-bold text-lg mb-4 text-amber-500">Quick Links</h5>
           <ul className="space-y-3 text-slate-300">
-            <li className="hover:text-white transition-colors cursor-pointer">
-              Home
+            <li>
+              <Link
+                to="/"
+                className="hover:text-white transition-colors cursor-pointer"
+              >
+                Home
+              </Link>
             </li>
-            <li className="hover:text-white transition-colors cursor-pointer">
-              About
+            <li>
+              <Link
+                to="/about"
+                className="hover:text-white transition-colors cursor-pointer"
+              >
+                About
+              </Link>
             </li>
-            <li className="hover:text-white transition-colors cursor-pointer">
-              Pricing
+            <li>
+              <Link
+                to="/pricing"
+                className="hover:text-white transition-colors cursor-pointer"
+              >
+                Pricing
+              </Link>
             </li>
             <li>
               <button

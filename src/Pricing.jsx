@@ -170,7 +170,7 @@ export default function Pricing() {
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-5xl font-black text-slate-900 tracking-tight mb-6">
             Sparkling Homes,{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-blue-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-sky-700">
               Simple Math.
             </span>
           </h1>
@@ -193,7 +193,7 @@ export default function Pricing() {
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-0 right-0 flex justify-center">
-                  <span className="bg-gradient-to-r from-blue-600 to-sky-500 text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-md uppercase tracking-widest">
+                  <span className="bg-gradient-to-r from-sky-700 to-sky-500 text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-md uppercase tracking-widest">
                     Most Popular
                   </span>
                 </div>
@@ -298,7 +298,7 @@ export default function Pricing() {
                 </div>
                 <h2 className="text-3xl md:text-4xl font-black text-slate-900 mt-4">
                   Office Cleaning,{" "}
-                  <span className="text-blue-600">made simple.</span>
+                  <span className="text-sky-600">made simple.</span>
                 </h2>
                 <p className="text-slate-600 mt-3 max-w-2xl">
                   Choose a cadence that fits your workplace traffic and keep

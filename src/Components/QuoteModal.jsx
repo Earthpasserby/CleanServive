@@ -1697,18 +1697,24 @@ export default function QuoteModal() {
                           className={`absolute z-20 mt-1 w-full rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 max-h-60 overflow-auto focus:outline-none py-1 transition-all duration-200 origin-top transform ${extrasOpen ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" : "opacity-0 scale-95 -translate-y-2 pointer-events-none"}`}
                         >
                           {[
-                            { label: "Balcony (₦2,000)", key: "balcony" },
-                            { label: "Wardrobe (₦3,000)", key: "wardrobe" },
-                            { label: "Fridge (₦2,000)", key: "fridge" },
-                            { label: "Fan (₦500)", key: "fan" },
-                            { label: "Oven (₦1,500)", key: "oven" },
-                            { label: "Laundry (₦4,000)", key: "laundry" },
-                            { label: "Ironing (₦2,500)", key: "ironing" },
+                            { label: "BalconyWipe (₦2,500)", key: "balcony" },
+                            {
+                              label: "WardrobeCurating (₦3,000)",
+                              key: "wardrobe",
+                            },
+                            { label: "FridgeCleaning (₦2,000)", key: "fridge" },
+                            { label: "FanCleaning (₦500)", key: "fan" },
+                            { label: "OvenSparkle (₦3,500)", key: "oven" },
+                            { label: "Laundry (₦5,000)", key: "laundry" },
+                            { label: "Ironing (₦4,000)", key: "ironing" },
                             {
                               label: "Kitchen Cabinet (₦1,500)",
                               key: "kitchenCabinet",
                             },
-                            { label: "Compound (₦5,000)", key: "compound" },
+                            {
+                              label: "CompoundSweep (₦5,000)",
+                              key: "compound",
+                            },
                             {
                               label: "Car Washing (₦5,000)",
                               key: "carWashing",

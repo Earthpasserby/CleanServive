@@ -12,7 +12,7 @@ const Footer = () => {
             Experience the difference of a truly spotless environment.
           </p>
           <span className="mt-2 block text-xs text-slate-500 uppercase tracking-[0.3em]">
-            keep your hands clean and ours dirty
+            YOU KEEP YOUR HANDS CLEAN. WE’LL GET OURS DIRTY. 💧✨
           </span>
         </div>
 

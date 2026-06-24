@@ -17,7 +17,7 @@ export default function About() {
               Why ScrubbPro? <br />
             </h1>
             <p className="mt-3 text-xs font-semibold uppercase tracking-[0.35em] text-sky-600">
-              keep your hands clean and ours dirty
+              YOU KEEP YOUR HANDS CLEAN. WE’LL GET OURS DIRTY. 💧✨
             </p>
             <p className="text-slate-600 mt-4 leading-relaxed">
               ScrubbPro was born from a simple desire for clean, well kept
